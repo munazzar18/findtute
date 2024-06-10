@@ -1,0 +1,5 @@
+
+"perwinkle" = #C0B9DD
+"lavender-web" = #DED9E2
+"pistachlo" = #ABDF75
+"verdigris" = #48A9A6
