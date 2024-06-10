@@ -114,16 +114,17 @@ export default function Home() {
             <div className="">
               <div>
                 <h1 className="font-bold text-xl sm:text-xl md:text-2xl lg:text-3xl">
-                  Craft Your Personalized Learning Profile:
+                  Discover a Network of Expert Tutors at Your Fingertips:
                 </h1>
 
                 <p className="text-justify text-lg sm:text-lg md:text-xl lg:text-2xl">
-                  Dive deeper into your educational journey by creating a{" "}
-                  <strong>personalized profile</strong>. This allows you to
-                  specify your learning goals, preferred subjects, and desired
-                  learning style. Having a clear profile helps connect you with
-                  the ideal nearby teachers who can cater to your specific needs
-                  and interests.
+                  Gone are the days of limited learning options. Our platform
+                  boasts a vast network of{" "}
+                  <strong>highly qualified tutors</strong> across diverse
+                  subjects. With a few clicks, you can browse profiles of{" "}
+                  <strong>teachers conveniently located near you</strong> -
+                  perfect for those seeking a more personalized touch or a
+                  flexible learning schedule.
                 </p>
               </div>
             </div>
