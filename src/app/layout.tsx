@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Assistant } from "next/font/google";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Toaster } from "react-hot-toast";
 
 const assistant = Assistant({ subsets: ["hebrew"] });
 
@@ -17,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={assistant.className}>{children}</body>
+      <body className={assistant.className}>
+        <Toaster position="top-right" />
+        {children}
+      </body>
     </html>
   );
 }
