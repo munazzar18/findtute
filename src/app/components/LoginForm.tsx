@@ -5,13 +5,13 @@ import * as Yup from "yup";
 import { Button, Input } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-hot-toast";
 
 interface LoginFormProps {
   getLoginData: (values: { email: string; password: string }) => void;
-  message: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ getLoginData, message }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, isSetLoading] = useState(false);
 
@@ -33,14 +33,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData, message }) => {
         .label("Password"),
     }),
     onSubmit: async (values) => {
-      getLoginData(values);
-      let msg = await message;
-      console.log(msg);
+      let res = await getLoginData(values);
+      // toast.success(res);
     },
   });
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center">
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col items-center gap-8 justify-center">
           <div>
