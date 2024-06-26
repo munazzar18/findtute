@@ -209,7 +209,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-pistachlo">
+      <div className="bg-gradient-to-r from-lavender-web via-pistachlo to-perwinkle">
         <div className="p-2 sm:p-2 md:p-6 lg:p-8">
           <div className="mb-6 sm:mb-2 md:mb-3 lg:mb-6 xl:mb-6">
             <h1 className="text-center font-bold text-xl sm:text-xl md:text-2xl lg:text-4xl">
@@ -380,7 +380,7 @@ export default function Home() {
       </div>
 
       {/* teachers section */}
-      <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row px-4 sm:px-4 md:px-16 lg:px-24 items-center justify-between mt-4 sm:mt-4 md:mt-8 lg:mt-16 mb-8 sm:mb-8 md:mb-16 lg:mb-24">
+      <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row px-4 sm:px-4 md:px-16 lg:px-48 items-center justify-between mt-4 sm:mt-4 md:mt-8 lg:mt-16 mb-8 sm:mb-8 md:mb-16 lg:mb-24">
         <div>
           <h1 className="text-xl font-bold sm:text-xl md:text-2xl lg:text-4xl mb-4 sm:mb-4 md:mb-6 lg:mb-8">
             What we bring for teachers?
@@ -400,7 +400,7 @@ export default function Home() {
           <Image src="/teacher1.png" height={1080} width={1080} alt="teacher" />
         </div>
       </div>
-      <div className="flex flex-col gap-4 sm:flex-col md:flex-col lg:flex-col px-4 sm:px-4 md:px-16 lg:px-24 items-center justify-between mt-4 sm:mt-4 md:mt-8 lg:mt-16 mb-8 sm:mb-8 md:mb-16 lg:mb-24 sm:gap-4 md:gap-8 lg:gap-14">
+      <div className="flex flex-col gap-4 sm:flex-col md:flex-col lg:flex-col px-4 sm:px-4 md:px-16 lg:px-48 items-center justify-between mt-4 sm:mt-4 md:mt-8 lg:mt-16 mb-8 sm:mb-8 md:mb-16 lg:mb-24 sm:gap-4 md:gap-8 lg:gap-14">
         <div>
           <h1 className="font-bold text-xl sm:text-xl md:text-2xl lg:text-3xl text-verdigris">
             <span className="bg-verdigris rounded-full text-white me-2">

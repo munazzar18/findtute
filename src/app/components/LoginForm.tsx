@@ -8,7 +8,26 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
 
 interface LoginFormProps {
-  getLoginData: (values: { email: string; password: string }) => void;
+  getLoginData: (values: {
+    email: string;
+    password: string;
+  }) => Promise<Response>;
+}
+
+interface Response {
+  error: string;
+  message: string;
+  statusCode: number;
+  status: boolean;
+  data: {
+    access_token: string;
+    user: {
+      email: string;
+      id: number;
+      username: string;
+      role: string;
+    };
+  };
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
@@ -33,8 +52,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
         .label("Password"),
     }),
     onSubmit: async (values) => {
+      isSetLoading(true);
       let res = await getLoginData(values);
-      // toast.success(res);
+      try {
+        if (res.statusCode !== 200 && res.status === false) {
+          toast.error(res.message);
+        } else {
+          toast.success(res.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      isSetLoading(false);
     },
   });
 
@@ -49,23 +78,37 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
               labelPlacement="inside"
               variant="bordered"
               placeholder="Enter your email"
+              isInvalid={formik.errors.email ? true : false}
+              color={formik.errors.email ? "danger" : "default"}
               onChange={(e) => formik.setFieldValue("email", e.target.value)}
               value={formik.values.email}
-              className="w-72"
+              className="w-72 text-xl"
+              errorMessage={
+                formik.touched.email && formik.errors.email
+                  ? formik.errors.email
+                  : ""
+              }
             />
-            <span>
+            {/* <span>
               {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
               ) : null}
-            </span>
+            </span> */}
           </div>
           <div>
             <Input
               label="Password"
               variant="bordered"
               placeholder="Enter your password"
+              color={formik.errors.password ? "danger" : "default"}
               onChange={(e) => formik.setFieldValue("password", e.target.value)}
               value={formik.values.password}
+              isInvalid={formik.errors.password ? true : false}
+              errorMessage={
+                formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : ""
+              }
               endContent={
                 <button
                   className="focus:outline-none"
@@ -92,11 +135,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
           <div>
             <Button
               variant="ghost"
-              color="success"
               type="submit"
+              color="primary"
               isLoading={isLoading}
               aria-label="Submit"
-              className="w-72"
+              className="w-72 text-lg"
             >
               Login
             </Button>
