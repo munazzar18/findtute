@@ -8,13 +8,30 @@ import { toast } from "react-hot-toast";
 import { Select, SelectItem } from "@nextui-org/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { Checkbox } from "@nextui-org/checkbox";
+
 interface Education {
   institute: string;
   degree: string;
   year: string;
 }
 
+interface Experience {
+  institute: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  present: boolean;
+}
+
 const initialEducation: Education = { institute: "", degree: "", year: "" };
+const initialExperience: Experience = {
+  institute: "",
+  title: "",
+  startDate: "",
+  endDate: "",
+  present: false,
+};
 
 const TeacherProfileData = () => {
   const [progress, setProgress] = useState(10);
@@ -22,6 +39,9 @@ const TeacherProfileData = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, isSetLoading] = useState(false);
   const [educations, setEducations] = useState<Education[]>([initialEducation]);
+  const [experiences, setExperiences] = useState<Experience[]>([
+    initialExperience,
+  ]);
 
   const handleFileUpload = () => {
     if (fileInputRef.current) {
@@ -60,8 +80,54 @@ const TeacherProfileData = () => {
     }
   };
 
-  const handleAddLast = (index: number) => {
+  const handleAddLastEducation = (index: number) => {
     return index === educations.length - 1;
+  };
+
+  const handleAddExperience = () => {
+    const updatedExperiences = [
+      ...formik.values.experiences,
+      initialExperience,
+    ];
+    setExperiences(updatedExperiences);
+    formik.setFieldValue("experiences", updatedExperiences);
+  };
+
+  const handleRemoveExperience = (index: number) => {
+    const newExperiences = experiences.filter((_, i) => i !== index);
+    setExperiences(newExperiences);
+    formik.setFieldValue("experiences", newExperiences);
+  };
+
+  const handleLastExperience = (index: number) => {
+    if (index > 0) {
+      return index === experiences.length - 1;
+    }
+  };
+
+  const handleAddLastExperience = (index: number) => {
+    return index === experiences.length - 1;
+  };
+
+  const handleLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          formik.setFieldValue("latitude", pos.coords.latitude);
+          formik.setFieldValue("longitude", pos.coords.longitude);
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            toast.error("Permission to access location was denied.");
+          } else {
+            toast.error("Error retrieving location.");
+          }
+          console.error(error);
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser.");
+    }
   };
 
   //validation
@@ -73,7 +139,11 @@ const TeacherProfileData = () => {
       mobile: "",
       grades: "",
       subjects: "",
+      preference: "",
+      latitude: 0,
+      longitude: 0,
       educations: educations,
+      experiences: experiences,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().label("First Name").required().max(30),
@@ -86,11 +156,21 @@ const TeacherProfileData = () => {
       subjects: Yup.string()
         .label("Subjects")
         .required("Subjects is a required field"),
+      preference: Yup.string().required().label("Preference"),
+      latitude: Yup.number().required().label("Latitude"),
+      longitude: Yup.number().required().label("Longitude"),
       educations: Yup.array().of(
         Yup.object({
           institute: Yup.string().required().label("Institute").max(60),
           degree: Yup.string().required().label("Degree").max(30),
           year: Yup.string().required().label("Year").max(4),
+        })
+      ),
+      experiences: Yup.array().of(
+        Yup.object({
+          institute: Yup.string().required().label("Institute").max(60),
+          title: Yup.string().required().label("Title").max(60),
+          startDate: Yup.string().required().label("Institute").max(20),
         })
       ),
     }),
@@ -279,6 +359,84 @@ const TeacherProfileData = () => {
               ))}
             </Select>
           </div>
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+            <Select
+              label="Select your teaching preference"
+              labelPlacement="outside"
+              selectionMode="single"
+              size="lg"
+              variant="bordered"
+              isInvalid={formik.errors.preference ? true : false}
+              color={formik.errors.preference ? "danger" : "primary"}
+              onChange={(e) =>
+                formik.setFieldValue("preference", e.target.value)
+              }
+              value={formik.values.preference}
+              errorMessage={
+                formik.touched.preference && formik.errors.preference
+                  ? formik.errors.preference
+                  : ""
+              }
+            >
+              <SelectItem key="online">Online</SelectItem>
+              <SelectItem key="onsite">On-site</SelectItem>
+              <SelectItem key="both">Both</SelectItem>
+            </Select>
+          </div>
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+            <div className="grid grid-cols-12 gap-4 items-baseline">
+              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                <Input
+                  type="number"
+                  variant="bordered"
+                  label="Latitude"
+                  labelPlacement="outside"
+                  size="lg"
+                  isInvalid={formik.errors.latitude ? true : false}
+                  color={formik.errors.latitude ? "danger" : "primary"}
+                  onChange={(e) =>
+                    formik.setFieldValue("latitude", e.target.value)
+                  }
+                  value={formik.values.latitude.toString()}
+                  errorMessage={
+                    formik.touched.latitude && formik.errors.latitude
+                      ? formik.errors.latitude
+                      : ""
+                  }
+                />
+              </div>
+              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                <Input
+                  type="number"
+                  variant="bordered"
+                  label="Longitude"
+                  labelPlacement="outside"
+                  size="lg"
+                  isInvalid={formik.errors.longitude ? true : false}
+                  color={formik.errors.longitude ? "danger" : "primary"}
+                  onChange={(e) =>
+                    formik.setFieldValue("longitude", e.target.value)
+                  }
+                  value={formik.values.longitude.toString()}
+                  errorMessage={
+                    formik.touched.longitude && formik.errors.longitude
+                      ? formik.errors.longitude
+                      : ""
+                  }
+                />
+              </div>
+              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  color="primary"
+                  onClick={handleLocation}
+                >
+                  Get Your Location
+                </Button>
+              </div>
+            </div>
+          </div>
           <div className="col-span-12 mb-2">
             <h1 className="text-2xl font-bold">Education</h1>
           </div>
@@ -421,7 +579,7 @@ const TeacherProfileData = () => {
                   />
                 </div>
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
-                  {handleAddLast(index) ? (
+                  {handleAddLastEducation(index) ? (
                     <Button
                       color="primary"
                       variant="ghost"
@@ -454,6 +612,206 @@ const TeacherProfileData = () => {
           </div>
           <div className="col-span-12 mb-2">
             <h1 className="text-2xl font-bold">Experience</h1>
+          </div>
+          <div className="col-span-12 mb-2">
+            {formik.values.experiences.map((experience, index) => (
+              <div
+                className="grid grid-cols-12 gap-4 items-baseline"
+                key={index}
+              >
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+                  <Input
+                    type="text"
+                    variant="bordered"
+                    label="Institute"
+                    labelPlacement="outside"
+                    size="lg"
+                    isInvalid={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.institute
+                        ? true
+                        : false
+                    }
+                    color={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.institute
+                        ? "danger"
+                        : "primary"
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.experiences[index].institute}
+                    name={`experiences[${index}].instituteExp`}
+                    errorMessage={
+                      formik.touched.experiences &&
+                      formik.touched.experiences[index] &&
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.institute
+                        ? (
+                            formik.errors
+                              .experiences as FormikErrors<Experience>[]
+                          )[index]?.institute
+                        : ""
+                    }
+                  />
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+                  <Input
+                    type="text"
+                    variant="bordered"
+                    label="Title"
+                    labelPlacement="outside"
+                    size="lg"
+                    isInvalid={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.title
+                        ? true
+                        : false
+                    }
+                    color={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.title
+                        ? "danger"
+                        : "primary"
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.experiences[index].title}
+                    name={`experiences[${index}].title`}
+                    errorMessage={
+                      formik.touched.experiences &&
+                      formik.touched.experiences[index] &&
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.title
+                        ? (
+                            formik.errors
+                              .experiences as FormikErrors<Experience>[]
+                          )[index]?.title
+                        : ""
+                    }
+                  />
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                  <Input
+                    type="date"
+                    variant="bordered"
+                    label="Start Date"
+                    labelPlacement="outside"
+                    size="lg"
+                    isInvalid={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.startDate
+                        ? true
+                        : false
+                    }
+                    color={
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.startDate
+                        ? "danger"
+                        : "primary"
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.experiences[index].startDate}
+                    name={`experiences[${index}].startDate`}
+                    errorMessage={
+                      formik.touched.experiences &&
+                      formik.touched.experiences[index] &&
+                      formik.errors.experiences &&
+                      formik.errors.experiences[index] &&
+                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                        index
+                      ]?.startDate
+                        ? (
+                            formik.errors
+                              .experiences as FormikErrors<Experience>[]
+                          )[index]?.startDate
+                        : ""
+                    }
+                  />
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                  {formik.values.experiences[index].present == false ? (
+                    <Input
+                      type="date"
+                      variant="bordered"
+                      label="End Date"
+                      labelPlacement="outside"
+                      size="lg"
+                      color="primary"
+                      onChange={formik.handleChange}
+                      value={
+                        formik.values.experiences[index].present == false
+                          ? formik.values.experiences[index].endDate
+                          : ""
+                      }
+                      name={`experiences[${index}].endDate`}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
+                  <Checkbox
+                    onChange={formik.handleChange}
+                    value={formik.values.experiences[index].present.toString()}
+                    name={`experiences[${index}].present`}
+                  >
+                    Present
+                  </Checkbox>
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
+                  {handleAddLastExperience(index) ? (
+                    <Button
+                      color="primary"
+                      variant="ghost"
+                      onClick={handleAddExperience}
+                      isIconOnly
+                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+
+                  {handleLastExperience(index) ? (
+                    <Button
+                      color="primary"
+                      variant="ghost"
+                      isIconOnly
+                      onClick={() => handleRemoveExperience(index)}
+                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
+                    >
+                      <FontAwesomeIcon icon={faMinus} />
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="col-span-12">
