@@ -1,71 +1,75 @@
-"use client";
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Button, Input } from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-hot-toast";
+'use client'
+import React, { useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { Button, Input } from '@nextui-org/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 interface LoginFormProps {
   getLoginData: (values: {
-    email: string;
-    password: string;
-  }) => Promise<Response>;
+    email: string
+    password: string
+  }) => Promise<Response>
 }
 
 interface Response {
-  error: string;
-  message: string;
-  statusCode: number;
-  status: boolean;
+  error: string
+  message: string
+  statusCode: number
+  status: boolean
   data: {
-    access_token: string;
+    access_token: string
     user: {
-      email: string;
-      id: number;
-      username: string;
-      role: string;
-    };
-  };
+      email: string
+      id: number
+      username: string
+      role: string
+    }
+  }
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, isSetLoading] = useState(false);
+  const router = useRouter()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isLoading, isSetLoading] = useState(false)
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleVisibility = () => setIsVisible(!isVisible)
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required")
-        .label("Email"),
+        .email('Invalid email address')
+        .required('Email is required')
+        .label('Email'),
       password: Yup.string()
-        .max(8, "Password must be 8 characters or more")
-        .required("Password is required")
-        .label("Password"),
+        .min(8, 'Password must be 8 characters or more')
+        .required('Password is required')
+        .label('Password'),
     }),
     onSubmit: async (values) => {
-      isSetLoading(true);
-      let res = await getLoginData(values);
+      isSetLoading(true)
+      let res = await getLoginData(values)
       try {
         if (res.statusCode !== 200 && res.status === false) {
-          toast.error(res.message);
+          toast.error(res.message)
+          //how to navigate to home here
         } else {
-          toast.success(res.message);
+          toast.success(res.message)
+          router.push('/')
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-      isSetLoading(false);
+      isSetLoading(false)
     },
-  });
+  })
 
   return (
     <div className="flex justify-center items-center">
@@ -79,14 +83,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
               variant="bordered"
               placeholder="Enter your email"
               isInvalid={formik.errors.email ? true : false}
-              color={formik.errors.email ? "danger" : "default"}
-              onChange={(e) => formik.setFieldValue("email", e.target.value)}
+              color={formik.errors.email ? 'danger' : 'default'}
+              onChange={(e) => formik.setFieldValue('email', e.target.value)}
               value={formik.values.email}
               className="w-72 text-xl"
               errorMessage={
                 formik.touched.email && formik.errors.email
                   ? formik.errors.email
-                  : ""
+                  : ''
               }
             />
             {/* <span>
@@ -100,14 +104,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
               label="Password"
               variant="bordered"
               placeholder="Enter your password"
-              color={formik.errors.password ? "danger" : "default"}
-              onChange={(e) => formik.setFieldValue("password", e.target.value)}
+              color={formik.errors.password ? 'danger' : 'default'}
+              onChange={(e) => formik.setFieldValue('password', e.target.value)}
               value={formik.values.password}
               isInvalid={formik.errors.password ? true : false}
               errorMessage={
                 formik.touched.password && formik.errors.password
                   ? formik.errors.password
-                  : ""
+                  : ''
               }
               endContent={
                 <button
@@ -128,7 +132,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
                   )}
                 </button>
               }
-              type={isVisible ? "text" : "password"}
+              type={isVisible ? 'text' : 'password'}
               className="w-72"
             />
           </div>
@@ -147,7 +151,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

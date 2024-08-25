@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon529a.eot?qkx0m1');
+  src:  url('fonts/icomoon529a.eot?qkx0m1#iefix') format('embedded-opentype'),
+    url('fonts/icomoon529a.ttf?qkx0m1') format('truetype'),
+    url('fonts/icomoon529a.woff?qkx0m1') format('woff'),
+    url('fonts/icomoon529a.svg?qkx0m1#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-close-icon .path1:before {
+  content: "\e900";
+}
+.icon-close-icon .path2:before {
+  content: "\e901";
+  margin-left: -1em;
+}
+.icon-apple:before {
+  content: "\e902";
+}
+.icon-doll-2:before {
+  content: "\e903";
+}
+.icon-doll:before {
+  content: "\e904";
+}
+.icon-ring-bell:before {
+  content: "\e905";
+}
+.icon-three-line:before {
+  content: "\e906";
+}
+.icon-baby-cutlery:before {
+  content: "\e907";
+}
+.icon-scissors:before {
+  content: "\e908";
+}
+.icon-crayon:before {
+  content: "\e909";
+}
+.icon-teddy-bear:before {
+  content: "\e90a";
+}
+.icon-baby-body:before {
+  content: "\e90b";
+}
+.icon-mat:before {
+  content: "\e90c";
+}
+.icon-feeder:before {
+  content: "\e90d";
+}
+.icon-toys:before {
+  content: "\e90e";
+}
+.icon-car-toy:before {
+  content: "\e90f";
+}
+.icon-chalkboard:before {
+  content: "\e910";
+}
+.icon-blocks:before {
+  content: "\e911";
+}
+.icon-book:before {
+  content: "\e912";
+}
+.icon-kindergarden:before {
+  content: "\e913";
+}
