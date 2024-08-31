@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.get('access_token')?.value
 
     if (!token && !unprotectedRoute.includes(request.nextUrl.pathname)) {
-        return NextResponse.redirect(new URL('/auth/login', request.url))
+        return NextResponse.redirect(new URL('/auth/home', request.url))
     }
 
     if (token && unprotectedRoute.includes(request.nextUrl.pathname)) {
