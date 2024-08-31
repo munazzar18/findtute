@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server'
 const unprotectedRoute = ['/auth/login', '/auth/register']
 
 export function middleware(request: NextRequest) {
-    console.log("middleware is running...")
     const token = request.cookies.get('access_token')?.value
 
     if (!token && !unprotectedRoute.includes(request.nextUrl.pathname)) {

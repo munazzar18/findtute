@@ -24,7 +24,7 @@ interface Response {
     access_token: string
     user: {
       email: string
-      id: number
+      id: string
       username: string
       role: string
     }
@@ -57,9 +57,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
       isSetLoading(true)
       let res = await getLoginData(values)
       try {
-        if (res.statusCode !== 200 && res.status === false) {
+        if (res.statusCode !== 200 && res.error === 'Unauthorized') {
           toast.error(res.message)
           //how to navigate to home here
+        } else if (res.status === false) {
+          toast.error(res.message)
         } else {
           toast.success(res.message)
           router.push('/')
@@ -138,12 +140,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
           </div>
           <div>
             <Button
-              variant="ghost"
               type="submit"
-              color="primary"
               isLoading={isLoading}
               aria-label="Submit"
-              className="w-72 text-lg"
+              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 leading-[0.2] btn"
             >
               Login
             </Button>

@@ -1,11 +1,12 @@
 'use client'
 import Image from 'next/image'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Input } from '@nextui-org/react'
 import { FormikErrors, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
 import { Select, SelectItem } from '@nextui-org/select'
+import { Spinner } from '@nextui-org/spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPlus,
@@ -78,6 +79,11 @@ interface StudentFormProps {
   }) => Promise<StudentFormResponse>
 }
 
+interface StudentProfileDataProps {
+  getStudentData: StudentFormProps['getStudentData']
+  getGrades: () => Promise<void>
+}
+
 const initialEducation: Education = { institute: '', degree: '', year: '' }
 const initialExperience: Experience = {
   institute: '',
@@ -87,8 +93,12 @@ const initialExperience: Experience = {
   present: false,
 }
 
-const StudentProfileData: React.FC<StudentFormProps> = ({ getStudentData }) => {
+const StudentProfileData = ({
+  getStudentData,
+  getGrades,
+}: StudentProfileDataProps) => {
   const [progress, setProgress] = useState(10)
+  const [loading, setLoading] = useState(false)
   const [image, setImage] = useState<File | null>()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isLoading, isSetLoading] = useState(false)
@@ -96,6 +106,23 @@ const StudentProfileData: React.FC<StudentFormProps> = ({ getStudentData }) => {
   const [experiences, setExperiences] = useState<Experience[]>([
     initialExperience,
   ])
+  const [grades, setGrades] = useState([])
+
+  const fetchGrades = async () => {
+    setLoading(true)
+    try {
+      const res = await getGrades()
+      console.log(res)
+      setGrades(res.data)
+    } catch (error) {
+      console.error('Failed to fetch grades', error)
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchGrades()
+  }, [])
 
   const handleFileUpload = () => {
     if (fileInputRef.current) {
@@ -233,6 +260,11 @@ const StudentProfileData: React.FC<StudentFormProps> = ({ getStudentData }) => {
 
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4 sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
+      {loading && (
+        <div className="fixed inset-0 bg-black/10 flex items-center justify-center">
+          <Spinner color="primary" size="lg" />
+        </div>
+      )}
       <form className="p-2 sm:p-2 md:p-2 lg:p-4" onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
@@ -372,7 +404,7 @@ const StudentProfileData: React.FC<StudentFormProps> = ({ getStudentData }) => {
                   : ''
               }
             >
-              {allGrades.map((grade) => (
+              {grades?.map((grade) => (
                 <SelectItem key={grade.id}>{grade.grade}</SelectItem>
               ))}
             </Select>
@@ -636,25 +668,27 @@ const StudentProfileData: React.FC<StudentFormProps> = ({ getStudentData }) => {
                 </div>
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
                   {handleAddLastEducation(index) ? (
-                    <button
+                    <Button
                       type="button"
                       onClick={handleAddEducation}
                       className="bg-green text-cream-foreground rounded-md max-h-0 leading-[0] btn"
+                      size="sm"
                     >
                       <FontAwesomeIcon icon={faPlus} />
-                    </button>
+                    </Button>
                   ) : (
                     ''
                   )}
 
                   {handleLastEducation(index) ? (
-                    <button
+                    <Button
                       type="button"
                       onClick={() => handleRemoveEducation(index)}
                       className="bg-red-600 text-cream-foreground rounded-md max-h-0 leading-[0] btn"
+                      size="sm"
                     >
                       <FontAwesomeIcon icon={faMinus} />
-                    </button>
+                    </Button>
                   ) : (
                     ''
                   )}

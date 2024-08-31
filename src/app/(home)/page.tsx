@@ -9,14 +9,14 @@ export default function page() {
           <div className="flex flex-col items-center text-center relative z-10">
             <h1 className="font-normal xl:text-[70px] lg:text-6xl md:text-5xl text-4xl xl:leading-[128%] lg:leading-[125%] md:leading-[120%] max-w-[776px]">
               <span className="relative">
-                Exploring Minds{' '}
+                Level Up Your Skills{' '}
                 <span className="absolute -left-6 top-1 text-3xl">
                   <i className="icon-three-line"></i>
                 </span>
               </span>
-              <span className="font-bold">Elementary</span>{' '}
+              <span className="font-bold">Find Your Perfect Tutor </span>{' '}
               <span className="font-bold text-destructive-foreground">
-                School
+                Online or Nearby!
               </span>
             </h1>
 
@@ -35,15 +35,16 @@ export default function page() {
             </div>
 
             <p className="pt-5 max-w-[431px]">
-              Starting a corporate business typically involves several steps,
-              such as develo a business
+              Unleash your learning potential with TeachU, the only platform
+              that connects you with expert tutors - both online and in your
+              area.
             </p>
-            <a
-              href="#"
-              className="mt-6 bg-green text-cream-foreground rounded-md max-h-15 leading-normal btn"
-            >
-              Learn More
-            </a>
+
+            <p className="pt-5 max-w-[431px]">
+              Stop searching, start learning! We make finding the perfect tutor
+              a breeze. Browse profiles of highly qualified teachers across a
+              wide range of subjects.
+            </p>
           </div>
           <div className="absolute left-2.5 lg:top-0 top-10 lg:max-w-full max-w-[200px] sm:block hidden animate-up-down">
             <img src="/assets/images/banner/boy_img_1.png" alt="banner-img-1" />
