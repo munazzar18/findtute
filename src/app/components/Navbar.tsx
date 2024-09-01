@@ -67,31 +67,39 @@ export default function App() {
 
                         <ul className="absolute top-full z-10 bg-background shadow-sm min-w-56 transition-all duration-500 opacity-0 invisible translate-y-5 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
                           <li>
-                            <a
-                              href="services.html"
+                            <Link
+                              href="/services"
                               className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                             >
                               Services
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <a
-                              href="service-details.html"
+                            <Link
+                              href="/service-details"
                               className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                             >
                               Service Details
-                            </a>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/blog"
+                              className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+                            >
+                              Blog
+                            </Link>
                           </li>
                         </ul>
                       </li>
 
                       <li className="leading-[164%] relative group">
-                        <a
-                          href="contact.html"
+                        <Link
+                          href="/contact"
                           className=" font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
                         >
                           Contact Us
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </nav>
