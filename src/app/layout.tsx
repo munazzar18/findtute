@@ -45,11 +45,6 @@ export default function RootLayout({
         <Toaster position="top-right" />
         <Script
           type="text/javascript"
-          src="/public/assets/kit.fontawesome.com/1cbbb02fe6.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          type="text/javascript"
           src="/public/assets/cdn.jsdelivr.net/npm/swiper%4011/swiper-bundle.min.js"
           strategy="lazyOnload"
         ></Script>

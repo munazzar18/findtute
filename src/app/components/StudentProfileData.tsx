@@ -111,7 +111,7 @@ const StudentProfileData = ({
   const fetchGrades = async () => {
     setLoading(true)
     try {
-      const res = await getGrades()
+      const res: any = await getGrades()
       console.log(res)
       setGrades(res.data)
     } catch (error) {
@@ -404,7 +404,7 @@ const StudentProfileData = ({
                   : ''
               }
             >
-              {grades?.map((grade) => (
+              {grades?.map((grade: any) => (
                 <SelectItem key={grade.id}>{grade.grade}</SelectItem>
               ))}
             </Select>
