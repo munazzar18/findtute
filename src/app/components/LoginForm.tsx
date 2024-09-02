@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface LoginFormProps {
   getLoginData: (values: {
@@ -137,6 +138,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
               type={isVisible ? 'text' : 'password'}
               className="w-72"
             />
+          </div>
+          <div>
+            <p className="text-destructive-foreground">
+              Don't have an account?{' '}
+              <Link className="text-secondary font-bold" href="/auth/register">
+                Register
+              </Link>
+            </p>
           </div>
           <div>
             <Button

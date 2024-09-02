@@ -8,6 +8,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { RadioGroup, Radio } from '@nextui-org/react'
+import Link from 'next/link'
 
 interface RegisterFormProps {
   getLoginData: (values: {
@@ -138,21 +139,32 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
           </div>
           <div>
             <div className="w-72 shadow-lg rounded-lg p-4">
-              <label className="text-sm text-gray-700 block mb-2">Who Are You</label>
+              <label className="text-sm text-gray-700 block mb-2">
+                Who Are You
+              </label>
               <RadioGroup
-  value={formik.values.role}
-  onChange={(e) => formik.setFieldValue('role', e.target.value)}
->
-    <Radio value="parents">Parents</Radio>
-    <Radio value="teacher">Teacher</Radio>
-    <Radio value="student">Student</Radio>
-  
-</RadioGroup>
+                value={formik.values.role}
+                onChange={(e) => formik.setFieldValue('role', e.target.value)}
+              >
+                <Radio value="parents">Parents</Radio>
+                <Radio value="teacher">Teacher</Radio>
+                <Radio value="student">Student</Radio>
+              </RadioGroup>
 
               {formik.touched.role && formik.errors.role ? (
-                <div className="text-red-500 text-sm mt-2">{formik.errors.role}</div>
+                <div className="text-red-500 text-sm mt-2">
+                  {formik.errors.role}
+                </div>
               ) : null}
             </div>
+          </div>
+          <div>
+            <p className="text-destructive-foreground">
+              Already have an account?{' '}
+              <Link className="text-secondary font-bold" href="/auth/login">
+                Login
+              </Link>
+            </p>
           </div>
           <div>
             <Button

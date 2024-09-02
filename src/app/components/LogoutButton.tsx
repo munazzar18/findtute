@@ -12,12 +12,13 @@ const LogoutButton = ({ logoutAction }: { logoutAction: () => void }) => {
 
   return (
     <div>
-      <a
+      <button
+        type="button"
         onClick={logout}
-        className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+        className=" font-semibold w-full text-left hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
       >
         Logout
-      </a>
+      </button>
     </div>
   )
 }
