@@ -2947,7 +2947,7 @@ h6 p {
 
 .after\:bg-testimonial-banner::after {
   content: var(--tw-content);
-  background-image: url('../images/testimonial/bg-img.png');
+  background-image: url('../../../public/assets/images/testimonial/bg-img.png');
 }
 
 .after\:bg-cover::after {

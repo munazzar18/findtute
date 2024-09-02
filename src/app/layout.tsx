@@ -5,8 +5,8 @@ import { Jost, Nunito, Bubblegum_Sans } from 'next/font/google'
 import './globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Toaster } from 'react-hot-toast'
-import '../../public/assets/css/animate.css'
-import '../../public/assets/css/output.css'
+import './styles/animate.css'
+import './styles/output.css'
 
 // const jost = Jost({
 //   subsets: ['latin'],
@@ -45,24 +45,20 @@ export default function RootLayout({
         <Toaster position="top-right" />
         <Script
           type="text/javascript"
-          src="/public/assets/cdn.jsdelivr.net/npm/swiper%4011/swiper-bundle.min.js"
-          strategy="lazyOnload"
+          src="/assets/swiper/swiper-bundle.min.js"
+          defer
         ></Script>
         <Script
           type="text/javascript"
-          src="/public/assets/js/animate.js"
-          strategy="lazyOnload"
+          src="/assets/js/animate.js"
+          defer
         ></Script>
         <Script
           type="text/javascript"
-          src="/public/assets/js/wow.min.js"
-          strategy="lazyOnload"
+          src="/assets/js/wow.min.js"
+          defer
         ></Script>
-        <Script
-          type="text/javascript"
-          src="/public/assets/js/main.js"
-          strategy="lazyOnload"
-        ></Script>
+        <Script type="text/javascript" src="/assets/js/main.js" defer></Script>
         {children}
       </body>
     </html>
