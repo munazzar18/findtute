@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Toaster } from 'react-hot-toast'
 import './styles/animate.css'
 import './styles/output.css'
-import '../../build.css'
+// import '../../build.css'
 
 // const jost = Jost({
 //   subsets: ['latin'],
