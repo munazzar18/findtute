@@ -35,7 +35,7 @@ const Register = () => {
     const saveCookes = cookies()
     let customError = ''
 
-    const res = await fetch(`${url}auth/login`, {
+    const res = await fetch(`${url}auth/register`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
