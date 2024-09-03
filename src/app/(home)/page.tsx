@@ -1,5 +1,22 @@
 import React from 'react'
 import Counter from '../helper/Counter'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faArrowRight,
+  faBook,
+  faBookOpen,
+  faEarthAsia,
+  faGlobe,
+  faHandsHoldingChild,
+  faIdBadge,
+  faMagnifyingGlass,
+  faNetworkWired,
+  faPersonChalkboard,
+  faPersonSnowboarding,
+  faRocket,
+  faSchool,
+} from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
 
 export default function page() {
   return (
@@ -35,7 +52,7 @@ export default function page() {
             </div>
 
             <p className="pt-5 max-w-[431px]">
-              Unleash your learning potential with TeachU, the only platform
+              Unleash your learning potential with Findtute, the only platform
               that connects you with expert tutors - both online and in your
               area.
             </p>
@@ -86,13 +103,17 @@ export default function page() {
               >
                 Invest in education invest in the future
               </h2>
-              <p className="wow fadeInUp" data-wow-delay=".3s">
-                Lorem ipsum dolor sit amet consectetur. Amet lectus mi ultricies
-                dictum facilisis sem. Imperdiet massa turpis sit proin metus
-                volutpat loren ipsum Lorem ipsum dolor sit amet consectetur.
-                Amet lectus mi ultricies dictum
+              <p className="wow fadeInUp text-justify" data-wow-delay=".3s">
+                Finding the perfect tutor shouldn't feel like a chore. Our
+                platform streamlines the process with a quick and easy signup
+                that takes just seconds. No more sifting through endless
+                applications or complicated registration forms. Get ready to
+                focus on what truly matters: unlocking your learning potential.
               </p>
-              <button className="border border-gray-200 rounded-md lg:mt-10 mt-7 btn">
+              <button
+                type="button"
+                className="border border-gray-200 rounded-md lg:mt-10 mt-7 btn"
+              >
                 Get a quote
               </button>
             </div>
@@ -104,10 +125,14 @@ export default function page() {
               >
                 <div className="rounded-full bg-primary lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
                   <i className="icon-kindergarden lg:text-[40px] text-3xl text-cream-foreground"></i>
+                  <FontAwesomeIcon
+                    icon={faSchool}
+                    className="lg:text-[40px] text-3xl text-cream-foreground"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
-                    20K
+                    <Counter start={0} end={150} />
                   </h4>
                   <p>Running Students</p>
                 </div>
@@ -118,11 +143,14 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-destructive lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <i className="icon-book lg:text-[40px] text-3xl text-cream-foreground"></i>
+                  <FontAwesomeIcon
+                    icon={faBook}
+                    className="lg:text-[40px] text-3xl text-cream-foreground"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
-                    <Counter start={1000} end={13000} />
+                    <Counter start={10} end={1500} />
                     {/* 13K */}
                   </h4>
                   <p>Completed</p>
@@ -134,13 +162,16 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-green lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <i className="icon-blocks lg:text-[40px] text-3xl text-cream-foreground"></i>
+                  <FontAwesomeIcon
+                    icon={faPersonChalkboard}
+                    className="lg:text-[40px] text-3xl text-cream-foreground"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
-                    3K
+                    <Counter start={0} end={500} />
                   </h4>
-                  <p>Award Winning</p>
+                  <p>Number of teachers</p>
                 </div>
               </div>
               <div
@@ -148,11 +179,14 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-secondary lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <i className="icon-book lg:text-[40px] text-3xl text-cream-foreground"></i>
+                  <FontAwesomeIcon
+                    icon={faHandsHoldingChild}
+                    className="lg:text-[40px] text-3xl text-cream-foreground"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
-                    13K
+                    <Counter start={0} end={374} />
                   </h4>
                   <p>Guardian Satishfaction</p>
                 </div>
@@ -172,7 +206,7 @@ export default function page() {
               className="font-bold lg:text-[32px] md:text-[28px] text-2xl lg:leading-[130%] md:leading-[120%] leading-[110%] lg:max-w-[630px] wow fadeInUp"
               data-wow-delay=".3s"
             >
-              Strong Foundation for Success For Nurturing Curiosityl
+              Find teachers nearby
             </h2>
           </div>
           <div className="lg:pl-11">
@@ -182,7 +216,10 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <i className="icon-car-toy md:text-6xl text-[40px]"></i>
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faRocket}
+                  />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -190,25 +227,26 @@ export default function page() {
                       href="service-details.html"
                       className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
                     >
-                      Online Class
+                      Get Started in Seconds
                     </a>
                   </h4>
                   <p className="lg:mt-4 mt-3">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit
-                    platea the ,osr of a proin mollis pretium facilisi in,
-                    ligula volutpat{' '}
+                    Tired of endlessly searching for qualified tutors? Findtute
+                    streamlines the process with a quick and easy signup. No
+                    mountains of paperwork, just a few clicks to unlock a world
+                    of learning possibilities
                   </p>
-                  <a
-                    href="service-details.html"
+                  <Link
+                    href="/services"
                     className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
                   >
                     <span className="group-hover/btn:text-green-foreground transition-all duration-500">
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <i className="fa-solid fa-arrow-right"></i>
+                      <FontAwesomeIcon icon={faArrowRight} />
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div
@@ -216,33 +254,39 @@ export default function page() {
                 data-wow-delay=".4s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <i className="icon-toys md:text-6xl text-[40px]"></i>
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faEarthAsia}
+                  />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
-                    <a
-                      href="service-details.html"
+                    <Link
+                      href="/services"
                       className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
                     >
-                      Formal Tuition
-                    </a>
+                      Discover a Network of Expert Tutors at Your Fingertips
+                    </Link>
                   </h4>
                   <p className="lg:mt-4 mt-3">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit
-                    platea the ,osr of a proin mollis pretium facilisi in,
-                    ligula volutpat{' '}
+                    Gone are the days of limited learning options. Our platform
+                    boasts a vast network of highly qualified tutors across
+                    diverse subjects. With a few clicks, you can browse profiles
+                    of teachers conveniently located near you - perfect for
+                    those seeking a more personalized touch or a flexible
+                    learning schedule.
                   </p>
-                  <a
-                    href="service-details.html"
+                  <Link
+                    href="/services"
                     className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
                   >
                     <span className="group-hover/btn:text-green-foreground transition-all duration-500">
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <i className="fa-solid fa-arrow-right"></i>
+                      <FontAwesomeIcon icon={faArrowRight} />
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div
@@ -250,33 +294,39 @@ export default function page() {
                 data-wow-delay=".5s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <i className="icon-feeder md:text-6xl text-[40px]"></i>
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faIdBadge}
+                  />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
                     <a
-                      href="service-details.html"
+                      href="/services"
                       className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
                     >
-                      Preschool
+                      Craft Your Personalized Learning Profile
                     </a>
                   </h4>
                   <p className="lg:mt-4 mt-3">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit
-                    platea the ,osr of a proin mollis pretium facilisi in,
-                    ligula volutpat{' '}
+                    Dive deeper into your educational journey by creating a
+                    personalized profile. This allows you to specify your
+                    learning goals, preferred subjects, and desired learning
+                    style. Having a clear profile helps connect you with the
+                    ideal nearby teachers who can cater to your specific needs
+                    and interests.
                   </p>
-                  <a
-                    href="service-details.html"
+                  <Link
+                    href="/services"
                     className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
                   >
                     <span className="group-hover/btn:text-green-foreground transition-all duration-500">
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <i className="fa-solid fa-arrow-right"></i>
+                      <FontAwesomeIcon icon={faArrowRight} />
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div
@@ -284,7 +334,78 @@ export default function page() {
                 data-wow-delay=".6s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <i className="icon-book md:text-6xl text-[40px]"></i>
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faBookOpen}
+                  />
+                </div>
+                <div className="lg:pl-11 mt-4 lg:mt-0">
+                  <h4>
+                    <Link
+                      href="/services"
+                      className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
+                    >
+                      Special Tuition
+                    </Link>
+                  </h4>
+                  <p className="lg:mt-4 mt-3">
+                    Empower yourself with knowledge! Once you've connected with
+                    the perfect teacher, it's time to embark on your learning
+                    adventure. Our platform facilitates seamless onsite lessons,
+                    allowing you to learn from the comfort of your own home.
+                    Embrace the flexibility and convenience of learning while
+                    receiving expert guidance from qualified tutors.
+                  </p>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
+                  >
+                    <span className="group-hover/btn:text-green-foreground transition-all duration-500">
+                      Read More
+                    </span>
+                    <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
+                      <FontAwesomeIcon icon={faArrowRight} />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-15 right-11 z-[-1] lg:max-w-full max-w-36 md:block hidden animate-left-right">
+          <img
+            src="/assets/images/shapes/pencil-rocket.png"
+            alt="pencil"
+            className="w-full h-auto"
+          />
+        </div>
+      </section>
+
+      {/* what we bring for teachers */}
+      <section className="lg:pt-15 pt-10 lg:pb-15 pb-10 relative z-[1]">
+        <div className="container">
+          <div className="text-center flex flex-col items-center">
+            <p className="text-green-foreground font-bubblegum-sans text-[19px] wow fadeInUp">
+              What we bring for teachers?
+            </p>
+            <h2
+              className="font-bold lg:text-[32px] md:text-[28px] text-2xl lg:leading-[130%] md:leading-[120%] leading-[110%] lg:max-w-[630px] wow fadeInUp"
+              data-wow-delay=".3s"
+            >
+              Unleash Your Teaching Power
+            </h2>
+          </div>
+          <div className="lg:pl-11">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-y-7.5 lg:gap-x-[74px] gap-x-5 lg:pt-15 pt-10">
+              <div
+                className="relative rounded-[10px] bg-background border-2 border-[#F2F2F2] lg:p-10 p-4 transition-all duration-500 hover:shadow-3xl hover:border-transparent group/card wow fadeInUp"
+                data-wow-delay=".3s"
+              >
+                <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faPersonSnowboarding}
+                  />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -292,25 +413,143 @@ export default function page() {
                       href="service-details.html"
                       className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
                     >
-                      Special Tuition
+                      Effortless Onboarding
                     </a>
                   </h4>
                   <p className="lg:mt-4 mt-3">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit
-                    platea the ,osr of a proin mollis pretium facilisi in,
-                    ligula volutpat{' '}
+                    Ditch the complex registration processes! Find tute
+                    prioritizes your time. Our easy signup gets you set up
+                    quickly, allowing you to focus on what you do best -
+                    inspiring young minds. Complete your profile to showcase
+                    your qualifications, experience, and teaching style.
                   </p>
-                  <a
-                    href="service-details.html"
+                  <Link
+                    href="/services"
                     className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
                   >
                     <span className="group-hover/btn:text-green-foreground transition-all duration-500">
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <i className="fa-solid fa-arrow-right"></i>
+                      <FontAwesomeIcon icon={faArrowRight} />
                     </span>
-                  </a>
+                  </Link>
+                </div>
+              </div>
+              <div
+                className="relative rounded-[10px] bg-background border-2 border-[#F2F2F2] lg:p-10 p-4 transition-all duration-500 hover:shadow-3xl hover:border-transparent group/card wow fadeInUp"
+                data-wow-delay=".4s"
+              >
+                <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faNetworkWired}
+                  />
+                </div>
+                <div className="lg:pl-11 mt-4 lg:mt-0">
+                  <h4>
+                    <Link
+                      href="/services"
+                      className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
+                    >
+                      Command Center at Your Fingertips
+                    </Link>
+                  </h4>
+                  <p className="lg:mt-4 mt-3">
+                    Stay organized and in control! Your dedicated dashboard
+                    provides a centralized hub for managing your teaching
+                    experience. Track student progress, schedule lessons, access
+                    teaching resources, and maximize your teaching efficiency.
+                  </p>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
+                  >
+                    <span className="group-hover/btn:text-green-foreground transition-all duration-500">
+                      Read More
+                    </span>
+                    <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
+                      <FontAwesomeIcon icon={faArrowRight} />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div
+                className="relative rounded-[10px] bg-background border-2 border-[#F2F2F2] lg:p-10 p-4 transition-all duration-500 hover:shadow-3xl hover:border-transparent group/card wow fadeInUp"
+                data-wow-delay=".5s"
+              >
+                <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faGlobe}
+                  />
+                </div>
+                <div className="lg:pl-11 mt-4 lg:mt-0">
+                  <h4>
+                    <a
+                      href="/services"
+                      className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
+                    >
+                      A World of Opportunity Awaits
+                    </a>
+                  </h4>
+                  <p className="lg:mt-4 mt-3">
+                    Empower the next generation! Find tute connects you with a
+                    diverse pool of motivated students seeking your expertise.
+                    Browse student profiles, understand their learning goals,
+                    and find students to ignite their academic journey.
+                  </p>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
+                  >
+                    <span className="group-hover/btn:text-green-foreground transition-all duration-500">
+                      Read More
+                    </span>
+                    <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
+                      <FontAwesomeIcon icon={faArrowRight} />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div
+                className="relative rounded-[10px] bg-background border-2 border-[#F2F2F2] lg:p-10 p-4 transition-all duration-500 hover:shadow-3xl hover:border-transparent group/card wow fadeInUp"
+                data-wow-delay=".6s"
+              >
+                <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
+                  <FontAwesomeIcon
+                    className="md:text-6xl text-[40px]"
+                    icon={faMagnifyingGlass}
+                  />
+                </div>
+                <div className="lg:pl-11 mt-4 lg:mt-0">
+                  <h4>
+                    <Link
+                      href="/services"
+                      className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500"
+                    >
+                      Seamless Student Discovery
+                    </Link>
+                  </h4>
+                  <p className="lg:mt-4 mt-3">
+                    No more waiting for opportunities to come your way! Our
+                    intuitive search filters within the dashboard allow you to
+                    find students based on location, subject, and learning
+                    needs. Proactively connect with students seeking your
+                    specific skillset and build a thriving online teaching
+                    practice.
+                  </p>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn"
+                  >
+                    <span className="group-hover/btn:text-green-foreground transition-all duration-500">
+                      Read More
+                    </span>
+                    <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
+                      <FontAwesomeIcon icon={faArrowRight} />
+                    </span>
+                  </Link>
                 </div>
               </div>
             </div>

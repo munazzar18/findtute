@@ -73,7 +73,7 @@ const Login = () => {
             </span>
             <span className="font-bold"> To </span>
             <span className="font-bold text-destructive-foreground">
-              TeachU
+              Findtute
             </span>
           </h1>
           <LoginForm getLoginData={getLoginData} />

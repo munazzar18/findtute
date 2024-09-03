@@ -14,7 +14,7 @@ interface RegisterFormProps {
   getLoginData: (values: {
     email: string
     password: string
-    role: string
+    roles: string
   }) => Promise<Response>
 }
 
@@ -29,7 +29,7 @@ interface Response {
       email: string
       id: string
       username: string
-      role: string
+      roles: string
     }
   }
 }
@@ -45,7 +45,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
     initialValues: {
       email: '',
       password: '',
-      role: 'parents', // Default role value
+      roles: 'parents', // Default role value
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -56,7 +56,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
         .min(8, 'Password must be 8 characters or more')
         .required('Password is required')
         .label('Password'),
-      role: Yup.string().required('Role is required').label('Role'), // Role validation
+      roles: Yup.string().required('Role is required').label('Role'), // Role validation
     }),
     onSubmit: async (values) => {
       isSetLoading(true)
@@ -143,17 +143,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
                 Who Are You
               </label>
               <RadioGroup
-                value={formik.values.role}
-                onChange={(e) => formik.setFieldValue('role', e.target.value)}
+                name="roles"
+                defaultValue="student"
+                color={formik.errors.roles ? 'danger' : 'default'}
+                value={formik.values.roles}
+                onChange={(e: any) =>
+                  formik.setFieldValue('roles', e.target.value)
+                }
               >
-                <Radio value="parents">Parents</Radio>
+                <Radio value="parent">Parents</Radio>
                 <Radio value="teacher">Teacher</Radio>
                 <Radio value="student">Student</Radio>
               </RadioGroup>
 
-              {formik.touched.role && formik.errors.role ? (
+              {formik.touched.roles && formik.errors.roles ? (
                 <div className="text-red-500 text-sm mt-2">
-                  {formik.errors.role}
+                  {formik.errors.roles}
                 </div>
               ) : null}
             </div>

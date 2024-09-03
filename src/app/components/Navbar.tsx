@@ -28,7 +28,7 @@ export default function App() {
                 <div>
                   <Link href="/" className="flex items-center gap-1">
                     <img src="/logo_small.png" alt="img" />
-                    <span className="font-bold text-3xl ">Teach U</span>
+                    <span className="font-bold text-3xl ">Find Tute</span>
                   </Link>
                 </div>
                 <div className="flex items-center">

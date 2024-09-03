@@ -1,3 +1,10 @@
+import {
+  faEnvelope,
+  faLocationDot,
+  faPhone,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Link from 'next/link'
 import React from 'react'
 
 const Contact = () => {
@@ -13,33 +20,36 @@ const Contact = () => {
                 </h2>
                 <ul className="lg:pt-5 pt-3 flex items-center lg:gap-5 gap-2">
                   <li>
-                    <a href="#" className="lg:text-[28px] text-xl font-bold">
+                    <Link href="/" className="lg:text-[28px] text-xl font-bold">
                       Home
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <i className="fa-solid fa-angle-right"></i>
                   </li>
                   <li>
-                    <a href="#" className="lg:text-[28px] text-xl font-bold">
+                    <Link
+                      href="/contact"
+                      className="lg:text-[28px] text-xl font-bold"
+                    >
                       Contact Us
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
               <div className="relative">
                 <img
-                  src="assets/images/shapes/bread-cat.png"
+                  src="/assets/images/shapes/bread-cat.png"
                   alt="cat-img"
                   className="absolute bottom-5 -left-[30px] animate-up-down"
                 />
                 <img
-                  src="assets/images/shapes/bread-thumb.png"
+                  src="/assets/images/shapes/bread-thumb.png"
                   alt="thumb-img"
                   className="sm:max-h-full max-h-60"
                 />
                 <img
-                  src="assets/images/shapes/bread-child.png"
+                  src="/assets/images/shapes/bread-child.png"
                   alt="child-img"
                   className="absolute bottom-0 right-0 animate-left-right"
                 />
@@ -47,68 +57,6 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="lg:pb-15 lg:pt-15 pb-10 pt-10">
-        <div className="container">
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7.5">
-            <div
-              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
-              data-wow-delay=".3s"
-            >
-              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
-                <span className="text-cream-foreground text-[28px]">
-                  <i className="fa-solid fa-location-dot"></i>
-                </span>
-              </div>
-              <h5 className="font-bold text-xl mt-5 pb-2.5">Location</h5>
-              <p>120os road no12.Mirpur,Bangladesh</p>
-            </div>
-
-            <div
-              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
-              data-wow-delay=".4s"
-            >
-              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
-                <span className="text-cream-foreground text-[28px]">
-                  <i className="fa-solid fa-envelope"></i>
-                </span>
-              </div>
-              <h5 className="font-bold text-xl mt-5 pb-2.5">Mail</h5>
-              <p>
-                <a href="#">nafiz123@gmail.com</a>-{' '}
-                <a href="#">fahad 1234@gmail.com</a>
-              </p>
-            </div>
-
-            <div
-              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
-              data-wow-delay=".5s"
-            >
-              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
-                <span className="text-cream-foreground text-[28px]">
-                  <i className="fa-solid fa-phone"></i>
-                </span>
-              </div>
-              <h5 className="font-bold text-xl mt-5 pb-2.5">Contact</h5>
-              <p>
-                <a href="#">013254974147</a>,<a href="#">01258369741</a>{' '}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d28617.938088161813!2d88.9847771!3d26.2862453!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1716712456909!5m2!1sen!2sbd"
-          width="1920"
-          height="497"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
       </div>
 
       <section className="lg:pt-15 lg;pb-15 pb-10 pt-10">
@@ -130,13 +78,13 @@ const Contact = () => {
                 <div className="absolute top-1/2 -translate-y-1/2 h-full flex flex-col justify-between">
                   <div className="mt-[68px] sm:w-full w-40 animate-up-down">
                     <img
-                      src="assets/images/contact/contact-2.png"
+                      src="/assets/images/contact/contact-2.png"
                       alt="two-girls-img"
                     />
                   </div>
                   <div className="bg-primary px-5 py-[18px] rounded-[10px] flex items-center gap-5 mb-7.5 animate-left-right">
                     <div>
-                      <img src="assets/images/contact/winner.svg" alt="img" />
+                      <img src="/assets/images/contact/winner.svg" alt="img" />
                     </div>
                     <div>
                       <h4 className="text-[28px] font-bold text-cream-foreground leading-[148%] font-nunito">
@@ -149,7 +97,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="flex lg:justify-end justify-center">
-                  <img src="assets/images/contact/contact-1.png" alt="img" />
+                  <img src="/assets/images/contact/contact-1.png" alt="img" />
                 </div>
               </div>
               <div>
@@ -228,6 +176,69 @@ const Contact = () => {
         </div>
       </section>
 
+      <div className="lg:pb-15 lg:pt-15 pb-10 pt-10">
+        <div className="container">
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7.5">
+            <div
+              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
+              data-wow-delay=".3s"
+            >
+              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
+                <span className="text-cream-foreground text-[28px]">
+                  <FontAwesomeIcon icon={faLocationDot} />
+                </span>
+              </div>
+              <h5 className="font-bold text-xl mt-5 pb-2.5">Location</h5>
+              <p>
+                Building No.3-A, Block 'Y' , Main Road Model Town C, Bahawalpur
+              </p>
+            </div>
+
+            <div
+              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
+              data-wow-delay=".4s"
+            >
+              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
+                <span className="text-cream-foreground text-[28px]">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </span>
+              </div>
+              <h5 className="font-bold text-xl mt-5 pb-2.5">Mail</h5>
+              <p>
+                <a href="#">info@findtute.com</a>
+              </p>
+            </div>
+
+            <div
+              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
+              data-wow-delay=".5s"
+            >
+              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
+                <span className="text-cream-foreground text-[28px]">
+                  <FontAwesomeIcon icon={faPhone} />
+                </span>
+              </div>
+              <h5 className="font-bold text-xl mt-5 pb-2.5">Contact</h5>
+              <p>
+                <a href="#">92304727400</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9297281835396!2d71.66935401507212!3d29.406032698582283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1630975049084!5m2!1sen!2sbd"
+          width="1920"
+          height="497"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
       <section className="lg:pt-15 pt-10 ">
         <div className="bg-warm py-12.5 relative z-[1]">
           <div className="container">
@@ -248,14 +259,14 @@ const Contact = () => {
                   proin metus volutpat.
                 </p>
                 <div className="mt-9">
-                  <a href="#" className="btn-rounded-full">
+                  <Link href="/services" className="btn-rounded-full">
                     Read More
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="relative">
                 <img
-                  src="assets/images/newsletter/stay-thumb.png"
+                  src="/assets/images/newsletter/stay-thumb.png"
                   alt="tree-img"
                 />
               </div>
@@ -263,7 +274,7 @@ const Contact = () => {
           </div>
           <div className="absolute left-0 bottom-0 z-[-1]">
             <img
-              src="assets/images/newsletter/stay-shape.png"
+              src="/assets/images/newsletter/stay-shape.png"
               alt="stay-shape"
             />
           </div>

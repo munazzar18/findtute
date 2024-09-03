@@ -2,6 +2,7 @@
 import RegisterForm from '@/app/components/RegisterForm'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface Response {
   error: string
@@ -14,7 +15,7 @@ interface Response {
       email: string
       id: string
       username: string
-      role: string
+      roles: string
     }
   }
 }
@@ -23,11 +24,13 @@ const Register = () => {
   const getLoginData = async (formData: {
     email: string
     password: string
+    roles: string
   }): Promise<Response> => {
     'use server'
 
     const email = formData.email
     const password = formData.password
+    const roles = formData.roles
     const url = process.env.NEXT_API_URL as string
     const saveCookes = cookies()
     let customError = ''
@@ -38,7 +41,7 @@ const Register = () => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, roles }),
     })
     const auth = await res.json()
     if (auth.statusCode !== 200 && auth.error === 'Unauthorized') {
@@ -62,18 +65,21 @@ const Register = () => {
 
   return (
     <section className="bg-warm min-h-screen ">
+      <div className="flex w-full items-center justify-center">
+        <Link
+          className="mt-2 text-secondary-foreground hover:text-primary"
+          href="/"
+        >
+          Back to home
+        </Link>
+      </div>
       <div className="container relative">
         <div className="flex flex-col items-center text-center relative z-10 min-h-screen pt-10">
           <h1 className="font-normal xl:text-[70px] lg:text-6xl md:text-5xl text-4xl xl:leading-[128%] lg:leading-[125%] md:leading-[120%] max-w-[776px]">
-            <span className="relative">
-              Welcome back!
-              <span className="absolute -left-6 top-1 text-3xl">
-                <i className="icon-three-line"></i>
-              </span>
-            </span>
-            <span className="font-bold"> To </span>
-            <span className="font-bold text-destructive-foreground">
-              TeachU
+            <span className="relative">Welcome</span>
+            <span className="font-bold"> to{'    '} </span>
+            <span className="relative font-bold text-destructive-foreground">
+              Find Tute
             </span>
           </h1>
           <RegisterForm getLoginData={getLoginData} />

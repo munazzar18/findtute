@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import Head from 'next/head'
+import { Providers } from './providers'
 import { Jost, Nunito, Bubblegum_Sans } from 'next/font/google'
 import './globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -31,8 +32,20 @@ const nunito = Nunito({
 // })
 
 export const metadata: Metadata = {
-  title: 'teachU',
-  description: 'only platform find teachers onsite or online',
+  title: 'Find tute',
+  description:
+    'only platform find teachers onsite or online for learning online or onsite',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default function RootLayout({
@@ -47,20 +60,24 @@ export default function RootLayout({
         <Script
           type="text/javascript"
           src="/assets/swiper/swiper-bundle.min.js"
-          defer
+          strategy="lazyOnload"
         ></Script>
         <Script
           type="text/javascript"
           src="/assets/js/animate.js"
-          defer
+          strategy="lazyOnload"
         ></Script>
         <Script
           type="text/javascript"
           src="/assets/js/wow.min.js"
-          defer
+          strategy="lazyOnload"
         ></Script>
-        <Script type="text/javascript" src="/assets/js/main.js" defer></Script>
-        {children}
+        <Script
+          type="text/javascript"
+          src="/assets/js/main.js"
+          strategy="lazyOnload"
+        ></Script>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

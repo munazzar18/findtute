@@ -96,11 +96,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
                   : ''
               }
             />
-            {/* <span>
+            <span>
               {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
               ) : null}
-            </span> */}
+            </span>
           </div>
           <div>
             <Input
