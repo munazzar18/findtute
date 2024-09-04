@@ -1,10 +1,10 @@
 {
-  "name": "Findtute-f",
+  "name": "Findtute",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npx tailwindcss -o build.css --minify",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },

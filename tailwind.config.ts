@@ -10,19 +10,7 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      colors: {
-        "perwinkle": "#C0B9DD",
-        "lavender-web": "#DED9E2",
-        "pistachlo": "#ABDF75",
-        "verdigris": "#48A9A6",
-      }
-    },
+    extend: {},
   },
   plugins: [nextui()],
 };
