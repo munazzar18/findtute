@@ -55,7 +55,7 @@ const StudentProfile = () => {
   }): Promise<StudentFormResponse> => {
     'use server'
     const access_token = cookies().get('access_token')?.value
-    const url = process.env.NEXT_API_URL as string
+    const url = process.env.NEXT_PUBLIC_API_URL as string
 
     try {
       const res = await fetch(`${url}profile/create`, {
@@ -102,7 +102,7 @@ const StudentProfile = () => {
 
   const getGrades = async () => {
     'use server'
-    const url = process.env.NEXT_API_URL as string
+    const url = process.env.NEXT_PUBLIC_API_URL as string
     const res = await fetch(`${url}grade`, {
       method: 'GET',
       headers: {

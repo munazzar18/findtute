@@ -31,7 +31,7 @@ const Register = () => {
     const email = formData.email
     const password = formData.password
     const roles = formData.roles
-    const url = process.env.NEXT_API_URL as string
+    const url = process.env.NEXT_PUBLIC_API_URL as string
     const saveCookes = cookies()
     let customError = ''
 
