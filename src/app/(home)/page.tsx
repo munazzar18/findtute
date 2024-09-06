@@ -124,7 +124,6 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-primary lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <i className="icon-kindergarden lg:text-[40px] text-3xl text-cream-foreground"></i>
                   <FontAwesomeIcon
                     icon={faSchool}
                     className="lg:text-[40px] text-3xl text-cream-foreground"

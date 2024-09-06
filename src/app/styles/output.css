@@ -1,3 +1,12 @@
+/*
+! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
+*/
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
 *,
 ::before,
 ::after {
@@ -16,6 +25,16 @@
   --tw-content: '';
 }
 
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
 html,
 :host {
   line-height: 1.5;
@@ -27,8 +46,8 @@ html,
   -o-tab-size: 4;
   tab-size: 4;
   /* 3 */
-  /* font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; */
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -78,24 +97,14 @@ abbr:where([title]) {
 Remove the default font size and weight for headings.
 */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit;
-}
-
 /*
 Reset links to optimize for opt-in styling instead of opt-out.
 */
-
+/* 
 a {
   color: inherit;
   text-decoration: inherit;
-}
+} */
 
 /*
 Add the correct font weight in Edge and Safari.
@@ -117,8 +126,8 @@ code,
 kbd,
 samp,
 pre {
-  /* font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace; */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
   /* 1 */
   font-feature-settings: normal;
   /* 2 */
@@ -182,7 +191,7 @@ input,
 optgroup,
 select,
 textarea {
-  /* font-family: inherit; */
+  font-family: inherit;
   /* 1 */
   font-feature-settings: inherit;
   /* 1 */
@@ -431,18 +440,13 @@ video {
 }
 
 body {
-  /* font-family: Nunito; */
+  font-family: Nunito;
   color: var(--muted-foreground);
   line-height: 160%;
   background-color: var(--background);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 p {
+p {
   color: var(--foreground);
 }
 
@@ -2006,37 +2010,37 @@ h6 p {
   );
 }
 
-/* .bg-\[url\(\'\/assets\/images\/blog\/blog-2-1\.png\'\)\]{
-  background-image: url('../../../../../assets/images/blog/blog-2-1.html');
-} */
+.bg-\[url\(\'\/assets\/images\/blog\/blog-2-1\.png\'\)\] {
+  background-image: url('/assets/images/blog/blog-2-1.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/blog\/blog-2-2\.png\'\)\]{
-  background-image: url('../../../../../assets/images/blog/blog-2-2.html');
-} */
+.bg-\[url\(\'\/assets\/images\/blog\/blog-2-2\.png\'\)\] {
+  background-image: url('/assets/images/blog/blog-2-2.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/blog\/blog-2-3\.png\'\)\]{
-  background-image: url('../../../../../assets/images/blog/blog-2-3.html');
-} */
+.bg-\[url\(\'\/assets\/images\/blog\/blog-2-3\.png\'\)\] {
+  background-image: url('/assets/images/blog/blog-2-3.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/extra-curricula\/img-1\.png\'\)\]{
-  background-image: url('../../../../../assets/images/extra-curricula/img-1.html');
-} */
+.bg-\[url\(\'\/assets\/images\/extra-curricula\/img-1\.png\'\)\] {
+  background-image: url('/assets/images/extra-curricula/img-1.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/extra-curricula\/img-2\.png\'\)\]{
-  background-image: url('../../../../../assets/images/extra-curricula/img-2.html');
-} */
+.bg-\[url\(\'\/assets\/images\/extra-curricula\/img-2\.png\'\)\] {
+  background-image: url('/assets/images/extra-curricula/img-2.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/extra-curricula\/img-3\.png\'\)\]{
-  background-image: url('../../../../../assets/images/extra-curricula/img-3.html');
-} */
+.bg-\[url\(\'\/assets\/images\/extra-curricula\/img-3\.png\'\)\] {
+  background-image: url('/assets/images/extra-curricula/img-3.html');
+}
 
-/* .bg-\[url\(\'\/assets\/images\/shapes\/egg-shap\.png\'\)\]{
-  background-image: url('../../../../../assets/images/shapes/egg-shap.html');
-} */
+.bg-\[url\(\'\/assets\/images\/shapes\/egg-shap\.png\'\)\] {
+  background-image: url('/assets/images/shapes/egg-shap.html');
+}
 
-/* .bg-newsletter-banner{
-  background-image: url('../../../../../assets/images/newsletter/bg-img.html');
-} */
+.bg-newsletter-banner {
+  background-image: url('/assets/images/newsletter/bg-img.html');
+}
 
 .bg-contain {
   background-size: contain;
@@ -2392,18 +2396,6 @@ h6 p {
 .text-center {
   text-align: center;
 }
-
-/* .font-bubblegum-sans {
-  font-family: Bubblegum Sans;
-} */
-
-/* .font-jost {
-  font-family: Jost;
-} */
-
-/* .font-nunito {
-  font-family: Nunito;
-} */
 
 .text-2xl {
   font-size: 1.5rem;
@@ -2928,7 +2920,7 @@ h6 p {
 
 .after\:bg-testimonial-banner::after {
   content: var(--tw-content);
-  background-image: url('../../../public/assets/images/testimonial/bg-img.png');
+  background-image: url('/assets/images/testimonial/bg-img.png');
 }
 
 .after\:bg-cover::after {

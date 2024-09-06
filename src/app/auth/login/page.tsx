@@ -2,6 +2,7 @@
 import LoginForm from '@/app/components/LoginForm'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface Response {
   error: string
@@ -61,7 +62,15 @@ const Login = () => {
   }
 
   return (
-    <section className="bg-warm min-h-screen ">
+    <section className="bg-warm relative">
+      <div className="flex w-full items-center justify-center">
+        <Link
+          className="mt-2 text-secondary-foreground hover:text-primary"
+          href="/"
+        >
+          Back to home
+        </Link>
+      </div>
       <div className="container relative">
         <div className="flex flex-col items-center text-center relative z-10 min-h-screen pt-10">
           <h1 className="font-normal xl:text-[70px] lg:text-6xl md:text-5xl text-4xl xl:leading-[128%] lg:leading-[125%] md:leading-[120%] max-w-[776px]">
@@ -76,8 +85,10 @@ const Login = () => {
               Findtute
             </span>
           </h1>
-          <LoginForm getLoginData={getLoginData} />
-          <div className="flex absolute right-[65px] top-14 animate-skw">
+          <div className="bg-background rounded-lg shadow-md px-5 py-10 mt-10">
+            <LoginForm getLoginData={getLoginData} />
+          </div>
+          <div className="flex absolute  top-14 right-[68px] animate-skw">
             <img
               src="/assets/images/shapes/shap.png"
               alt="shap-2"
@@ -96,7 +107,7 @@ const Login = () => {
           <span className="absolute -left-2.5 top-[9px] border-2 border-primary rounded-[125px] w-full h-full"></span>
         </div>
 
-        <div className="absolute right-0 bottom-24 lg:block hidden animate-up-down">
+        <div className="absolute right-0 bottom-25 lg:block hidden animate-up-down">
           <img src="/assets/images/banner/boy_img_2.png" alt="banner-img-2" />
           <span className="absolute -left-2.5 top-[9px] border-2 border-secondary rounded-[125px] max-h-[369px] w-full h-full"></span>
         </div>

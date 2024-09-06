@@ -1,6 +1,30 @@
+import logoutAction from '@/app/auth/logout/_action'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 
-const TeacherDashboard = () => {
+interface User {
+  id: string
+  email: string
+  role: string
+}
+
+export default function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  const userCookies = cookies().get('user')
+  let user: User | null = null
+
+  try {
+    if (userCookies && userCookies.value) {
+      user = JSON.parse(userCookies.value)
+    }
+  } catch (error) {
+    console.error('Error parsing user cookie:', error)
+  }
+
   return (
     <>
       <header
@@ -8,30 +32,32 @@ const TeacherDashboard = () => {
         className="sticky top-0 transition-[top] duration-300 z-40"
       >
         <div id="header-container ">
-          <div className="[.header-pinned_&]:shadow-md bg-warm transition-all duration-300 ">
-            <div className="container py-5 w-full">
-              <div className="flex justify-between items-center">
-                <div>
-                  <Link href="/" className="flex items-left gap-1">
+          <div className="[.header-pinned_&]:shadow-md w-full transition-all duration-300 bg-gray-50">
+            <div className="container py-5 w-full !px-2 !mx-2 ">
+              <div className="flex justify-between items-center ">
+                <div className="">
+                  <Link
+                    href="/"
+                    className="flex justify-start items-left gap-1"
+                  >
                     <img src="/logo_small.png" alt="img" />
-                    <span className="font-bold text-3xl ">Find Tute</span>
+                    <span className="font-bold text-3xl ">FindTute</span>
                   </Link>
                 </div>
-                <div>Logout</div>
               </div>
             </div>
           </div>
         </div>
       </header>
       <div className="h-screen overflow-hidden flex items-center justify-center bg-primary-foreground">
-        <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-secondary text-gray-800">
-          <div className="fixed flex flex-col top-48 left-0 w-72 h-full border-r bg-warm">
+        <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
+          <div className="fixed flex flex-col top-16 left-0 w-64 h-full border-r ">
             <div className="overflow-y-auto overflow-x-hidden flex-grow">
               <ul className="flex flex-col py-4 space-y-1">
                 <li>
-                  <a
-                    href="#"
-                    className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-secondary text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-primary pr-6 "
+                  <Link
+                    href={`/dashboard/${user?.id}`}
+                    className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-primary pr-6 "
                   >
                     <span className="inline-flex justify-center items-center ml-4">
                       <svg
@@ -52,40 +78,12 @@ const TeacherDashboard = () => {
                     <span className="ml-2 text-sm tracking-wide truncate">
                       Dashboard
                     </span>
-                  </a>
+                  </Link>
                 </li>
+
                 <li>
-                  <a
-                    href="#"
-                    className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
-                  >
-                    <span className="inline-flex justify-center items-center ml-4">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                        ></path>
-                      </svg>
-                    </span>
-                    <span className="ml-2 text-sm tracking-wide truncate">
-                      Inbox
-                    </span>
-                    <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">
-                      New
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={`/dashboard/${user?.id}/messages`}
                     className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                   >
                     <span className="inline-flex justify-center items-center ml-4">
@@ -107,7 +105,7 @@ const TeacherDashboard = () => {
                     <span className="ml-2 text-sm tracking-wide truncate">
                       Messages
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
@@ -172,8 +170,8 @@ const TeacherDashboard = () => {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={`/dashboard/${user?.id}/browse`}
                     className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                   >
                     <span className="inline-flex justify-center items-center ml-4">
@@ -193,12 +191,14 @@ const TeacherDashboard = () => {
                       </svg>
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">
-                      Clients
+                      {user?.role === 'student'
+                        ? 'Find tutors'
+                        : 'Find students'}
                     </span>
                     <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">
                       15
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="px-5">
                   <div className="flex flex-row items-center h-8">
@@ -208,8 +208,8 @@ const TeacherDashboard = () => {
                   </div>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={`/dashboard/${user?.id}/profile`}
                     className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                   >
                     <span className="inline-flex justify-center items-center ml-4">
@@ -231,11 +231,11 @@ const TeacherDashboard = () => {
                     <span className="ml-2 text-sm tracking-wide truncate">
                       Profile
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={`/dashboard/${user?.id}/settings`}
                     className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                   >
                     <span className="inline-flex justify-center items-center ml-4">
@@ -263,41 +263,45 @@ const TeacherDashboard = () => {
                     <span className="ml-2 text-sm tracking-wide truncate">
                       Settings
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
-                  >
-                    <span className="inline-flex justify-center items-center ml-4">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+                  <a className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                    <form action={logoutAction}>
+                      <span className="inline-flex justify-center items-center ml-4">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                          ></path>
+                        </svg>
+                      </span>
+                      <button
+                        type="submit"
+                        className="ml-2 text-sm tracking-wide truncate"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                        ></path>
-                      </svg>
-                    </span>
-                    <span className="ml-2 text-sm tracking-wide truncate">
-                      Logout
-                    </span>
+                        logout
+                      </button>
+                    </form>
                   </a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+
+        <main className="flex-grow p-6 overflow-auto bg-primary-foreground">
+          {children}
+        </main>
       </div>
     </>
   )
 }
-
-export default TeacherDashboard
