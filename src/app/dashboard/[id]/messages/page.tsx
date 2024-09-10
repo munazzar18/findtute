@@ -1,69 +1,72 @@
 'use client'
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react'
 
 const Inbox = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      sender: "Shanay cruz",
-      content: "Guts, I need a review of work. Are you ready?",
-      time: "05:14 PM",
+      sender: 'Shanay cruz',
+      content: 'Guts, I need a review of work. Are you ready?',
+      time: '05:14 PM',
       fromUser: false,
     },
     {
       id: 2,
-      sender: "Shanay cruz",
-      content: "Let me know",
-      time: "05:14 PM",
+      sender: 'Shanay cruz',
+      content: 'Let me know',
+      time: '05:14 PM',
       fromUser: false,
     },
     {
       id: 3,
-      sender: "You",
-      content: "Yes, let’s see, send your work here",
-      time: "05:14 PM",
+      sender: 'You',
+      content: 'Yes, let’s see, send your work here',
+      time: '05:14 PM',
       fromUser: true,
     },
     {
       id: 4,
-      sender: "You",
-      content: "Anyone on for lunch today",
-      time: "05:14 PM",
+      sender: 'You',
+      content: 'Anyone on for lunch today',
+      time: '05:14 PM',
       fromUser: true,
     },
-  ]);
+  ])
 
-  const [currentMessage, setCurrentMessage] = useState("");
-  const messagesEndRef = useRef(null);
+  const [currentMessage, setCurrentMessage] = useState('')
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Function to handle message send
   const handleSendMessage = () => {
-    if (currentMessage.trim() === "") return;
+    if (currentMessage.trim() === '') return
 
     setMessages([
       ...messages,
       {
         id: Date.now(), // Unique ID for each message
-        sender: "You",
+        sender: 'You',
         content: currentMessage,
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        time: new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
         fromUser: true,
       },
-    ]);
+    ])
 
-    setCurrentMessage("");
-  };
+    setCurrentMessage('')
+  }
 
   // Scroll to the bottom when a new message is added
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   // Handle message deletion by clicking on the message
-  const handleDeleteMessage = (id) => {
-    setMessages(messages.filter((message) => message.id !== id));
-  };
+  const handleDeleteMessage = (id: number) => {
+    setMessages(messages.filter((message) => message.id !== id))
+  }
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -72,7 +75,9 @@ const Inbox = () => {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.fromUser ? "justify-end" : ""} gap-2.5 mb-4 relative`}
+            className={`flex ${
+              msg.fromUser ? 'justify-end' : ''
+            } gap-2.5 mb-4 relative`}
             onClick={() => handleDeleteMessage(msg.id)} // Message deletion on click
           >
             {!msg.fromUser && (
@@ -85,19 +90,19 @@ const Inbox = () => {
             <div className="grid relative">
               <h5
                 className={`text-sm font-semibold leading-snug pb-1 ${
-                  msg.fromUser ? "text-right text-gray-900" : "text-gray-900"
+                  msg.fromUser ? 'text-right text-gray-900' : 'text-gray-900'
                 }`}
               >
                 {msg.sender}
               </h5>
               <div
                 className={`px-3.5 py-2 ${
-                  msg.fromUser ? "bg-indigo-600" : "bg-gray-100"
+                  msg.fromUser ? 'bg-indigo-600' : 'bg-gray-100'
                 } rounded inline-flex items-center gap-3`}
               >
                 <h5
                   className={`${
-                    msg.fromUser ? "text-white" : "text-gray-900"
+                    msg.fromUser ? 'text-white' : 'text-gray-900'
                   } text-sm font-normal leading-snug`}
                 >
                   {msg.content}
@@ -105,10 +110,12 @@ const Inbox = () => {
               </div>
               <div
                 className={`justify-start items-center inline-flex mb-2.5 ${
-                  msg.fromUser ? "justify-end" : ""
+                  msg.fromUser ? 'justify-end' : ''
                 }`}
               >
-                <h6 className="text-gray-500 text-xs font-normal leading-4 py-1">{msg.time}</h6>
+                <h6 className="text-gray-500 text-xs font-normal leading-4 py-1">
+                  {msg.time}
+                </h6>
               </div>
             </div>
           </div>
@@ -126,7 +133,7 @@ const Inbox = () => {
               placeholder="Type here..."
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -151,13 +158,15 @@ const Inbox = () => {
                   />
                 </g>
               </svg>
-              <h3 className="text-white text-xs font-semibold leading-4 px-2">Send</h3>
+              <h3 className="text-white text-xs font-semibold leading-4 px-2">
+                Send
+              </h3>
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Inbox;
+export default Inbox

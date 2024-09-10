@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={nunito.className}>
-        <Toaster position="top-right" />
+        <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
         {children}
       </body>
     </html>

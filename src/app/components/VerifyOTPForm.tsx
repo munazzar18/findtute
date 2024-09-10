@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { ResendOTPAction } from '../auth/forgot-password/_action'
 
 interface Response {
   error: string
@@ -74,13 +75,21 @@ const VerifyOTPForm = ({ verifyOtpData, getEmail }: any) => {
     }
   }, [secondsLeft])
 
-  const handleResendOTP = () => {
+  const handleResendOTP = async () => {
     setIsResendEnabled(false)
     setSecondsLeft(180)
     localStorage.setItem(
       'otpTimer',
       (new Date().getTime() + 180 * 1000).toString()
     )
+    const formData = new FormData()
+    formData.append('email', getEmail)
+    const res = await ResendOTPAction(formData)
+    if (res.status && res.status === true) {
+      toast.success(res.message)
+    } else {
+      toast.error(res.message)
+    }
   }
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)

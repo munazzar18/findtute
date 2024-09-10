@@ -1,12 +1,18 @@
 'use client'
 import Image from 'next/image'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { MultiSelect } from 'react-multi-select-component'
 import { FormikErrors, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import {
+  GetGrades,
+  GetSubjects,
+  UpdateProfileAction,
+  UploadProfileImageAction,
+} from '../dashboard/[id]/profile/_action'
 
 interface OptionType {
   label: string
@@ -18,10 +24,27 @@ interface FormValues {
   subjects: OptionType[]
 }
 
+type GradeResponse = [
+  {
+    id: string
+    grade: string
+    created_at: string
+  }
+]
+
+type SubjectResponse = [
+  {
+    id: string
+    subject: string
+    created_at: string
+  }
+]
+
 interface Education {
   institute: string
   degree: string
-  year: string
+  start_year: string
+  end_year: string
 }
 
 interface Experience {
@@ -32,7 +55,12 @@ interface Experience {
   present: boolean
 }
 
-const initialEducation: Education = { institute: '', degree: '', year: '' }
+const initialEducation: Education = {
+  institute: '',
+  degree: '',
+  start_year: '',
+  end_year: '',
+}
 const initialExperience: Experience = {
   institute: '',
   title: '',
@@ -43,13 +71,54 @@ const initialExperience: Experience = {
 
 const UserProfileData = () => {
   const [progress, setProgress] = useState(10)
-  const [image, setImage] = useState<File | null>()
+  const [image, setImage] = useState<string>('')
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [allGrades, setAllGrades] = useState<OptionType[]>([])
+  const [allSubjects, setAllSubjects] = useState<OptionType[]>([])
+  const [selectedGrades, setSelectedGrades] = useState<GradeResponse>()
+  const [selectedSubjects, setSelectedSubjects] = useState<SubjectResponse>()
   const [isLoading, isSetLoading] = useState(false)
-  const [educations, setEducations] = useState<Education[]>([initialEducation])
-  const [experiences, setExperiences] = useState<Experience[]>([
+  const [education, seteducation] = useState<Education[]>([initialEducation])
+  const [experience, setexperience] = useState<Experience[]>([
     initialExperience,
   ])
+
+  const getAllGrades = async () => {
+    const res: GradeResponse = await GetGrades()
+    if (res) {
+      res.map((grade: { id: string; grade: string }) => {
+        setAllGrades((prev) => [
+          ...prev,
+          {
+            label: grade.grade,
+            value: grade.id,
+          },
+        ])
+      })
+    }
+    return res
+  }
+
+  const getAllSubjects = async () => {
+    const res: SubjectResponse = await GetSubjects()
+    if (res) {
+      res.map((subject: { id: string; subject: string }) => {
+        setAllSubjects((prev) => [
+          ...prev,
+          {
+            label: subject.subject,
+            value: subject.id,
+          },
+        ])
+      })
+    }
+    return res
+  }
+
+  useEffect(() => {
+    getAllGrades()
+    getAllSubjects()
+  }, [])
 
   const handleFileUpload = () => {
     if (fileInputRef.current) {
@@ -57,61 +126,78 @@ const UserProfileData = () => {
     }
   }
 
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null
-    console.log('File:', file)
-    setImage(file)
+    if (!file) return
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+      const res = await UploadProfileImageAction(formData)
+      console.log(res)
+      if (res.status && res.status === true) {
+        toast.success(res.message)
+
+        //only temporary for now
+        const url = 'http://localhost:3500'
+        const path = url + res.data
+        setImage(path)
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const handleRemove = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-    setImage(null)
+    setImage('')
   }
 
   const handleAddEducation = () => {
-    const updatedEducations = [...formik.values.educations, initialEducation]
-    setEducations(updatedEducations)
-    formik.setFieldValue('educations', updatedEducations)
+    const updatededucation = [...formik.values.education, initialEducation]
+    seteducation(updatededucation)
+    formik.setFieldValue('education', updatededucation)
   }
 
   const handleRemoveEducation = (index: number) => {
-    const newEducations = educations.filter((_, i) => i !== index)
-    setEducations(newEducations)
-    formik.setFieldValue('educations', newEducations)
+    const neweducation = education.filter((_, i) => i !== index)
+    seteducation(neweducation)
+    formik.setFieldValue('education', neweducation)
   }
 
   const handleLastEducation = (index: number) => {
     if (index > 0) {
-      return index === educations.length - 1
+      return index === education.length - 1
     }
   }
 
   const handleAddLastEducation = (index: number) => {
-    return index === educations.length - 1
+    return index === education.length - 1
   }
 
   const handleAddExperience = () => {
-    const updatedExperiences = [...formik.values.experiences, initialExperience]
-    setExperiences(updatedExperiences)
-    formik.setFieldValue('experiences', updatedExperiences)
+    const updatedexperience = [...formik.values.experience, initialExperience]
+    setexperience(updatedexperience)
+    formik.setFieldValue('experience', updatedexperience)
   }
 
   const handleRemoveExperience = (index: number) => {
-    const newExperiences = experiences.filter((_, i) => i !== index)
-    setExperiences(newExperiences)
-    formik.setFieldValue('experiences', newExperiences)
+    const newexperience = experience.filter((_, i) => i !== index)
+    setexperience(newexperience)
+    formik.setFieldValue('experience', newexperience)
   }
 
   const handleLastExperience = (index: number) => {
     if (index > 0) {
-      return index === experiences.length - 1
+      return index === experience.length - 1
     }
   }
 
   const handleAddLastExperience = (index: number) => {
-    return index === experiences.length - 1
+    return index === experience.length - 1
   }
 
   const handleLocation = () => {
@@ -135,98 +221,115 @@ const UserProfileData = () => {
     }
   }
 
+  const filterSelectedGrades = (selected: OptionType[]) => {
+    let newGrades: any = []
+    selected.map((grade) => {
+      newGrades.push(grade.value)
+    })
+
+    setSelectedGrades(newGrades)
+  }
+
+  const filterSelectedSubjects = (selected: OptionType[]) => {
+    let newSubjects: any = []
+    selected.map((subject) => {
+      newSubjects.push(subject.value)
+    })
+
+    setSelectedSubjects(newSubjects)
+  }
+
   //validation
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       cnic: '',
       mobile: '',
-      grades: [],
-      subjects: [],
-      preference: '',
       latitude: 0,
       longitude: 0,
-      educations: educations,
-      experiences: experiences,
+      address: '',
+      avatar: '',
+      preference: '',
+      education: education,
+      experience: experience,
+      grades_ids: [],
+      subjects_ids: [],
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().label('First Name').required().max(30),
-      lastName: Yup.string().label('Last Name').required().max(30),
+      first_name: Yup.string().label('First Name').required().max(30),
+      last_name: Yup.string().label('Last Name').required().max(30),
       cnic: Yup.string().label('CNIC').required().max(13),
       mobile: Yup.string().label('Mobile').required(),
-      grades: Yup.string()
-        .label('Grades')
-        .required('Grades is a required field'),
-      subjects: Yup.string()
-        .label('Subjects')
-        .required('Subjects is a required field'),
+      address: Yup.string().label('Address').required().max(300),
       preference: Yup.string().required().label('Preference'),
       latitude: Yup.number().required().label('Latitude'),
       longitude: Yup.number().required().label('Longitude'),
-      educations: Yup.array().of(
+      education: Yup.array().of(
         Yup.object({
           institute: Yup.string().required().label('Institute').max(60),
           degree: Yup.string().required().label('Degree').max(30),
-          year: Yup.string().required().label('Year').max(4),
+          start_year: Yup.string().required().label('Year').max(4),
+          end_year: Yup.string().required().label('Year').max(4),
         })
       ),
-      experiences: Yup.array().of(
+      experience: Yup.array().of(
         Yup.object({
-          institute: Yup.string().required().label('Institute').max(60),
-          title: Yup.string().required().label('Title').max(60),
-          startDate: Yup.string().required().label('Institute').max(20),
+          institute: Yup.string().label('Institute').max(60),
+          title: Yup.string().label('Title').max(60),
+          startDate: Yup.string().label('Institute').max(20),
+          endDate: Yup.string().label('Institute').max(20),
         })
       ),
     }),
     onSubmit: async (values, { resetForm }) => {
       isSetLoading(true)
-      console.log('FormData:', values)
-      try {
-        toast.success('Profile updated')
+
+      const formData = new FormData()
+      formData.append('first_name', values.first_name)
+      formData.append('last_name', values.last_name)
+      formData.append('cnic', values.cnic)
+      formData.append('mobile', values.mobile)
+      formData.append('latitude', values.latitude.toString())
+      formData.append('longitude', values.longitude.toString())
+      formData.append('address', values.address)
+      formData.append('avatar', image)
+      formData.append('preference', values.preference)
+      formData.append('education', JSON.stringify(values.education))
+      formData.append('experience', JSON.stringify(values.experience))
+      formData.append('grades_ids', JSON.stringify(selectedGrades))
+      formData.append('subjects_ids', JSON.stringify(selectedSubjects))
+      const res = await UpdateProfileAction(formData)
+
+      if (res.status && res.status === true) {
+        toast.success(res.message)
         resetForm()
-      } catch (error) {
-        toast.error('Something went wrong!')
+      } else {
+        toast.error(res.message)
       }
+
       isSetLoading(false)
     },
   })
   //validation
-
-  //grades
-  const allGrades: OptionType[] = [
-    { label: '9th grade', value: '9th' },
-    { label: '10th grade', value: '10th' },
-    { label: '1st year', value: '1st year' },
-    { label: '2nd year', value: '2nd year' },
-  ]
-  //grades
-
-  //subjects
-  const allSubjects: OptionType[] = [
-    { label: 'Physics', value: 'Physics' },
-    { label: 'English', value: 'English' },
-    { label: 'Math', value: 'Math' },
-    { label: 'History', value: 'History' },
-  ]
-  //subjects
 
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4  sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
-            <Image
-              src="/user.png"
-              alt="profileImage"
-              width={100}
-              height={100}
+            <img
+              src={image ? image : '/user.png'}
+              alt="your profile image"
+              width={200}
+              height={200}
               className="rounded-full bg-primary"
             />
           </div>
           <div>
             <button
               color="primary"
+              type="button"
               className="text-sm text-nowrap sm:text-sm md:text-lg  lg:text-lg  bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn "
               onClick={handleFileUpload}
             >
@@ -243,6 +346,7 @@ const UserProfileData = () => {
           <div>
             <button
               color="primary"
+              type="button"
               className="w-full text-lg bg-red-600 text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
               onClick={handleRemove}
             >
@@ -262,15 +366,15 @@ const UserProfileData = () => {
               <input
                 type="text"
                 className="input input-bordered input-primary w-full"
-                color={formik.errors.firstName ? 'danger' : 'primary'}
+                color={formik.errors.first_name ? 'danger' : 'primary'}
                 onChange={(e) =>
-                  formik.setFieldValue('firstName', e.target.value)
+                  formik.setFieldValue('first_name', e.target.value)
                 }
-                value={formik.values.firstName}
+                value={formik.values.first_name}
               />
               <span>
-                {formik.touched.firstName && formik.errors.firstName
-                  ? formik.errors.firstName
+                {formik.touched.first_name && formik.errors.first_name
+                  ? formik.errors.first_name
                   : ''}
               </span>
             </label>
@@ -282,16 +386,16 @@ const UserProfileData = () => {
               </div>
               <input
                 type="text"
-                color={formik.errors.lastName ? 'danger' : 'primary'}
+                color={formik.errors.last_name ? 'danger' : 'primary'}
                 onChange={(e) =>
-                  formik.setFieldValue('lastName', e.target.value)
+                  formik.setFieldValue('last_name', e.target.value)
                 }
-                value={formik.values.lastName}
+                value={formik.values.last_name}
                 className="input input-bordered input-primary w-full"
               />
               <span>
-                {formik.touched.lastName && formik.errors.lastName
-                  ? formik.errors.lastName
+                {formik.touched.last_name && formik.errors.last_name
+                  ? formik.errors.last_name
                   : ''}
               </span>
             </label>
@@ -299,7 +403,7 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Last Name</span>
+                <span className="label-text">CNIC</span>
               </div>
               <input
                 type="text"
@@ -341,15 +445,16 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allGrades}
-                value={formik.values.grades}
-                onChange={(selected: OptionType[]) =>
-                  formik.setFieldValue('grades', selected)
-                }
+                value={formik.values.grades_ids}
+                onChange={(selected: OptionType[]) => {
+                  formik.setFieldValue('grades_ids', selected)
+                  filterSelectedGrades(selected)
+                }}
                 labelledBy="Select grades"
               />
               <span>
-                {formik.touched.grades && formik.errors.grades
-                  ? formik.errors.grades
+                {formik.touched.grades_ids && formik.errors.grades_ids
+                  ? formik.errors.grades_ids
                   : ''}
               </span>
             </label>
@@ -361,15 +466,16 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allSubjects}
-                value={formik.values.subjects}
-                onChange={(selected: OptionType[]) =>
-                  formik.setFieldValue('subjects', selected)
-                }
+                value={formik.values.subjects_ids}
+                onChange={(selected: OptionType[]) => {
+                  formik.setFieldValue('subjects_ids', selected)
+                  filterSelectedSubjects(selected)
+                }}
                 labelledBy="Select subjects"
               />
-              <span className="text-red-500">
-                {formik.touched.subjects && formik.errors.subjects
-                  ? formik.errors.subjects
+              <span className="">
+                {formik.touched.subjects_ids && formik.errors.subjects_ids
+                  ? formik.errors.subjects_ids
                   : ''}
               </span>
             </label>
@@ -387,9 +493,10 @@ const UserProfileData = () => {
                 }
                 value={formik.values.preference}
               >
-                <option key="online">Online</option>
-                <option key="onsite">On-site</option>
-                <option key="both">Both</option>
+                <option value="">Select preference</option>
+                <option value="online">Online</option>
+                <option value="onsite">On-site</option>
+                <option value="both">Both</option>
               </select>
               <span>
                 {formik.touched.preference && formik.errors.preference
@@ -459,134 +566,213 @@ const UserProfileData = () => {
               </div>
             </div>
           </div>
+
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12">
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text">Address</span>
+              </div>
+              <textarea
+                color={formik.errors.address ? 'danger' : 'primary'}
+                onChange={(e) =>
+                  formik.setFieldValue('address', e.target.value)
+                }
+                value={formik.values.address}
+                className="textarea textarea-primary h-24"
+                placeholder="Please enter your complete address"
+              ></textarea>
+            </label>
+            <span>
+              {formik.touched.address && formik.errors.address
+                ? formik.errors.address
+                : ''}
+            </span>
+          </div>
+
           <div className="col-span-12 mb-2">
             <h1 className="text-2xl font-bold">Education</h1>
           </div>
           <div className="col-span-12">
-            {formik.values.educations.map((education, index) => (
+            {formik.values.education.map((education, index) => (
               <div
                 className="grid grid-cols-12 gap-4 items-baseline"
                 key={index}
               >
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4 mb-4">
-                  <input
-                    type="text"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.educations &&
-                      formik.errors.educations[index] &&
-                      (formik.errors.educations as FormikErrors<Education>[])[
-                        index
-                      ]?.institute
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.educations[index].institute}
-                    name={`educations[${index}].institute`}
-                  />
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">Institute</span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered input-primary w-full"
+                      color={
+                        formik.errors.education &&
+                        formik.errors.education[index] &&
+                        (formik.errors.education as FormikErrors<Education>[])[
+                          index
+                        ]?.institute
+                          ? 'danger'
+                          : 'primary'
+                      }
+                      onChange={formik.handleChange}
+                      value={formik.values.education[index].institute}
+                      name={`education[${index}].institute`}
+                    />
+                  </label>
                   <span>
-                    {formik.touched.educations &&
-                    formik.touched.educations[index] &&
-                    formik.errors.educations &&
-                    formik.errors.educations[index] &&
-                    (formik.errors.educations as FormikErrors<Education>[])[
+                    {formik.touched.education &&
+                    formik.touched.education[index] &&
+                    formik.errors.education &&
+                    formik.errors.education[index] &&
+                    (formik.errors.education as FormikErrors<Education>[])[
                       index
                     ]?.institute
-                      ? (formik.errors.educations as FormikErrors<Education>[])[
+                      ? (formik.errors.education as FormikErrors<Education>[])[
                           index
                         ]?.institute
                       : ''}
                   </span>
                 </div>
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-3">
-                  <input
-                    type="text"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.educations &&
-                      formik.errors.educations[index] &&
-                      (formik.errors.educations as FormikErrors<Education>[])[
-                        index
-                      ]?.degree
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.educations[index].degree}
-                    name={`educations[${index}].degree`}
-                  />
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">Degree</span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered input-primary w-full"
+                      color={
+                        formik.errors.education &&
+                        formik.errors.education[index] &&
+                        (formik.errors.education as FormikErrors<Education>[])[
+                          index
+                        ]?.degree
+                          ? 'danger'
+                          : 'primary'
+                      }
+                      onChange={formik.handleChange}
+                      value={formik.values.education[index].degree}
+                      name={`education[${index}].degree`}
+                    />
+                  </label>
                   <span>
-                    {formik.touched.educations &&
-                    formik.touched.educations[index] &&
-                    formik.errors.educations &&
-                    formik.errors.educations[index] &&
-                    (formik.errors.educations as FormikErrors<Education>[])[
+                    {formik.touched.education &&
+                    formik.touched.education[index] &&
+                    formik.errors.education &&
+                    formik.errors.education[index] &&
+                    (formik.errors.education as FormikErrors<Education>[])[
                       index
                     ]?.degree
-                      ? (formik.errors.educations as FormikErrors<Education>[])[
+                      ? (formik.errors.education as FormikErrors<Education>[])[
                           index
                         ]?.degree
                       : ''}
                   </span>
                 </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-3">
-                  <input
-                    type="text"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.educations &&
-                      formik.errors.educations[index] &&
-                      (formik.errors.educations as FormikErrors<Education>[])[
-                        index
-                      ]?.year
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.educations[index].year}
-                    name={`educations[${index}].year`}
-                  />
-                  <span>
-                    {formik.touched.educations &&
-                    formik.touched.educations[index] &&
-                    formik.errors.educations &&
-                    formik.errors.educations[index] &&
-                    (formik.errors.educations as FormikErrors<Education>[])[
-                      index
-                    ]?.year
-                      ? (formik.errors.educations as FormikErrors<Education>[])[
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">Start Year</span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered input-primary w-full"
+                      color={
+                        formik.errors.education &&
+                        formik.errors.education[index] &&
+                        (formik.errors.education as FormikErrors<Education>[])[
                           index
-                        ]?.year
+                        ]?.start_year
+                          ? 'danger'
+                          : 'primary'
+                      }
+                      onChange={formik.handleChange}
+                      value={formik.values.education[index].start_year}
+                      name={`education[${index}].start_year`}
+                    />
+                  </label>
+                  <span>
+                    {formik.touched.education &&
+                    formik.touched.education[index] &&
+                    formik.errors.education &&
+                    formik.errors.education[index] &&
+                    (formik.errors.education as FormikErrors<Education>[])[
+                      index
+                    ]?.start_year
+                      ? (formik.errors.education as FormikErrors<Education>[])[
+                          index
+                        ]?.start_year
                       : ''}
                   </span>
                 </div>
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
-                  {handleAddLastEducation(index) ? (
-                    <button
-                      color="primary"
-                      onClick={handleAddEducation}
-                      type="button"
-                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
-                    >
-                      <FontAwesomeIcon icon={faPlus} />
-                    </button>
-                  ) : (
-                    ''
-                  )}
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">End Year</span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered input-primary w-full"
+                      color={
+                        formik.errors.education &&
+                        formik.errors.education[index] &&
+                        (formik.errors.education as FormikErrors<Education>[])[
+                          index
+                        ]?.end_year
+                          ? 'danger'
+                          : 'primary'
+                      }
+                      onChange={formik.handleChange}
+                      value={formik.values.education[index].end_year}
+                      name={`education[${index}].end_year`}
+                    />
+                  </label>
+                  <span>
+                    {formik.touched.education &&
+                    formik.touched.education[index] &&
+                    formik.errors.education &&
+                    formik.errors.education[index] &&
+                    (formik.errors.education as FormikErrors<Education>[])[
+                      index
+                    ]?.end_year
+                      ? (formik.errors.education as FormikErrors<Education>[])[
+                          index
+                        ]?.end_year
+                      : ''}
+                  </span>
+                </div>
+                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-1 items-center">
+                  <label className="form-control">
+                    <div className="label mb-2">
+                      <span className="label-text"></span>
+                    </div>
+                    {handleAddLastEducation(index) ? (
+                      <button
+                        color="primary"
+                        onClick={handleAddEducation}
+                        type="button"
+                        className="mx-1 w-full sm:w-full md:w-full lg:w-10 "
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </button>
+                    ) : (
+                      ''
+                    )}
 
-                  {handleLastEducation(index) ? (
-                    <button
-                      color="primary"
-                      type="button"
-                      onClick={() => handleRemoveEducation(index)}
-                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
-                    >
-                      <FontAwesomeIcon icon={faMinus} />
-                    </button>
-                  ) : (
-                    ''
-                  )}
+                    {handleLastEducation(index) ? (
+                      <button
+                        color="primary"
+                        type="button"
+                        onClick={() => handleRemoveEducation(index)}
+                        className="mx-1 w-full sm:w-full md:w-full lg:w-10"
+                      >
+                        <FontAwesomeIcon icon={faMinus} />
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                  </label>
                 </div>
               </div>
             ))}
@@ -595,7 +781,7 @@ const UserProfileData = () => {
             <h1 className="text-2xl font-bold">Experience</h1>
           </div>
           <div className="col-span-12 mb-2">
-            {formik.values.experiences.map((experience, index) => (
+            {formik.values.experience.map((experience, index) => (
               <div
                 className="grid grid-cols-12 gap-4 items-baseline mb-4"
                 key={index}
@@ -605,29 +791,28 @@ const UserProfileData = () => {
                     type="text"
                     className="input input-bordered input-primary w-full"
                     color={
-                      formik.errors.experiences &&
-                      formik.errors.experiences[index] &&
-                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                      formik.errors.experience &&
+                      formik.errors.experience[index] &&
+                      (formik.errors.experience as FormikErrors<Experience>[])[
                         index
                       ]?.institute
                         ? 'danger'
                         : 'primary'
                     }
                     onChange={formik.handleChange}
-                    value={formik.values.experiences[index].institute}
-                    name={`experiences[${index}].instituteExp`}
+                    value={formik.values.experience[index].institute}
+                    name={`experience[${index}].instituteExp`}
                   />
                   <span>
-                    {formik.touched.experiences &&
-                    formik.touched.experiences[index] &&
-                    formik.errors.experiences &&
-                    formik.errors.experiences[index] &&
-                    (formik.errors.experiences as FormikErrors<Experience>[])[
+                    {formik.touched.experience &&
+                    formik.touched.experience[index] &&
+                    formik.errors.experience &&
+                    formik.errors.experience[index] &&
+                    (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.institute
                       ? (
-                          formik.errors
-                            .experiences as FormikErrors<Experience>[]
+                          formik.errors.experience as FormikErrors<Experience>[]
                         )[index]?.institute
                       : ''}
                   </span>
@@ -637,29 +822,28 @@ const UserProfileData = () => {
                     type="text"
                     className="input input-bordered input-primary w-full"
                     color={
-                      formik.errors.experiences &&
-                      formik.errors.experiences[index] &&
-                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                      formik.errors.experience &&
+                      formik.errors.experience[index] &&
+                      (formik.errors.experience as FormikErrors<Experience>[])[
                         index
                       ]?.title
                         ? 'danger'
                         : 'primary'
                     }
                     onChange={formik.handleChange}
-                    value={formik.values.experiences[index].title}
-                    name={`experiences[${index}].title`}
+                    value={formik.values.experience[index].title}
+                    name={`experience[${index}].title`}
                   />
                   <span>
-                    {formik.touched.experiences &&
-                    formik.touched.experiences[index] &&
-                    formik.errors.experiences &&
-                    formik.errors.experiences[index] &&
-                    (formik.errors.experiences as FormikErrors<Experience>[])[
+                    {formik.touched.experience &&
+                    formik.touched.experience[index] &&
+                    formik.errors.experience &&
+                    formik.errors.experience[index] &&
+                    (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.title
                       ? (
-                          formik.errors
-                            .experiences as FormikErrors<Experience>[]
+                          formik.errors.experience as FormikErrors<Experience>[]
                         )[index]?.title
                       : ''}
                   </span>
@@ -669,45 +853,44 @@ const UserProfileData = () => {
                     type="date"
                     className="input input-bordered input-primary w-full"
                     color={
-                      formik.errors.experiences &&
-                      formik.errors.experiences[index] &&
-                      (formik.errors.experiences as FormikErrors<Experience>[])[
+                      formik.errors.experience &&
+                      formik.errors.experience[index] &&
+                      (formik.errors.experience as FormikErrors<Experience>[])[
                         index
                       ]?.startDate
                         ? 'danger'
                         : 'primary'
                     }
                     onChange={formik.handleChange}
-                    value={formik.values.experiences[index].startDate}
-                    name={`experiences[${index}].startDate`}
+                    value={formik.values.experience[index].startDate}
+                    name={`experience[${index}].startDate`}
                   />
                   <span>
-                    {formik.touched.experiences &&
-                    formik.touched.experiences[index] &&
-                    formik.errors.experiences &&
-                    formik.errors.experiences[index] &&
-                    (formik.errors.experiences as FormikErrors<Experience>[])[
+                    {formik.touched.experience &&
+                    formik.touched.experience[index] &&
+                    formik.errors.experience &&
+                    formik.errors.experience[index] &&
+                    (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.startDate
                       ? (
-                          formik.errors
-                            .experiences as FormikErrors<Experience>[]
+                          formik.errors.experience as FormikErrors<Experience>[]
                         )[index]?.startDate
                       : ''}
                   </span>
                 </div>
                 <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                  {formik.values.experiences[index].present == false ? (
+                  {formik.values.experience[index].present == false ? (
                     <input
                       type="date"
                       className="input input-bordered input-primary w-full"
                       onChange={formik.handleChange}
                       value={
-                        formik.values.experiences[index].present == false
-                          ? formik.values.experiences[index].endDate
+                        formik.values.experience[index].present == false
+                          ? formik.values.experience[index].endDate
                           : ''
                       }
-                      name={`experiences[${index}].endDate`}
+                      name={`experience[${index}].endDate`}
                     />
                   ) : (
                     ''
@@ -721,10 +904,10 @@ const UserProfileData = () => {
                         type="checkbox"
                         className="checkbox checkbox-primary"
                         onChange={formik.handleChange}
-                        value={formik.values.experiences[
+                        value={formik.values.experience[
                           index
                         ].present.toString()}
-                        name={`experiences[${index}].present`}
+                        name={`experience[${index}].present`}
                       />
                     </label>
                   </div>
