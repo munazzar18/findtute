@@ -1,6 +1,8 @@
-import React from 'react'
-import Counter from '../helper/Counter'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from "react";
+import Counter from "../helper/Counter";
+import Head from "next/head";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import {
   faArrowRight,
   faBook,
@@ -15,23 +17,64 @@ import {
   faPersonSnowboarding,
   faRocket,
   faSchool,
-} from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
+} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function page() {
   return (
     <>
+      <Head>
+        <script type="application/ld+json">
+          {`
+          {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.findtute.com/"
+          },
+          {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Find Online Best Tutors",
+        "description": "Best Online Teachers for Personalized Learning,Affordable Online Teaching Platforms
+        Experienced Online Tutors for All Subjects,Top Online Tutors for High School Students,How to Find Qualified Online Teachers,Online Tutoring Services for Math and Science,Benefits of Online Teaching for Professionals,Online Tutors Available 24/7,Online Teaching for K-12 Students,Private Online Tutors for Exam Preparation,Online Tutors for College Students,Online Teaching for Corporate Training,Online Tutors for English Language Learners,Online Tutors for Kids,Online Tutors for Test Preparation"
+      },
+    `}
+        </script>
+
+        <meta
+          name="description"
+          content="Discover the best teachers and tutors online for personalized learning. Our platform connects you with expert online teaching professionals, offering flexible and interactive lessons. Start improving your skills with top online tutors today!"
+        />
+        <meta
+          property="og:title"
+          content="Find Expert Online Teachers and Tutors for Personalized Learning"
+        />
+        <meta
+          property="og:description"
+          content="Connect with expert online teachers and tutors for personalized learning. Our platform makes online teaching easy and accessible, with flexible options to suit your needs. Find the best tutors online today!"
+        />
+        <meta
+          property="og:image"
+          content="https://findtute.com/assets/images/blog/blog-details-1.png"
+        />
+      </Head>
+
       <section className="bg-warm pt-[78px] lg:mb-15 mb-10 relative">
         <div className="container relative">
           <div className="flex flex-col items-center text-center relative z-10">
             <h1 className="font-normal xl:text-[70px] lg:text-6xl md:text-5xl text-4xl xl:leading-[128%] lg:leading-[125%] md:leading-[120%] max-w-[776px]">
               <span className="relative">
-                Level Up Your Skills{' '}
+                Level Up Your Skills{" "}
                 <span className="absolute -left-6 top-1 text-3xl">
                   <i className="icon-three-line"></i>
                 </span>
               </span>
-              <span className="font-bold">Find Your Perfect Tutor </span>{' '}
+              <span className="font-bold">Find Your Perfect Tutor </span>{" "}
               <span className="font-bold text-destructive-foreground">
                 Online or Nearby!
               </span>
@@ -51,16 +94,14 @@ export default function page() {
               />
             </div>
 
-            <p className="pt-5 max-w-[431px]">
-              Unleash your learning potential with Findtute, the only platform
-              that connects you with expert tutors - both online and in your
-              area.
+            <p className="pt-5 max-w-[731px]">
+            Discover top online teachers and tutors for personalized learning, Findtute available 24/7 for all subjects, including exam preparation. Explore affordable online teaching Findtute platforms that provide flexible and high-quality education for students of all levels, from K-12 to corporate training. Benefit from virtual learning, interactive online classes, and remote tutors tailored to your specific educational needs.
             </p>
 
-            <p className="pt-5 max-w-[431px]">
+            <p className="pt-5 max-w-[731px]">
               Stop searching, start learning! We make finding the perfect tutor
               a breeze. Browse profiles of highly qualified teachers across a
-              wide range of subjects.
+              wide range of subjects. Connect with experienced educators today and enhance your learning journey with comprehensive online education services
             </p>
           </div>
           <div className="absolute left-2.5 lg:top-0 top-10 lg:max-w-full max-w-[200px] sm:block hidden animate-up-down">
@@ -561,7 +602,58 @@ export default function page() {
             className="w-full h-auto"
           />
         </div>
+
+        {/* blockquotes section */}
+
+        <div className="flex flex-col items-center justify-center p-9">
+          {/* Block Quote 1 */}
+          <div className="relative p-6 mb-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+            <div className="absolute text-6xl text-blue-500 opacity-20 top-4 left-4 -translate-y-1/2">
+              <FaQuoteLeft />
+            </div>
+            <blockquote className="text-lg font-semibold text-gray-700 italic text-center pt-8 pb-4">
+              Discover a comprehensive platform for online teaching and
+              tutoring. Connect with experienced educators and enhance your
+              learning experience today.Want to learn better? Our platform
+              connects you with experienced tutors. Sign up now and boost your
+              knowledge in a friendly environment!
+            </blockquote>
+            <div className="absolute text-6xl text-blue-500 opacity-20 bottom-4 right-4 translate-y-1/2">
+              <FaQuoteRight />
+            </div>
+          </div>
+
+          {/* Block Quote 2 */}
+          <div className="relative p-6 mb-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+            <div className="absolute text-6xl text-blue-500 opacity-20 top-4 left-4 -translate-y-1/2">
+              <FaQuoteLeft />
+            </div>
+            <blockquote className="text-lg font-semibold text-gray-700 italic text-center pt-8 pb-4">
+              Explore our online teaching services and find qualified tutors to
+              support your educational journey. Elevate your skills with
+              personalized online instruction.
+            </blockquote>
+            <div className="absolute text-6xl text-blue-500 opacity-20 bottom-4 right-4 translate-y-1/2">
+              <FaQuoteRight />
+            </div>
+          </div>
+
+          {/* Block Quote 3 */}
+          <div className="relative p-6 mb-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+            <div className="absolute text-6xl text-blue-500 opacity-20 top-4 left-4 -translate-y-1/2">
+              <FaQuoteLeft />
+            </div>
+            <blockquote className="text-lg font-semibold text-gray-700 italic text-center pt-8 pb-4">
+              Join our community of online teachers and tutors dedicated to
+              providing quality education. Unlock your potential with tailored
+              learning solutions available anytime.
+            </blockquote>
+            <div className="absolute text-6xl text-blue-500 opacity-20 bottom-4 right-4 translate-y-1/2">
+              <FaQuoteRight />
+            </div>
+          </div>
+        </div>
       </section>
     </>
-  )
+  );
 }

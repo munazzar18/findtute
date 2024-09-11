@@ -1,14 +1,12 @@
 import React from 'react'
 import { Metadata } from 'next';
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 
 
 
 
 
 export const metadata: Metadata = {
-  title: 'Find Tute',
+  title: 'Login Findtute',
   description:
     'only platform find teachers onsite or online for learning online or onsite,find expert online tutors for academic success,Looking for top-notch teachers online for online teaching? Look no further! Our expert online tutors offer personalized instruction to help you succeed. Sign up now and experience the difference with our online teaching tutors',
     keywords: 'Virtual Learning,Remote Tutors,Online Classroom,Live Online Lessons,Digital Tutors,E-Learning,Interactive Online Classes,Online Study Help,Online Education Services,Online Learning Platforms',
@@ -29,9 +27,7 @@ export default function Layout({
 }>) {
   return (
     <>
-      <Navbar />
       <main>{children}</main>
-      <Footer />
     </>
   )
 }

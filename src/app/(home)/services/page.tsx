@@ -1,8 +1,27 @@
 import React from 'react';
+import Head from 'next/head';
 
 const Services = () => {
   return (
     <>
+
+<Head>
+        <title>Our Services | Best Online Teachers</title>
+        <meta name="description" content="Discover the range of online teaching and tutoring services we offer to help you achieve your learning goals." />
+        <meta name="keywords" content="Online Services, Tutoring Services, Teaching Services, Education Solutions" />
+        <meta property="og:title" content="Our Services | Best Online Teachers" />
+        <meta property="og:description" content="Explore our various online teaching and tutoring services tailored to meet your educational needs." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/service" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Services | Best Online Teachers" />
+        <meta name="twitter:description" content="Learn about the services we provide to support your educational journey." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+
+
+
      <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
             <div className="container">
