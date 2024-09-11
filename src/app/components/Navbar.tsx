@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { cookies } from 'next/headers'
-import Logout from '../auth/logout/page'
+import LogoutButton from './LogoutButton'
 
 interface User {
   id: string
@@ -13,7 +13,16 @@ interface User {
 
 export default function App() {
   const userCookies = cookies().get('user')
-  const user: User = userCookies ? JSON.parse(userCookies.value) : null
+  let user: User | null = null
+
+  try {
+    if (userCookies && userCookies.value) {
+      user = JSON.parse(userCookies.value)
+    }
+  } catch (error) {
+    console.error('Error parsing user cookie:', error)
+  }
+
   const token = cookies().get('access_token')?.value
   return (
     <>
@@ -28,7 +37,7 @@ export default function App() {
                 <div>
                   <Link href="/" className="flex items-center gap-1">
                     <img src="/logo_small.png" alt="img" />
-                    <span className="font-bold text-3xl ">Teach U</span>
+                    <span className="font-bold text-3xl ">FindTute</span>
                   </Link>
                 </div>
                 <div className="flex items-center">
@@ -52,7 +61,7 @@ export default function App() {
                       </li>
                       <li className="leading-[164%] relative py-5 group">
                         <Link
-                          href="#"
+                          href="/services"
                           className=" font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
                         >
                           Services{' '}
@@ -109,8 +118,8 @@ export default function App() {
                     <nav className="bg-warm border-l-2 border-l-primary w-full max-w-md min-h-screen h-full overflow-y-auto p-7 shadow-md fixed -right-full top-0 z-50 transition-all duration-500 offcanva  ">
                       <div className="flex justify-between items-center">
                         <a href="#" className="flex items-center gap-1">
-                          <img src="assets/images/logo.png" alt="img" />
-                          <span className="font-bold text-3xl ">Ascent</span>
+                          <img src="/logo_small.png" alt="findtute logo" />
+                          <span className="font-bold text-3xl ">FindTute</span>
                         </a>
                         <div className="bg-primary w-10 h-10 text-cream-foreground flex items-center justify-center rounded-[4px] left-4 offcanvaClose">
                           <i className="fa-solid fa-xmark text-xl"></i>
@@ -118,165 +127,59 @@ export default function App() {
                       </div>
                       <ul className=" mt-6">
                         <li className="leading-[164%] relative w-full dropdown">
-                          <a
-                            href="#"
+                          <Link
+                            href="/"
                             className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                           >
                             <span>Home</span>
                             <i className="fa-solid fa-plus"></i>
-                          </a>
-
-                          <ul className="max-h-0 min-w-56 w-full opacity-0 invisible transition-all duration-500 dropdown-item">
-                            <li>
-                              <a
-                                href="index.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Home-1
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="index-2.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Home-2
-                              </a>
-                            </li>
-                          </ul>
+                          </Link>
                         </li>
                         <li className="leading-[164%] relative w-full">
-                          <a
-                            href="about.html"
+                          <Link
+                            href="/about"
                             className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                           >
                             About Us
-                          </a>
+                          </Link>
                         </li>
                         <li className="leading-[164%] relative w-full dropdown">
-                          <a
-                            href="#"
+                          <Link
+                            href="/services"
                             className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                           >
                             <span>Services</span>
                             <i className="fa-solid fa-plus"></i>
-                          </a>
+                          </Link>
 
                           <ul className="max-h-0 min-w-56 w-full opacity-0 invisible transition-all duration-500 dropdown-item">
                             <li>
-                              <a
-                                href="services.html"
+                              <Link
+                                href="/services"
                                 className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
                               >
                                 Services
-                              </a>
+                              </Link>
                             </li>
                             <li>
-                              <a
-                                href="service-details.html"
+                              <Link
+                                href="/service-details"
                                 className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
                               >
                                 Service Details
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                         </li>
-                        <li className="leading-[164%] relative w-full dropdown">
-                          <a
-                            href="#"
-                            className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                          >
-                            <span>Blog</span>
-                            <i className="fa-solid fa-plus"></i>
-                          </a>
-
-                          <ul className="max-h-0 min-w-56 w-full opacity-0 invisible transition-all duration-500 dropdown-item">
-                            <li>
-                              <a
-                                href="blog.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Blog
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="blog-details.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Blog Details
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="leading-[164%] relative w-full dropdown">
-                          <a
-                            href="#"
-                            className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                          >
-                            <span>Page</span>
-                            <i className="fa-solid fa-plus"></i>
-                          </a>
-
-                          <ul className="max-h-0 min-w-56 w-full opacity-0 invisible transition-all duration-500 dropdown-item">
-                            <li>
-                              <a
-                                href="about.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                About
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="services.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Services
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="service-details.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Service Details
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="portfolio.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Portfolio
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="faq.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Faq's
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href="contact.html"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Contact
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
+                        <li className="leading-[164%] relative w-full dropdown"></li>
 
                         <li className="leading-[164%] relative w-full ">
-                          <a
-                            href="contact.html"
+                          <Link
+                            href="/contact"
                             className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
                           >
                             Contact Us
-                          </a>
+                          </Link>
                         </li>
                       </ul>
 
@@ -290,7 +193,7 @@ export default function App() {
                               <p>
                                 <i className="fa-solid fa-phone text-primary-foreground"></i>{' '}
                                 <a href="#" className="ml-2.5">
-                                  (629) 555-0129
+                                  923047279400
                                 </a>
                               </p>
                             </li>
@@ -298,7 +201,7 @@ export default function App() {
                               <p>
                                 <i className="fa-solid fa-envelope text-primary-foreground"></i>{' '}
                                 <a href="#" className="ml-2.5">
-                                  info@example.com
+                                  info@findtute.com
                                 </a>
                               </p>
                             </li>
@@ -306,7 +209,8 @@ export default function App() {
                               <p>
                                 <i className="fa-solid fa-location-dot text-primary-foreground"></i>{' '}
                                 <span className="ml-2.5">
-                                  6391 Elgin St. Celina, 10299
+                                  Building #3-A, Block Y, Main Road, Model Town
+                                  C, Bahawalpur
                                 </span>
                               </p>
                             </li>
@@ -321,39 +225,24 @@ export default function App() {
                                   href="services.html"
                                   className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                                 >
-                                  {user.email}
+                                  {user?.email}
                                 </a>
                               </li>
                               <li>
-                                {user.role === 'teacher' ? (
-                                  <Link
-                                    href={`/onboarding/teacher/${user.id}`}
-                                    className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                                  >
-                                    Profile
-                                  </Link>
-                                ) : (
-                                  <Link
-                                    href={`/onboarding/student/${user.id}`}
-                                    className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                                  >
-                                    Profile
-                                  </Link>
-                                )}
+                                <Link
+                                  href={`/onboarding/${user?.id}`}
+                                  className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+                                >
+                                  Profile
+                                </Link>
                               </li>
                             </ul>
                           ) : (
                             <Link
                               href="/auth/register"
-                              className="bg-primary text-cream-foreground rounded-md sm:flex hidden items-center gap-2.5  btn after:bg-green"
+                              className="text-lg bg-primary text-cream-foreground sm:flex hidden items-center gap-2.5 rounded-md max-h-1 !leading-[0.2]  btn after:bg-green"
                             >
                               Register
-                              <span>
-                                <FontAwesomeIcon
-                                  icon={faArrowRight}
-                                  size="sm"
-                                />
-                              </span>{' '}
                             </Link>
                           )}
                         </div>
@@ -410,7 +299,7 @@ export default function App() {
                               href="#"
                               className=" font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
                             >
-                              {user.email}
+                              {user?.email}
                               <span className="">
                                 <FontAwesomeIcon
                                   icon={faAngleDown}
@@ -423,24 +312,22 @@ export default function App() {
                             <ul className="absolute top-full z-10 bg-background shadow-sm min-w-56 transition-all duration-500 opacity-0 invisible translate-y-5 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
                               <li>
                                 <Link
-                                  href={
-                                    user.role === 'teacher'
-                                      ? `/onboarding/teacher/${user.id}`
-                                      : `/onboarding/student/${user.id}`
-                                  }
+                                  href={`/dashboard/${user?.id}`}
+                                  className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+                                >
+                                  Dashboard
+                                </Link>
+                              </li>
+                              <li>
+                                <Link
+                                  href={`/onboarding/${user?.id}`}
                                   className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                                 >
                                   Profile
                                 </Link>
                               </li>
                               <li>
-                                {/* <Link
-                                  href="/auth/logout"
-                                  className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                                >
-                                  Logout
-                                </Link> */}
-                                <Logout />
+                                <LogoutButton />
                               </li>
                             </ul>
                           </li>
@@ -448,12 +335,9 @@ export default function App() {
                       ) : (
                         <Link
                           href="/auth/register"
-                          className="bg-primary text-cream-foreground rounded-md sm:flex hidden items-center gap-2.5  btn after:bg-green"
+                          className="text-lg bg-primary text-cream-foreground sm:flex hidden items-center gap-2.5 rounded-md max-h-1 !leading-[0.2]  btn after:bg-green"
                         >
                           Register
-                          <span>
-                            <FontAwesomeIcon icon={faArrowRight} size="sm" />
-                          </span>{' '}
                         </Link>
                       )}
                     </div>

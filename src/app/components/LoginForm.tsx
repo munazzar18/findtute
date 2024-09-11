@@ -2,11 +2,11 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Button, Input } from '@nextui-org/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface LoginFormProps {
   getLoginData: (values: {
@@ -76,46 +76,51 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
   return (
     <div className="flex justify-center items-center">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center gap-8 justify-center">
+        <div className="flex flex-col items-center gap-3 justify-center">
           <div>
-            <Input
-              type="email"
-              label="Email"
-              labelPlacement="inside"
-              variant="bordered"
-              placeholder="Enter your email"
-              isInvalid={formik.errors.email ? true : false}
-              color={formik.errors.email ? 'danger' : 'default'}
-              onChange={(e) => formik.setFieldValue('email', e.target.value)}
-              value={formik.values.email}
-              className="w-72 text-xl"
-              errorMessage={
-                formik.touched.email && formik.errors.email
-                  ? formik.errors.email
-                  : ''
-              }
-            />
-            {/* <span>
+            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
+              Email
+              <input
+                name="email"
+                tabIndex={0}
+                type="email"
+                className="grow"
+                placeholder="Enter you email"
+                color={formik.errors.email ? 'danger' : 'default'}
+                onChange={(e) => formik.setFieldValue('email', e.target.value)}
+                value={formik.values.email}
+              />
+            </label>
+            <span className="flex justify-start">
               {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
               ) : null}
-            </span> */}
+            </span>
           </div>
           <div>
-            <Input
-              label="Password"
-              variant="bordered"
-              placeholder="Enter your password"
-              color={formik.errors.password ? 'danger' : 'default'}
-              onChange={(e) => formik.setFieldValue('password', e.target.value)}
-              value={formik.values.password}
-              isInvalid={formik.errors.password ? true : false}
-              errorMessage={
-                formik.touched.password && formik.errors.password
-                  ? formik.errors.password
-                  : ''
-              }
-              endContent={
+            <div className="flex justify-end">
+              <Link
+                className="text-destructive-foreground font-bold"
+                href="/auth/forgot-password"
+              >
+                Forgot Password
+              </Link>
+            </div>
+            <div>
+              <label className="input input-bordered input-primary flex items-center gap-2 w-80">
+                Password
+                <input
+                  name="password"
+                  tabIndex={1}
+                  type={isVisible ? 'text' : 'password'}
+                  className="grow"
+                  placeholder="Enter your password"
+                  color={formik.errors.password ? 'danger' : 'default'}
+                  onChange={(e) =>
+                    formik.setFieldValue('password', e.target.value)
+                  }
+                  value={formik.values.password}
+                />
                 <button
                   className="focus:outline-none"
                   type="button"
@@ -124,29 +129,54 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
                   {isVisible ? (
                     <FontAwesomeIcon
                       icon={faEye}
-                      className="text-2xl text-default-400 pointer-events-none"
+                      className="text-md text-default-400 pointer-events-none"
                     />
                   ) : (
                     <FontAwesomeIcon
                       icon={faEyeSlash}
-                      className="text-2xl text-default-400 pointer-events-none"
+                      className="text-md text-default-400 pointer-events-none"
                     />
                   )}
                 </button>
-              }
-              type={isVisible ? 'text' : 'password'}
-              className="w-72"
-            />
+              </label>
+              <span className="flex justify-start">
+                {formik.touched.password && formik.errors.password ? (
+                  <div>{formik.errors.password}</div>
+                ) : null}
+              </span>
+            </div>
+            <span className="flex justify-start">
+              {formik.touched.password && formik.errors.password ? (
+                <div>{formik.errors.password}</div>
+              ) : null}
+            </span>
           </div>
           <div>
-            <Button
-              type="submit"
-              isLoading={isLoading}
-              aria-label="Submit"
-              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 leading-[0.2] btn"
-            >
-              Login
-            </Button>
+            <p className="text-destructive-foreground">
+              Don't have an account?{' '}
+              <Link className="text-secondary font-bold" href="/auth/register">
+                Register
+              </Link>
+            </p>
+          </div>
+          <div>
+            {isLoading ? (
+              <button
+                disabled
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              >
+                <span className="loading loading-spinner loading-xs"></span>
+                Please wait
+              </button>
+            ) : (
+              <button
+                type="submit"
+                aria-label="Submit"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       </form>
