@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {
   faEnvelope,
   faLocationDot,
@@ -7,9 +8,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import React from 'react'
 
+
+
+
 const Contact = () => {
   return (
     <>
+ <Head>
+        <title>Contact Us | Best Online Teachers</title>
+        <meta name="description" content="Get in touch with us for inquiries about online teaching and tutoring services." />
+        <meta name="keywords" content="Contact Us, Online Tutors, Inquiry, Education Support" />
+        <meta property="og:title" content="Contact Us | Best Online Teachers" />
+        <meta property="og:description" content="Reach out to us for more information about our online teaching services." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/contact" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | Best Online Teachers" />
+        <meta name="twitter:description" content="Contact us for all your online teaching needs." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+
+
       <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
           <div className="container">
@@ -58,7 +78,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-
       <section className="lg:pt-15 lg;pb-15 pb-10 pt-10">
         <div className="container">
           <div className="max-w-[546px] mx-auto text-center">

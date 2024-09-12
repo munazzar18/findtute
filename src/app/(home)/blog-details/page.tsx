@@ -1,8 +1,29 @@
 import React from 'react'
+import Head from 'next/head';
+
 
 const Blogdetails = () => {
   return (
     <>
+    
+    <Head>
+        <title>Blog Post Title | Best Online Teachers</title>
+        <meta name="description" content="Read our detailed blog post on online teaching topics and tips." />
+        <meta name="keywords" content="Blog Post, Online Teaching Tips, Education Blog, Tutoring Advice" />
+        <meta property="og:title" content="Blog Post Title | Best Online Teachers" />
+        <meta property="og:description" content="In-depth analysis and advice on online teaching in our latest blog post." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/blog/blog-post-title" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog Post Title | Best Online Teachers" />
+        <meta name="twitter:description" content="Detailed insights on online teaching in our blog post." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+   
+
+
+
       <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
           <div className="container">

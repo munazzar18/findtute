@@ -1,7 +1,24 @@
 import React from 'react';
+import Head from 'next/head';
 const Portfolio = () => {
   return (
     <>
+
+<Head>
+        <title>Our Portfolio | Best Online Teachers</title>
+        <meta name="description" content="Explore our portfolio showcasing successful online teaching and tutoring projects." />
+        <meta name="keywords" content="Portfolio, Online Teaching Success, Tutor Projects, Education Portfolio" />
+        <meta property="og:title" content="Our Portfolio | Best Online Teachers" />
+        <meta property="og:description" content="Browse through our portfolio to see examples of our successful online teaching and tutoring projects." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/portfolio" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Portfolio | Best Online Teachers" />
+        <meta name="twitter:description" content="View our portfolio of successful online teaching and tutoring projects." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+
       <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
             <div className="container">

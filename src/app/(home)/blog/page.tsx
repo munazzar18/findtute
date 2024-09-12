@@ -1,8 +1,27 @@
 import React from 'react'
+import Head from 'next/head';
 
 const Blog = () => {
   return (
     <>
+    <Head>
+        <title>Our Blog | Best Online Teachers</title>
+        <meta name="description" content="Read the latest articles and insights from our experts on online teaching and tutoring." />
+        <meta name="keywords" content="Online Teaching Blog, Online Tutors Articles, Education Insights, Tutoring Tips" />
+        <meta property="og:title" content="Our Blog | Best Online Teachers" />
+        <meta property="og:description" content="Explore our blog for the latest updates and expert advice on online teaching and tutoring." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/blog" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Blog | Best Online Teachers" />
+        <meta name="twitter:description" content="Read our blog for the latest in online teaching and tutoring." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+   
+
+
+
        <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
             <div className="container">

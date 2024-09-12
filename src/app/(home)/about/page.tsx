@@ -1,9 +1,30 @@
 import React from 'react'
+import Head from 'next/head';
 import { NextSeo } from 'next-seo'
+import { FaStar, FaChalkboardTeacher, FaLaptop } from 'react-icons/fa';
 
 const About = () => {
+
   return (
     <>
+
+
+
+     <Head>
+        <title>About Our Company | Best Online Teachers</title>
+        <meta name="description" content="Learn about our company, offering top online teachers and tutors for personalized learning and professional development." />
+        <meta name="keywords" content="Online Teachers, Online Teaching, Online Tutors, Tutors Online, Best Online Teachers for Personalized Learning, Affordable Online Teaching Platforms, Experienced Online Tutors, Top Online Tutors for High School Students" />
+        <meta property="og:title" content="About Our Company | Best Online Teachers" />
+        <meta property="og:description" content="Discover how our company connects you with experienced educators for enhanced learning experiences. Explore our top online teaching and tutoring services." />
+        <meta property="og:url" content="https://findtute.com/about" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Our Company | Best Online Teachers" />
+        <meta name="twitter:description" content="Learn about our company, offering top online teachers and tutors for personalized learning and professional development." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+
+
          <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
             <div className="container">
@@ -253,7 +274,49 @@ const About = () => {
             </div>
         </div>
     </section>
-
+{/* add new about page  */}
+<section>
+<div className="max-w-screen-xl mx-auto px-4 py-10 sm:flex items-center justify-between">
+      <div className="sm:w-1/2 p-5">
+        <div className="relative group overflow-hidden">
+          <img
+            src="https://i.imgur.com/WbQnbas.png"
+            alt="About Our Company"
+            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      </div>
+      <div className="sm:w-1/2 p-5">
+        <div className="text">
+          <span className="text-gray-500 border-b-2 border-indigo-600 uppercase">About us</span>
+          <h2 className="my-4 font-bold text-3xl sm:text-4xl">
+            About <span className="text-indigo-600">Our Company</span>
+          </h2>
+          <p className="text-gray-700 mb-5">
+            Discover a comprehensive platform for online teaching and tutoring. Connect with experienced educators and enhance your learning experience today.
+          </p>
+          <blockquote className="border-l-4 border-indigo-600 pl-4 italic text-gray-600">
+            Discover a comprehensive platform for online teaching and tutoring. Connect with experienced educators and enhance your learning experience today.
+          </blockquote>
+          <div className="mt-6 space-y-4">
+            <div className="flex items-center space-x-2">
+              <FaStar className="text-indigo-600" />
+              <span className="text-gray-700">Top Online Tutors for High School Students</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaChalkboardTeacher className="text-indigo-600" />
+              <span className="text-gray-700">Best Online Teachers for Personalized Learning</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaLaptop className="text-indigo-600" />
+              <span className="text-gray-700">Affordable Online Teaching Platforms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{/* end new about page  */}
     <section className="lg:pt-15 pt-10 ">
         <div className="bg-warm py-12.5 relative z-[1]">
             <div className="container">

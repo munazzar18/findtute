@@ -14,9 +14,6 @@ const nunito = Nunito({
 })
 
 export const metadata: Metadata = {
-  title: 'Find tute',
-  description:
-    'only platform find teachers onsite or online for learning online or onsite',
   robots: {
     index: true,
     follow: true,

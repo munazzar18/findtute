@@ -1,8 +1,27 @@
 import React from 'react';
+import { FaQuestionCircle, FaUserGraduate, FaChalkboardTeacher, FaBook, FaClock, FaLaptop, FaGraduationCap, FaDollarSign, FaGlobe } from 'react-icons/fa';
+import Head from 'next/head';
+
 
 const Faqs = () => {
   return (
     <>
+
+<Head>
+        <title>FAQs | Best Online Teachers</title>
+        <meta name="description" content="Find answers to frequently asked questions about our online teaching services." />
+        <meta name="keywords" content="FAQs, Online Teaching Questions, Tutor Support, Education Help" />
+        <meta property="og:title" content="FAQs | Best Online Teachers" />
+        <meta property="og:description" content="Get answers to common questions about our online teaching services." />
+        <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
+        <meta property="og:url" content="https://findtute.com/faqs" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FAQs | Best Online Teachers" />
+        <meta name="twitter:description" content="Find answers to your questions about online teaching and tutoring." />
+        <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
+      </Head>
+
+
      <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
             <div className="container">
@@ -87,7 +106,88 @@ const Faqs = () => {
             </div>
         </div>
     </section>
-    
+
+    {/* Add new faqs */}
+    <section className="p-8 bg-gray-100">
+      <h2 className="text-3xl font-semibold text-center mb-8">Frequently Asked Questions</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaQuestionCircle className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What are the best online teachers for personalized learning?</h3>
+          <p>Discover top-rated online teachers who tailor their approach to your learning needs for a more effective educational experience.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaUserGraduate className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What are affordable online teaching platforms?</h3>
+          <p>Explore budget-friendly online teaching platforms that offer quality education without breaking the bank.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaChalkboardTeacher className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">How do I find experienced online tutors for all subjects?</h3>
+          <p>Learn how to find qualified online tutors who are experts in various subjects to meet your educational goals.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaBook className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Where can I find top online tutors for high school students?</h3>
+          <p>Find the best online tutors who specialize in helping high school students succeed academically.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaClock className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Are there online tutors available 24/7?</h3>
+          <p>Yes, there are online tutors available around the clock to support your learning anytime, anywhere.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaLaptop className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What are the benefits of online teaching for professionals?</h3>
+          <p>Discover how online teaching can enhance professional development and skills acquisition for working individuals.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaGraduationCap className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">How does online teaching work for K-12 students?</h3>
+          <p>Learn about the online teaching methods and tools used to support K-12 students in their educational journey.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaDollarSign className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Are there private online tutors for exam preparation?</h3>
+          <p>Find private online tutors who can provide personalized support and strategies for effective exam preparation.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaGlobe className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What are the best online education services?</h3>
+          <p>Explore a range of top online education services that offer high-quality learning experiences for diverse needs.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaUserGraduate className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What online tutors are available for college students?</h3>
+          <p>Find online tutors who specialize in supporting college students with their academic challenges.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaChalkboardTeacher className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">How does online teaching work for corporate training?</h3>
+          <p>Understand how online teaching can be utilized for effective corporate training and skill development.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaBook className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Are there online tutors for English language learners?</h3>
+          <p>Find online tutors who specialize in helping English language learners improve their skills.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaUserGraduate className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Where can I find online tutors for kids?</h3>
+          <p>Explore options for online tutors who offer engaging and educational support for younger students.</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+          <FaClock className="text-2xl text-blue-500 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">What are the best online tutors for test preparation?</h3>
+          <p>Get help from top online tutors who can assist with test preparation strategies and practice.</p>
+        </div>
+      </div>
+      <blockquote className="mt-8 p-4 bg-white border-l-4 border-blue-500 text-gray-700 italic text-center">
+        <p>Discover a comprehensive platform for online teaching and tutoring. Connect with experienced educators and enhance your learning experience today.</p>
+      </blockquote>
+    </section>
+ {/* end new faqs */}
+
     <section className="lg:pt-15 pt-10 ">
         <div className="bg-warm py-12.5 relative z-[1]">
             <div className="container">
@@ -110,6 +210,7 @@ const Faqs = () => {
             </div>
         </div>
     </section>
+    
     </>
   );
 };
