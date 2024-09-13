@@ -2,8 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { FaAngleDown } from 'react-icons/fa';
 import { cookies } from 'next/headers'
 import LogoutButton from './LogoutButton'
+import { BiArrowToRight } from "react-icons/bi";
+import { HiHome } from "react-icons/hi2";
 
 interface User {
   id: string
@@ -32,7 +35,7 @@ export default function App() {
       >
         <div id="header-container">
           <div className="[.header-pinned_&]:shadow-md bg-background transition-all duration-300">
-            <div className="container py-5 ">
+            <div className="container ">
               <div className="flex justify-between items-center ">
                 <div>
                   <Link href="/" className="flex items-center gap-1">
@@ -46,9 +49,9 @@ export default function App() {
                       <li className="leading-[164%] relative py-5 group">
                         <Link
                           href="/"
-                          className="font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500 py-5"
+                          className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
                         >
-                          Home
+                        <HiHome className='text-2xl text-[#1CBBB4]'/>   Home  
                         </Link>
                       </li>
                       <li className="leading-[164%] relative group">
@@ -59,49 +62,18 @@ export default function App() {
                           About Us
                         </Link>
                       </li>
-                      <li className="leading-[164%] relative py-5 group">
-                        <Link
-                          href="/services"
-                          className=" font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
-                        >
-                          Services{' '}
-                          <span className="">
-                            <FontAwesomeIcon
-                              icon={faAngleDown}
-                              fixedWidth
-                              size="sm"
-                            />
-                          </span>
-                        </Link>
-
-                        <ul className="absolute top-full z-10 bg-background shadow-sm min-w-56 transition-all duration-500 opacity-0 invisible translate-y-5 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
-                          <li>
-                            <Link
-                              href="/services"
-                              className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                            >
-                              Services
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/service-details"
-                              className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                            >
-                              Service Details
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/blog"
-                              className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                            >
-                              Blog
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-
+                      <li className="relative py-5 group">
+                   
+                   <Link href="/services" className="flex items-center  group-hover:text-primary-foreground font-semibold text-lg text-gray-800 transition-colors duration-300 hover:text-primary-600">Services<span className="ml-2 text-[#1CBBB4] transition-transform duration-300 group-hover:rotate-180"><FaAngleDown size={19}/></span>
+                   </Link>
+                   <ul className="absolute top-full left-0 z-10 mt-2 bg-white shadow-lg min-w-56 transition-all duration-300 opacity-0 invisible translate-y-4 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0"><li><Link href="/services" className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Services</Link></li>
+                   <li><Link href="/service-details"
+                   className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Service Details</Link></li>
+                     <li>
+                       <Link href="/blog" className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Blog</Link>
+                  </li>
+                      </ul>
+                             </li>
                       <li className="leading-[164%] relative group">
                         <Link
                           href="/contact"
@@ -127,13 +99,12 @@ export default function App() {
                       </div>
                       <ul className=" mt-6">
                         <li className="leading-[164%] relative w-full dropdown">
-                          <Link
-                            href="/"
-                            className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                          >
-                            <span>Home</span>
-                            <i className="fa-solid fa-plus"></i>
-                          </Link>
+                         <Link
+                          href="/"
+                          className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
+                        >
+                        <HiHome className='text-2xl text-[#1CBBB4]'/>   Home  
+                        </Link>
                         </li>
                         <li className="leading-[164%] relative w-full">
                           <Link
@@ -239,10 +210,10 @@ export default function App() {
                             </ul>
                           ) : (
                             <Link
-                              href="/auth/register"
-                              className="text-lg bg-primary text-cream-foreground sm:flex hidden items-center gap-2.5 rounded-md max-h-1 !leading-[0.2]  btn after:bg-green"
-                            >
-                              Register
+                              href="/auth/register">
+                              <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
+                            Register   <BiArrowToRight className='text-xl' /> 
+                                </button>
                             </Link>
                           )}
                         </div>
@@ -335,9 +306,9 @@ export default function App() {
                       ) : (
                         <Link
                           href="/auth/register"
-                          className="text-lg bg-primary text-cream-foreground sm:flex hidden items-center gap-2.5 rounded-md max-h-1 !leading-[0.2]  btn after:bg-green"
-                        >
-                          Register
+                        > <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
+                        Register   <BiArrowToRight className='text-xl' /> 
+                       </button>  
                         </Link>
                       )}
                     </div>
@@ -377,3 +348,4 @@ export default function App() {
     </>
   )
 }
+

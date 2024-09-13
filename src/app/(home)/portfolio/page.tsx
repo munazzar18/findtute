@@ -5,6 +5,7 @@ const Portfolio = () => {
     <>
 
 <Head>
+          <link rel="canonical" href="https://www.findtute.com/portfolio" />
         <title>Our Portfolio | Best Online Teachers</title>
         <meta name="description" content="Explore our portfolio showcasing successful online teaching and tutoring projects." />
         <meta name="keywords" content="Portfolio, Online Teaching Success, Tutor Projects, Education Portfolio" />

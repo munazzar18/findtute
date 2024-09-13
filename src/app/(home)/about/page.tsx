@@ -11,6 +11,7 @@ const About = () => {
 
 
      <Head>
+     <link rel="canonical" href="https://www.findtute.com/about" />
         <title>About Our Company | Best Online Teachers</title>
         <meta name="description" content="Learn about our company, offering top online teachers and tutors for personalized learning and professional development." />
         <meta name="keywords" content="Online Teachers, Online Teaching, Online Tutors, Tutors Online, Best Online Teachers for Personalized Learning, Affordable Online Teaching Platforms, Experienced Online Tutors, Top Online Tutors for High School Students" />
@@ -89,9 +90,7 @@ const About = () => {
                 <div className="pt-7.5 sm:pt-[70px] lg:pt-0">
                     <p className="text-secondary-foreground font-bubblegum-sans text-[19px] wow fadeInUp">About Us</p>
                     <h2 className="font-bold lg:text-[32px] md:text-[28px] text-2xl lg:leading-[130%] md:leading-[120%] leading-[110%] pb-5 wow fadeInUp" data-wow-delay=".3s">Unlocking Potential, One Child at a just Time in school</h2>
-                    <p className="wow fadeInUp" data-wow-delay=".4s">Lorem ipsum dolor sit amet consectetur. Amet lectus mi ultricies dictum facilisis sem. Imperdiet
-                        massa turpis sit proin metus volutpat loren ipsum Lorem ipsum dolor sit amet consectetur. Amet
-                        lectus mi ultricies dictum</p>
+                    <p className="wow fadeInUp" data-wow-delay=".4s">Looking for top-notch online teaching solutions? Our platform connects you with experienced online tutors who offer personalized lessons tailored to your needs. Whether you’re seeking help from tutors online for academic subjects or specialized skills, we provide the best teachers online to enhance your learning experience. Our online teaching services ensure flexibility and convenience, allowing you to learn from anywhere, anytime. Discover how our expert online tutors can support your educational journey today!</p>
                     <div className="lg:mt-10 mt-7">
                         <a href="#" className="border border-gray-200 hover:text-cream-foreground btn">Get a quote</a>
                     </div>
@@ -324,7 +323,7 @@ const About = () => {
                     <div className="lg:max-w-[573px] max-w-[400px]">
                         <p className="text-muted-foreground font-bubblegum-sans text-[19px] wow fadeInUp" >Stay With Us</p>
                         <h2 className="font-bold lg:text-[32px] md:text-[28px] text-2xl lg:leading-[130%] md:leading-[120%] leading-[110%] mt-2.5 max-w-[410px] wow fadeInUp" data-wow-delay=".3s">The path to success starts with education</h2>
-                        <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">Lorem ipsum dolor sit amet consectetur. Amet lectus mi ultricies dictum facilisis sem. Imperdiet massa turpis sit proin metus volutpat.</p>
+                        <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">At Stay With Us, success begins with quality education led by expert teachers online. Our personalized online teaching connects students with experienced online tutors for tailored learning experiences. With flexible tutors online, we help students unlock their potential and achieve academic success from anywhere.</p>
                         <div className="mt-9">
                             <a href="#" className="btn-rounded-full">Read More</a>
                         </div>
