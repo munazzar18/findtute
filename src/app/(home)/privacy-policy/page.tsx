@@ -6,6 +6,7 @@ const PrivacyPolicy = () => {
  
 
  <Head>
+ <link rel="canonical" href="https://www.findtute.com/privacy-policy" />
         <title>Privacy Policy | Best Online Teachers</title>
         <meta name="description" content="Read our privacy policy to understand how we handle and protect your personal information." />
         <meta name="keywords" content="Privacy Policy, Data Protection, Online Teaching Privacy, Tutor Privacy" />

@@ -7,6 +7,7 @@ const Blogdetails = () => {
     <>
     
     <Head>
+          <link rel="canonical" href="https://www.findtute.com/blog-details" />
         <title>Blog Post Title | Best Online Teachers</title>
         <meta name="description" content="Read our detailed blog post on online teaching topics and tips." />
         <meta name="keywords" content="Blog Post, Online Teaching Tips, Education Blog, Tutoring Advice" />

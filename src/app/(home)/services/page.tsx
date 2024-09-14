@@ -6,6 +6,7 @@ const Services = () => {
     <>
 
 <Head>
+          <link rel="canonical" href="https://www.findtute.com/services" />
         <title>Our Services | Best Online Teachers</title>
         <meta name="description" content="Discover the range of online teaching and tutoring services we offer to help you achieve your learning goals." />
         <meta name="keywords" content="Online Services, Tutoring Services, Teaching Services, Education Solutions" />
@@ -58,7 +59,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Online className</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Welcome to Online ClassName, where online teaching excellence meets flexibility. Connect with top online tutors for personalized, high-quality education tailored to your needs. Our platform offers a range of subjects with teachers online to support your academic and skill development goals. Experience exceptional online teaching from the comfort of your home with Online ClassName!</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -74,7 +75,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Formal Tuition</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Formal Tuition delivers premier educational services with a platform of highly qualified tutors. We provide exceptional online teaching focused on academic rigor and personalized instruction. Connect with expert online tutors for a tailored learning experience from the comfort of your home. Achieve your academic goals with confidence through Formal Tuition.</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -90,7 +91,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Preschool</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Preschool offers a nurturing environment with highly trained teachers online who focus on fostering creativity and foundational skills. Through interactive, play-based online teaching, our online tutors help young children grow academically and socially. Start your child’s journey with tutors online at Preschool for a strong educational foundation.</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -106,7 +107,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Special Tuition</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Special Tuition connects students with expert online tutors who provide personalized, focused instruction across various subjects. Our teachers online offer flexible and tailored online teaching to meet each student’s unique learning needs. Achieve academic success with the support of experienced tutors online through Special Tuition.</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -122,7 +123,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Edu Connect</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Education Connect links students with experienced teachers online for flexible and personalized online teaching across various subjects. Our platform offers access to expert online tutors, ensuring tailored learning experiences to meet individual needs. With tutors online available anytime, Education Connect empowers students to achieve their academic goals.</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -138,7 +139,7 @@ const Services = () => {
                             <h4>
                                 <a href="service-details.html" className="font-semibold lg:text-2xl text-xl group-hover/card:text-green-foreground transition-all duration-500">Knowledge Hub</a>
                             </h4>
-                            <p className="lg:mt-4 mt-3">Lorem ipsum dolor sit amet consectetur adipiscing elit platea the ,osr of a proin mollis pretium facilisi in, ligula volutpat </p>
+                            <p className="lg:mt-4 mt-3">Knowledge Hub provides access to top teachers online for comprehensive and interactive online teaching. Our expert online tutors cover a wide range of subjects, offering personalized support to enhance each student’s learning experience. With flexible tutors online, Knowledge Hub ensures quality education from anywhere at any time.</p>
                             <a href="service-details.html" className="inline-flex items-center gap-2.5 lg:mt-7.5 mt-4 group/btn">
                                 <span className="group-hover/btn:text-green-foreground transition-all duration-500">Read More</span> 
                                 <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500"> <i className="fa-solid fa-arrow-right"></i></span>
@@ -158,7 +159,7 @@ const Services = () => {
                     <div className="lg:max-w-[573px] max-w-[400px]">
                         <p className="text-muted-foreground font-bubblegum-sans text-[19px] wow fadeInUp" >Stay With Us</p>
                         <h2 className="font-bold lg:text-[32px] md:text-[28px] text-2xl lg:leading-[130%] md:leading-[120%] leading-[110%] mt-2.5 max-w-[410px] wow fadeInUp" data-wow-delay=".3s">The path to success starts with education</h2>
-                        <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">Lorem ipsum dolor sit amet consectetur. Amet lectus mi ultricies dictum facilisis sem. Imperdiet massa turpis sit proin metus volutpat.</p>
+                        <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">At Stay With Us, success begins with quality education led by expert teachers online. Our personalized online teaching connects students with experienced online tutors for tailored learning experiences. With flexible tutors online, we help students unlock their potential and achieve academic success from anywhere.</p>
                         <div className="mt-9">
                             <a href="#" className="btn-rounded-full">Read More</a>
                         </div>

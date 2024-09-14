@@ -3,6 +3,7 @@ import RegisterForm from '@/app/components/RegisterForm'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
+import Head from 'next/head';
 
 interface Response {
   error: string
@@ -77,6 +78,18 @@ const Register = () => {
   }
 
   return (
+    <>
+    <Head>
+    <link rel="canonical" href="https://www.findtute.com/register" />
+    <title>Register - Online Teaching Platform</title>
+      <meta name="description" content="Register to become an online teacher or tutor, join online classes, and access educational resources." />
+      <meta name="keywords" content="online teacher, online tutor, online teaching, online classes" />
+      <meta property="og:title" content="Register - Online Teaching Platform" />
+      <meta property="og:description" content="Register to become an online teacher or tutor, join online classes, and access educational resources." />
+      <meta property="og:image" content="/path/to/your-image.jpg" />
+      <meta property="og:url" content="https://www.yoursite.com/register" /> {/* Optional: Prevent indexing if this is a login page */}
+  </Head>
+  
     <section className="bg-warm relative min-h-screen w-full">
       <div className="flex w-full items-center justify-center">
         <Link
@@ -135,6 +148,7 @@ const Register = () => {
         </div>
       </div>
     </section>
+    </>
   )
 }
 

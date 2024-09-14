@@ -3,6 +3,7 @@ import LoginForm from '@/app/components/LoginForm'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
+import Head from 'next/head';
 
 interface Response {
   error: string
@@ -62,6 +63,18 @@ const Login = () => {
   }
 
   return (
+    <>
+    <Head>
+    <link rel="canonical" href="https://www.findtute.com/login" />
+    <title>Login - Online Teaching Platform</title>
+    <meta name="description" content="Login to access online teaching resources, connect with online tutors, and manage your online classes." />
+    <meta name="keywords" content="online teacher, online tutor, online teaching, online classes" />
+    <meta property="og:title" content="Login - Online Teaching Platform" />
+    <meta property="og:description" content="Login to access online teaching resources, connect with online tutors, and manage your online classes." />
+    <meta property="og:image" content="/path/to/your-image.jpg" />
+    <meta property="og:url" content="https://www.yoursite.com/login" />
+    <meta name="robots" content="noindex, nofollow" /> {/* Optional: Prevent indexing if this is a login page */}
+  </Head>
     <section className="bg-warm relative">
       <div className="flex w-full items-center justify-center">
         <Link
@@ -125,6 +138,7 @@ const Login = () => {
         </div>
       </div>
     </section>
+    </>
   )
 }
 

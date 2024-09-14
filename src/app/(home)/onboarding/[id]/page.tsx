@@ -5,6 +5,7 @@ const TeacherProfile = () => {
   return (
     <>  
       <Head>
+      <link rel="canonical" href="https://www.findtute.com/onboarding" />
         <title>Onboarding | Best Online Teachers</title>
         <meta name="description" content="Get started with our onboarding process for online teaching and tutoring services." />
         <meta name="keywords" content="Onboarding, Online Teaching Setup, Tutor Onboarding, Education Services" />

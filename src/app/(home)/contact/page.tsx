@@ -15,6 +15,7 @@ const Contact = () => {
   return (
     <>
  <Head>
+ <link rel="canonical" href="https://www.findtute.com/contact" />
         <title>Contact Us | Best Online Teachers</title>
         <meta name="description" content="Get in touch with us for inquiries about online teaching and tutoring services." />
         <meta name="keywords" content="Contact Us, Online Tutors, Inquiry, Education Support" />
@@ -258,6 +259,12 @@ const Contact = () => {
         ></iframe>
       </div>
 
+      <section className="p-8 bg-gray-100">
+      <blockquote className="mt-8 p-4 bg-white border-l-4 border-blue-500 text-gray-700 italic text-center">
+        <p>Our platform connects online tutors and learners globally. Whether you're looking for the best tutors online or want to enhance your skills via online teaching, we have the right solutions for you. Join thousands of students and tutors in an immersive learning experience</p>
+      </blockquote>
+      </section>
+
       <section className="lg:pt-15 pt-10 ">
         <div className="bg-warm py-12.5 relative z-[1]">
           <div className="container">
@@ -273,9 +280,7 @@ const Contact = () => {
                   The path to success starts with education
                 </h2>
                 <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">
-                  Lorem ipsum dolor sit amet consectetur. Amet lectus mi
-                  ultricies dictum facilisis sem. Imperdiet massa turpis sit
-                  proin metus volutpat.
+                  At Stay With Us, success begins with quality education led by expert teachers online. Our personalized online teaching connects students with experienced online tutors for tailored learning experiences. With flexible tutors online, we help students unlock their potential and achieve academic success from anywhere.
                 </p>
                 <div className="mt-9">
                   <Link href="/services" className="btn-rounded-full">
@@ -303,4 +308,4 @@ const Contact = () => {
   )
 }
 
-export default Contact
+export default Contact;

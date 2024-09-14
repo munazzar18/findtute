@@ -8,6 +8,7 @@ const Faqs = () => {
     <>
 
 <Head>
+        <link rel="canonical" href="https://www.findtute.com/faqs" />
         <title>FAQs | Best Online Teachers</title>
         <meta name="description" content="Find answers to frequently asked questions about our online teaching services." />
         <meta name="keywords" content="FAQs, Online Teaching Questions, Tutor Support, Education Help" />
