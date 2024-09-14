@@ -3,6 +3,9 @@ import Counter from "../helper/Counter";
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { FaLaptop, FaBook, FaUsers, FaGlobe, FaDollarSign } from 'react-icons/fa';
+import { FaArrowRightToBracket } from "react-icons/fa6";
+
 import {
   faArrowRight,
   faBook,
@@ -20,10 +23,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
+
+
 export default function page() {
   return (
     <>
       <Head>
+      <link rel="canonical" href="https://www.findtute.com/" />
         <script type="application/ld+json">
           {`
           {
@@ -624,7 +630,7 @@ export default function page() {
           </div>
 
           {/* Block Quote 2 */}
-          <div className="relative p-6 mb-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+          <div className="relative p-6 mb-6 bg-white border-l-4 border-green-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
             <div className="absolute text-6xl text-blue-500 opacity-20 top-4 left-4 -translate-y-1/2">
               <FaQuoteLeft />
             </div>
@@ -639,7 +645,7 @@ export default function page() {
           </div>
 
           {/* Block Quote 3 */}
-          <div className="relative p-6 mb-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+          <div className="relative p-6 mb-6 bg-white border-l-4 border-red-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
             <div className="absolute text-6xl text-blue-500 opacity-20 top-4 left-4 -translate-y-1/2">
               <FaQuoteLeft />
             </div>
@@ -654,6 +660,58 @@ export default function page() {
           </div>
         </div>
       </section>
+
+
+
+
+      <section className="bg-gray-50">
+      <div className="container mx-auto px-6">
+        <h1 className="text-4xl font-bold text-center mb-8 text-[#ED145B]">
+       Explore the World of Online Tutoring
+        </h1>
+        <p className="text-lg text-center mb-12 text-gray-700">
+          In today's digital age, online tutoring has become an increasingly popular option for those looking to work from home or earn extra income. If you're considering a career shift or a side job, online tutoring jobs offer a flexible and rewarding opportunity. Whether you're seeking online tutoring jobs from home or looking for the best platforms to start your journey, there's a wide array of options available.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+            <FaLaptop className="text-blue-500 text-4xl mb-4" />
+            <h2 className="text-2xl font-semibold mb-2">Flexible Work From Home</h2>
+            <p className="text-gray-600">
+              For students, online tutoring jobs can be a great way to gain experience, earn money, and enhance your teaching skills. If you're a beginner teacher, many online tutoring websites for teachers provide the necessary resources and training to help you get started.
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+            <FaBook className="text-green-500 text-4xl mb-4" />
+            <h2 className="text-2xl font-semibold mb-2">Educational Support</h2>
+            <p className="text-gray-600">
+              Websites like these also offer a variety of opportunities to connect with students and provide valuable educational support. If you’re based in Pakistan, you can find specific platforms that cater to your region.
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+            <FaUsers className="text-purple-500 text-4xl mb-4" />
+            <h2 className="text-2xl font-semibold mb-2">Local and Global Opportunities</h2>
+            <p className="text-gray-600">
+              For those interested in making money online, there are numerous online tutoring sites to earn money that offer competitive rates and a range of subjects to teach. Sites focusing on online teaching provide comprehensive tools and resources for effective learning experiences.
+            </p>
+          </div>
+        </div>
+        <div className="text-center mt-12 flex justify-items-center items-center flex-col">
+          <h2 className="text-3xl font-bold text-[#ED145B] mb-4">Start Your Journey Today!</h2>
+          <p className="text-lg text-gray-700 mb-4">
+            Whether you are a teacher looking to expand your reach or a student seeking flexible job opportunities, the landscape of online tutoring offers something for everyone. Explore the myriad opportunities available and start your journey into the world of online education today.
+          </p>
+          <span>
+          <Link 
+         href="/">
+         <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
+           Apply Now    <FaArrowRightToBracket className="text-xl" />
+
+          </button>
+        </Link>
+        </span>
+        </div>
+      </div>
+    </section>
     </>
   );
-}
+} 

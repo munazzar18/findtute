@@ -5,6 +5,7 @@ const TermsConditions = () => {
   return (
   <>
     <Head>
+    <link rel="canonical" href="https://www.findtute.com/terms-condition" />
         <title>Terms and Conditions | Best Online Teachers</title>
         <meta name="description" content="Read our terms and conditions for using our online teaching and tutoring services." />
         <meta name="keywords" content="Terms and Conditions, Online Teaching Terms, Tutor Terms, Education Terms" />

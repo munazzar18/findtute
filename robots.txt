@@ -1,5 +1,23 @@
 User-Agent: *
 Allow: /
+
+# Block sensitive or non-public areas of your site
 Disallow: /private/
 
+# Include the location of your sitemap
 Sitemap: https://acme.com/sitemap.xml
+
+# Optional: Specify crawl delay to avoid overloading your server
+Crawl-Delay: 10
+
+# Optional: Allow Googlebot to crawl and index the entire site
+User-Agent: Googlebot
+Allow: /
+
+# Optional: Disallow specific sections for Googlebot
+User-Agent: Googlebot
+Disallow: /temporary/
+
+# Optional: Allow all other bots to crawl the entire site
+User-Agent: Bingbot
+Allow: /
