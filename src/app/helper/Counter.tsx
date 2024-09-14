@@ -11,7 +11,7 @@ interface CounterProps {
 // Ease-out function
 const easeOutQuad = (t: number): number => t * (2 - t)
 
-const Counter: React.FC<CounterProps> = ({ start, end, duration = 2000 }) => {
+const Counter: React.FC<CounterProps> = ({ start, end, duration = 5000 }) => {
   const [count, setCount] = useState<number>(start)
 
   useEffect(() => {
