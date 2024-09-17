@@ -1,5 +1,4 @@
 import logoutAction from '@/app/auth/logout/_action'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 

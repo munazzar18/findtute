@@ -1,10 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faArrowUp,
-  faEnvelope,
-  faLocationDot,
-  faPhone,
-} from '@fortawesome/free-solid-svg-icons'
+import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import ScrollToTopButton from '../helper/ScrollToTop'
 import Link from 'next/link'
 
@@ -138,7 +132,7 @@ const Footer = () => {
               <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
-                    <FontAwesomeIcon icon={faLocationDot} />
+                    <FaMapMarkerAlt />
                   </span>{' '}
                   <span className="max-w-[168px]">
                     Building No.3-A, Block 'Y' , Main Road Model Town C,
@@ -149,7 +143,7 @@ const Footer = () => {
               <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
-                    <FontAwesomeIcon icon={faEnvelope} />
+                    <FaEnvelope />
                   </span>{' '}
                   <a href="#">findtute@info.com</a>
                 </p>
@@ -157,7 +151,7 @@ const Footer = () => {
               <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
-                    <FontAwesomeIcon icon={faPhone} />
+                    <FaPhoneAlt />
                   </span>{' '}
                   <a href="#">0923047279400</a>
                 </p>

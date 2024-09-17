@@ -18,4 +18,40 @@
     <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://www.findtute.com/services</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
+   <url>
+    <loc>https://www.findtute.com/terms-condition</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.findtute.com/privacy-policy</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.findtute.com/contact</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.findtute.com/faq</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.findtute.com/service-details</loc> <!-- Update URL to your actual site URL -->
+    <lastmod>2024-09-13T00:00:00+00:00</lastmod> <!-- Update with the current date/time -->
+    <changefreq>weekly</changefreq> <!-- Adjust frequency based on your site's update schedule -->
+    <priority>0.5</priority>
+  </url>
 </urlset>

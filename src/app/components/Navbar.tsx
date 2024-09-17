@@ -1,12 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown } from 'react-icons/fa'
 import { cookies } from 'next/headers'
 import LogoutButton from './LogoutButton'
-import { BiArrowToRight } from "react-icons/bi";
-import { HiHome } from "react-icons/hi2";
+import { BiArrowToRight } from 'react-icons/bi'
+import { HiHome } from 'react-icons/hi2'
+import MobileMenu from './MobileMenu'
 
 interface User {
   id: string
@@ -44,14 +43,14 @@ export default function App() {
                   </Link>
                 </div>
                 <div className="flex items-center">
-                  <nav className="xl:block hidden">
+                  <nav className="lg:block hidden">
                     <ul className="flex items-center gap-[25px]">
                       <li className="leading-[164%] relative py-5 group">
                         <Link
                           href="/"
                           className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
                         >
-                        <HiHome className='text-2xl text-[#1CBBB4]'/>   Home  
+                          <HiHome className="text-2xl text-[#1CBBB4]" /> Home
                         </Link>
                       </li>
                       <li className="leading-[164%] relative group">
@@ -63,17 +62,42 @@ export default function App() {
                         </Link>
                       </li>
                       <li className="relative py-5 group">
-                   
-                   <Link href="/services" className="flex items-center  group-hover:text-primary-foreground font-semibold text-lg text-gray-800 transition-colors duration-300 hover:text-primary-600">Services<span className="ml-2 text-[#1CBBB4] transition-transform duration-300 group-hover:rotate-180"><FaAngleDown size={19}/></span>
-                   </Link>
-                   <ul className="absolute top-full left-0 z-10 mt-2 bg-white shadow-lg min-w-56 transition-all duration-300 opacity-0 invisible translate-y-4 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0"><li><Link href="/services" className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Services</Link></li>
-                   <li><Link href="/service-details"
-                   className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Service Details</Link></li>
-                     <li>
-                       <Link href="/blog" className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200">Blog</Link>
-                  </li>
-                      </ul>
-                             </li>
+                        <Link
+                          href="/services"
+                          className="flex items-center  group-hover:text-primary-foreground font-semibold text-lg text-gray-800 transition-colors duration-300 hover:text-primary-600"
+                        >
+                          Services
+                          <span className="ml-2 text-[#1CBBB4] transition-transform duration-300 group-hover:rotate-180">
+                            <FaAngleDown size={19} />
+                          </span>
+                        </Link>
+                        <ul className="absolute top-full left-0 z-10 mt-2 bg-white shadow-lg min-w-56 transition-all duration-300 opacity-0 invisible translate-y-4 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
+                          <li>
+                            <Link
+                              href="/services"
+                              className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                            >
+                              Services
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/service-details"
+                              className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                            >
+                              Service Details
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/blog"
+                              className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                            >
+                              Blog
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
                       <li className="leading-[164%] relative group">
                         <Link
                           href="/contact"
@@ -85,184 +109,13 @@ export default function App() {
                     </ul>
                   </nav>
 
-                  <div className="block xl:hidden">
-                    <div className="fixed left-0 top-0 w-full h-full bg-black/30 invisible transition-all offcanva-overlay hover:visible"></div>
-                    <nav className="bg-warm border-l-2 border-l-primary w-full max-w-md min-h-screen h-full overflow-y-auto p-7 shadow-md fixed -right-full top-0 z-50 transition-all duration-500 offcanva  ">
-                      <div className="flex justify-between items-center">
-                        <a href="#" className="flex items-center gap-1">
-                          <img src="/logo_small.png" alt="findtute logo" />
-                          <span className="font-bold text-3xl ">FindTute</span>
-                        </a>
-                        <div className="bg-primary w-10 h-10 text-cream-foreground flex items-center justify-center rounded-[4px] left-4 offcanvaClose">
-                          <i className="fa-solid fa-xmark text-xl"></i>
-                        </div>
-                      </div>
-                      <ul className=" mt-6">
-                        <li className="leading-[164%] relative w-full dropdown">
-                         <Link
-                          href="/"
-                          className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
-                        >
-                        <HiHome className='text-2xl text-[#1CBBB4]'/>   Home  
-                        </Link>
-                        </li>
-                        <li className="leading-[164%] relative w-full">
-                          <Link
-                            href="/about"
-                            className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                          >
-                            About Us
-                          </Link>
-                        </li>
-                        <li className="leading-[164%] relative w-full dropdown">
-                          <Link
-                            href="/services"
-                            className=" py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                          >
-                            <span>Services</span>
-                            <i className="fa-solid fa-plus"></i>
-                          </Link>
-
-                          <ul className="max-h-0 min-w-56 w-full opacity-0 invisible transition-all duration-500 dropdown-item">
-                            <li>
-                              <Link
-                                href="/services"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Services
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/service-details"
-                                className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 px-6 block border-b border-b-slate-300"
-                              >
-                                Service Details
-                              </Link>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="leading-[164%] relative w-full dropdown"></li>
-
-                        <li className="leading-[164%] relative w-full ">
-                          <Link
-                            href="/contact"
-                            className="text-[#385469]  hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
-                          >
-                            Contact Us
-                          </Link>
-                        </li>
-                      </ul>
-
-                      <div className="mt-5">
-                        <div>
-                          <h4 className="text-xl font-bold text-[#385469]">
-                            Contact Info
-                          </h4>
-                          <ul className="mt-5 flex flex-col gap-[15px]">
-                            <li>
-                              <p>
-                                <i className="fa-solid fa-phone text-primary-foreground"></i>{' '}
-                                <a href="#" className="ml-2.5">
-                                  923047279400
-                                </a>
-                              </p>
-                            </li>
-                            <li>
-                              <p>
-                                <i className="fa-solid fa-envelope text-primary-foreground"></i>{' '}
-                                <a href="#" className="ml-2.5">
-                                  info@findtute.com
-                                </a>
-                              </p>
-                            </li>
-                            <li>
-                              <p>
-                                <i className="fa-solid fa-location-dot text-primary-foreground"></i>{' '}
-                                <span className="ml-2.5">
-                                  Building #3-A, Block Y, Main Road, Model Town
-                                  C, Bahawalpur
-                                </span>
-                              </p>
-                            </li>
-                          </ul>
-                        </div>
-                        {/* button */}
-                        <div className="mt-5">
-                          {token ? (
-                            <ul className="absolute top-full z-10 bg-background shadow-sm min-w-56 transition-all duration-500 opacity-0 invisible translate-y-5 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
-                              <li>
-                                <a
-                                  href="services.html"
-                                  className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                                >
-                                  {user?.email}
-                                </a>
-                              </li>
-                              <li>
-                                <Link
-                                  href={`/onboarding/${user?.id}`}
-                                  className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
-                                >
-                                  Profile
-                                </Link>
-                              </li>
-                            </ul>
-                          ) : (
-                            <Link
-                              href="/auth/register">
-                              <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
-                            Register   <BiArrowToRight className='text-xl' /> 
-                                </button>
-                            </Link>
-                          )}
-                        </div>
-                        {/* button */}
-                        <ul className="flex items-center gap-[14px] mt-6">
-                          <li>
-                            <a
-                              href="#"
-                              className="rounded-md w-11 h-11 flex items-center justify-center text-muted-foreground bg-background hover:bg-primary transition-all duration-500"
-                            >
-                              <i className="fa-brands fa-facebook-f "></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="rounded-md w-11 h-11 flex items-center justify-center text-muted-foreground bg-background hover:bg-primary transition-all duration-500"
-                            >
-                              <i className="fa-brands fa-x-twitter"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="rounded-md w-11 h-11 flex items-center justify-center text-muted-foreground bg-background hover:bg-primary transition-all duration-500"
-                            >
-                              <i className="fa-brands fa-linkedin"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="rounded-md w-11 h-11 flex items-center justify-center text-muted-foreground bg-background hover:bg-primary transition-all duration-500"
-                            >
-                              <i className="fa-brands fa-pinterest-p"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </nav>
-                  </div>
-
                   <div className="flex items-center gap-6 ">
                     <div className="ml-16 cursor-pointer search-btn">
                       <i className="fa-solid fa-magnifying-glass "></i>
                     </div>
                     <p className="h-11 w-[1px] bg-muted xl:block hidden"></p>
                     {/* Desktop Version btn */}
-                    <div className="">
+                    <div className="lg:block hidden">
                       {token ? (
                         <ul className="flex items-center gap-[25px]">
                           <li className="leading-[164%] relative py-5 group">
@@ -272,11 +125,7 @@ export default function App() {
                             >
                               {user?.email}
                               <span className="">
-                                <FontAwesomeIcon
-                                  icon={faAngleDown}
-                                  fixedWidth
-                                  size="sm"
-                                />
+                                <FaAngleDown size="sm" />
                               </span>
                             </Link>
 
@@ -304,20 +153,15 @@ export default function App() {
                           </li>
                         </ul>
                       ) : (
-                        <Link
-                          href="/auth/register"
-                        > <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
-                        Register   <BiArrowToRight className='text-xl' /> 
-                       </button>  
+                        <Link href="/auth/register">
+                          <button className="text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn">
+                            Register{' '}
+                          </button>
                         </Link>
                       )}
                     </div>
-                    <div className="block xl:hidden">
-                      <div className="flex flex-col items-end cursor-pointer transition-all duration-500 offcanvaTragger">
-                        <span className="block h-[3px] w-5 bg-muted"></span>
-                        <span className="block h-[3px] w-7.5 bg-muted mt-2"></span>
-                        <span className="block h-[3px] w-5 bg-muted mt-2"></span>
-                      </div>
+                    <div className="block lg:hidden">
+                      <MobileMenu />
                     </div>
                   </div>
 
@@ -348,4 +192,3 @@ export default function App() {
     </>
   )
 }
-
