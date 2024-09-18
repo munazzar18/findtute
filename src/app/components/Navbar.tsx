@@ -51,13 +51,13 @@ export default function App() {
                           href="/"
                           className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
                         >
-                        <HiHome className='text-2xl text-[#1CBBB4]'/>   Home  
+                        <HiHome className='text-2xl text-[#1CBBB4] '/>   Home  
                         </Link>
                       </li>
                       <li className="leading-[164%] relative group">
                         <Link
                           href="/about"
-                          className="font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
+                          className="font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500 "
                         >
                           About Us
                         </Link>
