@@ -5,14 +5,13 @@ import { MultiSelect } from 'react-multi-select-component'
 import { FormikErrors, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import {
   GetGrades,
   GetSubjects,
   UpdateProfileAction,
   UploadProfileImageAction,
 } from '../dashboard/[id]/profile/_action'
+import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
 
 interface OptionType {
   label: string
@@ -754,7 +753,7 @@ const UserProfileData = () => {
                         type="button"
                         className="mx-1 w-full sm:w-full md:w-full lg:w-10 "
                       >
-                        <FontAwesomeIcon icon={faPlus} />
+                        <FaCirclePlus />
                       </button>
                     ) : (
                       ''
@@ -767,7 +766,7 @@ const UserProfileData = () => {
                         onClick={() => handleRemoveEducation(index)}
                         className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                       >
-                        <FontAwesomeIcon icon={faMinus} />
+                        <FaCircleMinus />
                       </button>
                     ) : (
                       ''
@@ -919,7 +918,7 @@ const UserProfileData = () => {
                       onClick={handleAddExperience}
                       className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FaCirclePlus />
                     </button>
                   ) : (
                     ''
@@ -931,7 +930,7 @@ const UserProfileData = () => {
                       onClick={() => handleRemoveExperience(index)}
                       className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                     >
-                      <FontAwesomeIcon icon={faMinus} />
+                      <FaCircleMinus />
                     </button>
                   ) : (
                     ''

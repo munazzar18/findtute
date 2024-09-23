@@ -29,7 +29,7 @@ const Sidebar = ({
                 href={item.link}
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-primary pr-6 ${
                   pathname === item.link
-                    ? 'text-[#f7941e] bg-white font-bold'
+                    ? '!text-gray-800 bg-gray-50 font-extrabold'
                     : ''
                 } `}
               >

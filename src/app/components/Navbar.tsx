@@ -121,11 +121,11 @@ export default function App() {
                           <li className="leading-[164%] relative py-5 group">
                             <Link
                               href="#"
-                              className=" font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
+                              className="flex items-center gap-1 font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
                             >
                               {user?.email}
                               <span className="">
-                                <FaAngleDown size="sm" />
+                                <FaAngleDown size={20} />
                               </span>
                             </Link>
 
@@ -161,7 +161,7 @@ export default function App() {
                       )}
                     </div>
                     <div className="block lg:hidden">
-                      <MobileMenu />
+                      <MobileMenu userData={user} tokenData={token} />
                     </div>
                   </div>
 

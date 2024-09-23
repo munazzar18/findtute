@@ -16,7 +16,13 @@ interface User {
   role: string
 }
 
-const MobileMenu = () => {
+const MobileMenu = ({
+  userData,
+  tokenData,
+}: {
+  userData: User | null
+  tokenData: string | undefined
+}) => {
   const [switchNav, setSwitchNav] = useState(false)
 
   const handleSwitchNav = () => {
@@ -26,7 +32,6 @@ const MobileMenu = () => {
   return (
     <>
       <div className="block xl:hidden">
-        <div className="fixed left-0 top-0 w-full h-full bg-black/30 invisible transition-all offcanva-overlay hover:visible"></div>
         <nav
           className={`bg-warm border-l-2 border-l-primary w-full max-w-md min-h-screen h-full overflow-y-auto p-7 shadow-md fixed  ${
             switchNav ? 'right-0' : '-right-full'
@@ -44,54 +49,89 @@ const MobileMenu = () => {
               <FiX className="text-xl" />
             </div>
           </div>
-          <ul className=" mt-6">
-            <li className="leading-[164%] relative w-full dropdown">
-              <Link
-                href="/"
-                className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                onClick={handleSwitchNav}
-              >
-                <span>Home</span>
-              </Link>
-            </li>
-            <li className="leading-[164%] relative w-full">
-              <Link
-                href="/about"
-                className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                onClick={handleSwitchNav}
-              >
-                About Us
-              </Link>
-            </li>
-            <li className="leading-[164%] relative w-full dropdown">
-              <Link
-                href="/services"
-                className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                onClick={handleSwitchNav}
-              >
-                <span>Services</span>
-              </Link>
-            </li>
-            <li className="leading-[164%] relative w-full dropdown">
-              <Link
-                href="/blog"
-                className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
-                onClick={handleSwitchNav}
-              >
-                <span>Blog</span>
-              </Link>
-            </li>
 
-            <li className="leading-[164%] relative w-full ">
-              <Link
-                href="/contact"
-                className="text-[#385469] font-jost hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
-                onClick={handleSwitchNav}
-              >
-                Contact Us
-              </Link>
-            </li>
-          </ul>
+          {userData && tokenData ? (
+            <ul className=" mt-6">
+              <li className="leading-[164%] relative w-full dropdown">
+                <Link
+                  href="/"
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  <span>Home</span>
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full">
+                <Link
+                  href={`/dashboard/${userData?.id}`}
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full dropdown">
+                <Link
+                  href={`/onboarding/${userData?.id}`}
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  <span>Profile</span>
+                </Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className=" mt-6">
+              <li className="leading-[164%] relative w-full dropdown">
+                <Link
+                  href="/"
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  <span>Home</span>
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full">
+                <Link
+                  href="/about"
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  About Us
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full dropdown">
+                <Link
+                  href="/services"
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  <span>Services</span>
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full dropdown">
+                <Link
+                  href="/blog"
+                  className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                  onClick={handleSwitchNav}
+                >
+                  <span>Blog</span>
+                </Link>
+              </li>
+
+              <li className="leading-[164%] relative w-full ">
+                <Link
+                  href="/contact"
+                  className="text-[#385469] font-jost hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
+                  onClick={handleSwitchNav}
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          )}
+
+          <ul className=" mt-6"></ul>
 
           <div className="mt-5">
             <div>

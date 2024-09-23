@@ -2,8 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -12,6 +10,7 @@ import {
   ResetPasswordAction,
 } from '../auth/forgot-password/_action'
 import { useFormStatus } from 'react-dom'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const ForgetPasswordForm = ({ getMail }: { getMail: string }) => {
   const [loading, setLoading] = useState(false)
@@ -147,15 +146,9 @@ const ForgetPasswordForm = ({ getMail }: { getMail: string }) => {
                 onClick={toggleVisibility}
               >
                 {isVisible ? (
-                  <FontAwesomeIcon
-                    icon={faEye}
-                    className="text-md text-default-400 pointer-events-none"
-                  />
+                  <FaEye className="text-md text-default-400 pointer-events-none" />
                 ) : (
-                  <FontAwesomeIcon
-                    icon={faEyeSlash}
-                    className="text-md text-default-400 pointer-events-none"
-                  />
+                  <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
                 )}
               </button>
             </label>
