@@ -22,11 +22,13 @@ const useChatSocket = ({ room, userId, token }: UseChatSocketProps) => {
   const myVideo = useRef<HTMLVideoElement>(null)
   const userVideo = useRef<HTMLVideoElement>(null)
 
-  const url = process.env.NEXT_PUBLIC_SOCKET_URL
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL as string
+
+  console.log('SOCKET URL:', url)
 
   useEffect(() => {
     if (userId) {
-      const socketConnection = io(url ? url : '', {
+      const socketConnection = io(url, {
         auth: { userId, token },
         transports: ['websocket'],
       })

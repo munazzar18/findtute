@@ -132,7 +132,6 @@ const UserProfileData = () => {
     formData.append('file', file)
     try {
       const res = await UploadProfileImageAction(formData)
-      console.log(res)
       if (res.status && res.status === true) {
         toast.success(res.message)
 

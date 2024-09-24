@@ -112,7 +112,6 @@ const VerifyOTPForm = ({ verifyOtpData, getEmail }: any) => {
         .label('One time password'),
     }),
     onSubmit: async (values) => {
-      console.log('Values', values)
       setIsLoading(true)
       let res = await verifyOtpData(values)
       try {
