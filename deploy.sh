@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go to the app directory
-cd /var/www/findtute
+cd ~/findtute
 
 # Pull the latest changes from Git
 git pull origin master
