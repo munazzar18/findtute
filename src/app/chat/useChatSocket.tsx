@@ -17,14 +17,13 @@ interface Message {
 const useChatSocket = ({ room, userId, token }: UseChatSocketProps) => {
   const [socket, setSocket] = useState<Socket | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
-  const [myPeer, setMyPeer] = useState<Peer | null>(null)
+  const [peerConnection, setPeerConnection] =
+    useState<RTCPeerConnection | null>(null)
 
   const myVideo = useRef<HTMLVideoElement>(null)
   const userVideo = useRef<HTMLVideoElement>(null)
 
   const url = process.env.NEXT_PUBLIC_SOCKET_URL as string
-
-  console.log('SOCKET URL:', url)
 
   useEffect(() => {
     if (userId) {
@@ -40,8 +39,29 @@ const useChatSocket = ({ room, userId, token }: UseChatSocketProps) => {
         setMessages((prev) => [...prev, message])
       })
 
-      socketConnection.on('signal', (userId: string) => {
-        console.log('User joined:', userId)
+      // Handle incoming WebRTC signals (ICE candidates, offers, answers)
+      socketConnection.on('signal', async (data: any) => {
+        if (peerConnection) {
+          if (data.type === 'offer') {
+            await peerConnection.setRemoteDescription(
+              new RTCSessionDescription(data)
+            )
+            const answer = await peerConnection.createAnswer()
+            await peerConnection.setLocalDescription(answer)
+            socketConnection.emit('signal', {
+              room,
+              ...peerConnection.localDescription,
+            })
+          } else if (data.type === 'answer') {
+            await peerConnection.setRemoteDescription(
+              new RTCSessionDescription(data)
+            )
+          } else if (data.candidate) {
+            await peerConnection.addIceCandidate(
+              new RTCIceCandidate(data.candidate)
+            )
+          }
+        }
       })
 
       return () => {
@@ -51,33 +71,36 @@ const useChatSocket = ({ room, userId, token }: UseChatSocketProps) => {
     }
   }, [room, userId])
 
-  // Initialize PeerJS connection
+  // Initialize RTCPeerConnection
   useEffect(() => {
-    if (!myPeer) {
-      const peer = new Peer(userId, {
-        host: 'localhost',
-        port: 9000,
-        path: '/peerjs',
+    if (!peerConnection) {
+      const pc = new RTCPeerConnection({
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' }, // Google's public STUN server
+        ],
       })
 
-      peer.on('open', () => {
-        setMyPeer(peer)
-      })
+      // Send ICE candidates to signaling server
+      pc.onicecandidate = (event) => {
+        if (event.candidate && socket) {
+          socket.emit('signal', { room, candidate: event.candidate })
+        }
+      }
 
-      peer.on('call', (call: MediaConnection) => {
-        call.answer() // Answer without creating a new stream
-        call.on('stream', (remoteStream: MediaStream) => {
-          if (userVideo.current) {
-            userVideo.current.srcObject = remoteStream
-          }
-        })
-      })
+      // Handle receiving tracks from the remote peer
+      pc.ontrack = (event) => {
+        if (userVideo.current) {
+          userVideo.current.srcObject = event.streams[0]
+        }
+      }
+
+      setPeerConnection(pc)
     }
 
     return () => {
-      if (myPeer) myPeer.destroy()
+      if (peerConnection) peerConnection.close()
     }
-  }, [myPeer, userId])
+  }, [peerConnection])
 
   const sendMessage = (message: string) => {
     if (socket) {
@@ -85,26 +108,32 @@ const useChatSocket = ({ room, userId, token }: UseChatSocketProps) => {
     }
   }
 
-  const startScreenSharing = () => {
-    navigator.mediaDevices
-      .getDisplayMedia({ video: true })
-      .then((stream) => {
-        if (myVideo.current) {
-          myVideo.current.srcObject = stream
-        }
-
-        // Call other peers in the room
-        const call = myPeer?.call(room, stream)
-
-        call?.on('stream', (remoteStream: MediaStream) => {
-          if (userVideo.current) {
-            userVideo.current.srcObject = remoteStream
-          }
-        })
+  // Start screen sharing using WebRTC
+  const startScreenSharing = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
       })
-      .catch((error) => {
-        console.error('Error sharing screen:', error)
+
+      // Display your screen in the local video element
+      if (myVideo.current) {
+        myVideo.current.srcObject = stream
+      }
+
+      // Add your screen to the RTCPeerConnection
+      stream.getTracks().forEach((track) => {
+        if (peerConnection) peerConnection.addTrack(track, stream)
       })
+
+      // Create an offer and send it to the other peer
+      if (peerConnection) {
+        const offer = await peerConnection.createOffer()
+        await peerConnection.setLocalDescription(offer)
+        socket?.emit('signal', { room, ...peerConnection.localDescription })
+      }
+    } catch (error) {
+      console.error('Error sharing screen:', error)
+    }
   }
 
   return {

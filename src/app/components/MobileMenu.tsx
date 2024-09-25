@@ -128,6 +128,24 @@ const MobileMenu = ({
                   Contact Us
                 </Link>
               </li>
+              <li className="leading-[164%] relative w-full ">
+                <Link
+                  href="/auth/login"
+                  className="text-[#385469] font-jost hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
+                  onClick={handleSwitchNav}
+                >
+                  Login
+                </Link>
+              </li>
+              <li className="leading-[164%] relative w-full ">
+                <Link
+                  href="/auth/register"
+                  className="text-[#385469] font-jost hover:text-secondary-foreground transition-all duration-500 py-2.5 block border-b border-b-slate-300"
+                  onClick={handleSwitchNav}
+                >
+                  Register
+                </Link>
+              </li>
             </ul>
           )}
 
