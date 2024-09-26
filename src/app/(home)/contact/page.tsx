@@ -252,17 +252,7 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9297281835396!2d71.66935401507212!3d29.406032698582283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1630975049084!5m2!1sen!2sbd"
-          width="1920"
-          height="497"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </div>
+      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden"></div>
 
       <section className="p-8 bg-gray-100">
         <blockquote className="mt-8 p-4 bg-white border-l-4 border-blue-500 text-gray-700 italic text-center">

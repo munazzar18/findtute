@@ -74,14 +74,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
   return (
     <div className="flex justify-center items-start ">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center gap-4 justify-center">
+        <div className="flex flex-col items-center gap-2 justify-center">
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Email
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Email</span>
+              </div>
               <input
                 type="email"
-                className="grow"
-                placeholder="info@findtute.com"
+                autoComplete="on"
+                className="input input-bordered input-primary w-80"
+                placeholder="Enter you email"
                 color={formik.errors.email ? 'danger' : 'default'}
                 onChange={(e) => formik.setFieldValue('email', e.target.value)}
                 value={formik.values.email}
@@ -94,28 +97,33 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
             </span>
           </div>
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Password
-              <input
-                type={isVisible ? 'text' : 'password'}
-                className="grow"
-                color={formik.errors.password ? 'danger' : 'default'}
-                onChange={(e) =>
-                  formik.setFieldValue('password', e.target.value)
-                }
-                value={formik.values.password}
-              />
-              <button
-                className="focus:outline-none"
-                type="button"
-                onClick={toggleVisibility}
-              >
-                {isVisible ? (
-                  <FaEye className="text-md text-default-400 pointer-events-none" />
-                ) : (
-                  <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
-                )}
-              </button>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Password</span>
+              </div>
+              <div className="relative">
+                <input
+                  type={isVisible ? 'text' : 'password'}
+                  className=" input input-bordered input-primary w-80"
+                  placeholder="Enter you password"
+                  color={formik.errors.password ? 'danger' : 'default'}
+                  onChange={(e) =>
+                    formik.setFieldValue('password', e.target.value)
+                  }
+                  value={formik.values.password}
+                />
+                <button
+                  className="focus:outline-none absolute right-2 top-1/3 "
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <FaEye className="text-md text-default-400 pointer-events-none" />
+                  ) : (
+                    <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              </div>
             </label>
             <span className="flex justify-start">
               {formik.touched.password && formik.errors.password ? (

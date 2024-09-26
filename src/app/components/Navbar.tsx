@@ -1,10 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { FaAngleDown } from 'react-icons/fa'
 import { cookies } from 'next/headers'
 import LogoutButton from './LogoutButton'
-import { BiArrowToRight } from 'react-icons/bi'
-import { HiHome } from 'react-icons/hi2'
 import MobileMenu from './MobileMenu'
 
 interface User {
@@ -50,7 +47,7 @@ export default function App() {
                           href="/"
                           className="font-semibold text-lg gap-2 flex justify-center items-center group-hover:text-primary-foreground transition-all duration-500 py-5"
                         >
-                          <HiHome className="text-2xl text-[#1CBBB4]" /> Home
+                          Home
                         </Link>
                       </li>
                       <li className="leading-[164%] relative group">
@@ -153,11 +150,34 @@ export default function App() {
                           </li>
                         </ul>
                       ) : (
-                        <Link href="/auth/register">
-                          <button className="text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn">
-                            Register{' '}
-                          </button>
-                        </Link>
+                        <ul>
+                          <li className="relative py-5 group">
+                            <a className="flex items-center  group-hover:text-primary-foreground font-semibold text-lg text-gray-800 transition-colors duration-300 hover:text-primary-600">
+                              Sign Up / Sign In
+                              <span className="ml-2 text-[#1CBBB4] transition-transform duration-300 group-hover:rotate-180">
+                                <FaAngleDown size={19} />
+                              </span>
+                            </a>
+                            <ul className="absolute top-full left-0 z-10 mt-2 bg-white shadow-lg min-w-56 transition-all duration-300 opacity-0 invisible translate-y-4 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
+                              <li>
+                                <Link
+                                  href="/auth/login"
+                                  className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                                >
+                                  Sign In
+                                </Link>
+                              </li>
+                              <li>
+                                <Link
+                                  href="/auth/register"
+                                  className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                                >
+                                  Sign Up
+                                </Link>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
                       )}
                     </div>
                     <div className="block lg:hidden">

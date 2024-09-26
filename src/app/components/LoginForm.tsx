@@ -75,15 +75,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
   return (
     <div className="flex justify-center items-center">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center gap-3 justify-center">
+        <div className="flex flex-col items-center gap-2 justify-center">
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Email
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Email</span>
+              </div>
               <input
                 name="email"
-                tabIndex={0}
                 type="email"
-                className="grow"
+                className="input input-bordered input-primary w-80"
                 placeholder="Enter you email"
                 color={formik.errors.email ? 'danger' : 'default'}
                 onChange={(e) => formik.setFieldValue('email', e.target.value)}
@@ -97,40 +98,43 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
             </span>
           </div>
           <div>
-            <div className="flex justify-end">
-              <Link
-                className="text-destructive-foreground font-bold"
-                href="/auth/forgot-password"
-              >
-                Forgot Password
-              </Link>
-            </div>
             <div>
-              <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-                Password
-                <input
-                  name="password"
-                  tabIndex={1}
-                  type={isVisible ? 'text' : 'password'}
-                  className="grow"
-                  placeholder="Enter your password"
-                  color={formik.errors.password ? 'danger' : 'default'}
-                  onChange={(e) =>
-                    formik.setFieldValue('password', e.target.value)
-                  }
-                  value={formik.values.password}
-                />
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={toggleVisibility}
-                >
-                  {isVisible ? (
-                    <FaEye className="text-md text-default-400 pointer-events-none" />
-                  ) : (
-                    <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
-                  )}
-                </button>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text text-xl">Password</span>
+                  <span className="label-text-alt text-lg">
+                    <Link
+                      className="text-destructive-foreground font-bold"
+                      href="/auth/forgot-password"
+                    >
+                      Forgot Password
+                    </Link>
+                  </span>
+                </div>
+                <div className="relative">
+                  <input
+                    name="password"
+                    type={isVisible ? 'text' : 'password'}
+                    className="input input-bordered input-primary w-80"
+                    placeholder="Enter your password"
+                    color={formik.errors.password ? 'danger' : 'default'}
+                    onChange={(e) =>
+                      formik.setFieldValue('password', e.target.value)
+                    }
+                    value={formik.values.password}
+                  />
+                  <button
+                    className="focus:outline-none absolute right-2 top-1/3"
+                    type="button"
+                    onClick={toggleVisibility}
+                  >
+                    {isVisible ? (
+                      <FaEye className="text-md text-default-400 pointer-events-none" />
+                    ) : (
+                      <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
+                    )}
+                  </button>
+                </div>
               </label>
               <span className="flex justify-start">
                 {formik.touched.password && formik.errors.password ? (

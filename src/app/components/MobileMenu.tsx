@@ -9,6 +9,7 @@ import {
   FaTwitter,
 } from 'react-icons/fa6'
 import { FaMapMarkedAlt, FaPhoneAlt, FaRegEnvelope } from 'react-icons/fa'
+import LogoutButton from './LogoutButton'
 
 interface User {
   id: string
@@ -78,6 +79,12 @@ const MobileMenu = ({
                 >
                   <span>Profile</span>
                 </Link>
+              </li>
+              <li
+                className="leading-[164%] relative font-jost border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
+                onClick={handleSwitchNav}
+              >
+                <LogoutButton />
               </li>
             </ul>
           ) : (
