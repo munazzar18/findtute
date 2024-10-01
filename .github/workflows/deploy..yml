@@ -6,14 +6,42 @@ on:
       - master
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the repository
+      # Step 1: Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Execute deployment on EC2
+      # Step 2: Install Node.js (use the correct version for your app)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use the correct version for your project
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build the Next.js app
+      - name: Build Next.js app
+        run: npm run build
+
+      # Step 5: Upload build artifacts
+      - name: Archive production build
+        uses: actions/upload-artifact@v3
+        with:
+          name: nextjs-build
+          path: |
+            .next
+            public
+            package.json
+            next.config.js
+            node_modules
+
+      # Step 6: SSH into the EC2 instance and deploy the build
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -21,5 +49,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd ~/findtute   # Change path to root
-            ./deploy.sh
+            cd ~/findtute
+            rm -rf .next public
+            mkdir -p .next public
+            # Step 7: Download build artifacts from GitHub
+            scp -r -i ${{ secrets.EC2_SSH_KEY }} ${{ github.workspace }}/.next ${{ secrets.EC2_USER }}@$${{ secrets.EC2_HOST }}:~/findtute/
+            scp -r -i ${{ secrets.EC2_SSH_KEY }} ${{ github.workspace }}/public ${{ secrets.EC2_USER }}@$${{ secrets.EC2_HOST }}:~/findtute/
+
+            # Step 8: Restart the server (adjust as necessary)
+            pm2 restart findtute # or whatever process manager you're using
