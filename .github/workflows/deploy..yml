@@ -30,7 +30,7 @@ jobs:
 
       # Step 5: Create build.zip
       - name: Zip the build files
-        run: zip -r build.zip .next public package.json next.config.js node_modules
+        run: zip -r build.zip .next
 
       # Step 6: Transfer build.zip to EC2
       - name: Transfer build.zip to EC2
