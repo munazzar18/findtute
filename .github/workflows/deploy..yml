@@ -6,55 +6,53 @@ on:
       - master
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout the repository
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Install Node.js (use the correct version for your app)
+      # Step 2: Install Node.js (use correct version)
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Use the correct version for your project
+          node-version: '20' # Change based on your project's Node version
 
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the Next.js app
-      - name: Build Next.js app
+      # Step 4: Build Next.js app
+      - name: Build app
         run: npm run build
 
-      # Step 5: Upload build artifacts
-      - name: Archive production build
-        uses: actions/upload-artifact@v3
-        with:
-          name: nextjs-build
-          path: |
-            .next
-            public
-            package.json
-            next.config.js
-            node_modules
+      # Step 5: Create build.zip
+      - name: Zip the build files
+        run: zip -r build.zip .next public package.json next.config.js node_modules
 
-      # Step 6: SSH into the EC2 instance and deploy the build
-      - name: Deploy to EC2
+      # Step 6: Transfer build.zip to EC2
+      - name: Transfer build.zip to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: 'build.zip'
+          target: '~/findtute/'
+
+      # Step 7: SSH into EC2 and unzip/deploy
+      - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
           script: |
             cd ~/findtute
-            rm -rf .next public
-            mkdir -p .next public
-            # Step 7: Download build artifacts from GitHub
-            scp -r -i ${{ secrets.EC2_SSH_KEY }} ${{ github.workspace }}/.next ${{ secrets.EC2_USER }}@$${{ secrets.EC2_HOST }}:~/findtute/
-            scp -r -i ${{ secrets.EC2_SSH_KEY }} ${{ github.workspace }}/public ${{ secrets.EC2_USER }}@$${{ secrets.EC2_HOST }}:~/findtute/
-
-            # Step 8: Restart the server (adjust as necessary)
-            pm2 restart findtute # or whatever process manager you're using
+            sudo unzip -o build.zip -d .
+            rm -f build.zip
+            pm2 restart findtute
+            pm2 status findtute
+            echo "Deployment complete!"
