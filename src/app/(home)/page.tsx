@@ -695,7 +695,7 @@ export default function page() {
             </p>
             <span className="mt-2">
               <Link href="/">
-                <button className="text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn">
+                <button className="text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn">
                   Apply Now
                 </button>
               </Link>

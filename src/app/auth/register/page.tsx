@@ -20,12 +20,14 @@ interface Response {
 
 const Register = () => {
   const getLoginData = async (formData: {
+    username: string
     email: string
     password: string
     roles: string
   }): Promise<Response> => {
     'use server'
 
+    const username = formData.username
     const email = formData.email
     const password = formData.password
     const roles = formData.roles
@@ -38,7 +40,7 @@ const Register = () => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password, roles }),
+      body: JSON.stringify({ username, email, password, roles }),
     })
     try {
       const auth = await res.json()
@@ -123,7 +125,7 @@ const Register = () => {
                 FindTute
               </span>
             </h1>
-            <div className="bg-background rounded-lg shadow-md p-8 mt-10">
+            <div className="bg-background rounded-lg shadow-md p-8 ">
               <RegisterForm getLoginData={getLoginData} />
             </div>
             <div className="flex absolute right-[68px] top-14 animate-skw">

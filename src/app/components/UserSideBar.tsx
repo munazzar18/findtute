@@ -7,9 +7,11 @@ import {
   IoTv,
 } from 'react-icons/io5'
 import Sidebar from './Sidebar'
+import { FaFile } from 'react-icons/fa'
 
 interface User {
   id: string
+  username: string
   email: string
   role: string
 }
@@ -43,26 +45,32 @@ const UserSideBar = () => {
     {
       id: 1,
       name: 'Dashboard',
-      link: `/dashboard/${user?.id}`,
+      link: `/dashboard`,
       icon: <IoFileTrayStacked />,
     },
     {
       id: 2,
       name: 'Browse',
-      link: `/dashboard/${user?.id}/browse`,
+      link: `/dashboard/browse`,
       icon: <IoPeopleSharp />,
     },
     {
       id: 3,
       name: 'Messages',
-      link: `/dashboard/${user?.id}/messages/${user?.id}`,
+      link: `/dashboard/messages`,
       icon: <IoChatbubbles />,
     },
     {
       id: 4,
       name: 'Online Session',
-      link: `/dashboard/${user?.id}/online-session/${generateRoomName(16)}`,
+      link: `/dashboard/online-session`,
       icon: <IoTv />,
+    },
+    {
+      id: 5,
+      name: 'Order',
+      link: `/dashboard/order`,
+      icon: <FaFile />,
     },
   ]
 

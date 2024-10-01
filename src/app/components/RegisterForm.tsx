@@ -9,6 +9,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 interface RegisterFormProps {
   getLoginData: (values: {
+    username: string
     email: string
     password: string
     roles: string
@@ -36,11 +37,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
 
   const formik = useFormik({
     initialValues: {
+      username: '',
       email: '',
       password: '',
       roles: '',
     },
     validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, 'Username must be 3 characters or more')
+        .max(30, 'Username must be 30 characters or less')
+        .required('Username is required')
+        .label('Username'),
       email: Yup.string()
         .email('Invalid email address')
         .required('Email is required')
@@ -75,6 +82,29 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
     <div className="flex justify-center items-start ">
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col items-center gap-2 justify-center">
+          <div>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Username</span>
+              </div>
+              <input
+                type="text"
+                autoComplete="on"
+                className="input input-bordered input-primary w-80"
+                placeholder="Enter you username"
+                color={formik.errors.username ? 'danger' : 'default'}
+                onChange={(e) =>
+                  formik.setFieldValue('username', e.target.value)
+                }
+                value={formik.values.username}
+              />
+            </label>
+            <span className="flex justify-start">
+              {formik.touched.username && formik.errors.username ? (
+                <div>{formik.errors.username}</div>
+              ) : null}
+            </span>
+          </div>
           <div>
             <label className="form-control">
               <div className="label">
@@ -201,7 +231,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
             {isLoading ? (
               <button
                 disabled
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               >
                 <span className="loading loading-spinner loading-xs"></span>
                 Please wait
@@ -210,7 +240,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
               <button
                 type="submit"
                 aria-label="Submit"
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] customBtn"
               >
                 Register
               </button>

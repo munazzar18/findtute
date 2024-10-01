@@ -3,9 +3,11 @@ import { FaAngleDown } from 'react-icons/fa'
 import { cookies } from 'next/headers'
 import LogoutButton from './LogoutButton'
 import MobileMenu from './MobileMenu'
+import React from 'react'
 
 interface User {
   id: string
+  username: string
   email: string
   role: string
 }
@@ -79,18 +81,18 @@ export default function App() {
                           </li>
                           <li>
                             <Link
-                              href="/service-details"
+                              href="/pricing"
                               className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
                             >
-                              Service Details
+                              Pricing
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/blog"
+                              href="/how-it-works"
                               className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
                             >
-                              Blog
+                              How It Works
                             </Link>
                           </li>
                         </ul>
@@ -120,7 +122,7 @@ export default function App() {
                               href="#"
                               className="flex items-center gap-1 font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
                             >
-                              {user?.email}
+                              {user?.username}
                               <span className="">
                                 <FaAngleDown size={20} />
                               </span>
@@ -129,7 +131,7 @@ export default function App() {
                             <ul className="absolute top-full z-10 bg-background shadow-sm min-w-56 transition-all duration-500 opacity-0 invisible translate-y-5 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
                               <li>
                                 <Link
-                                  href={`/dashboard/${user?.id}`}
+                                  href="/dashboard"
                                   className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                                 >
                                   Dashboard
@@ -137,12 +139,22 @@ export default function App() {
                               </li>
                               <li>
                                 <Link
-                                  href={`/onboarding/${user?.id}`}
+                                  href="/onboarding"
                                   className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
                                 >
                                   Profile
                                 </Link>
                               </li>
+                              {user?.role === 'admin' && (
+                                <li>
+                                  <Link
+                                    href="/admin/dashboard"
+                                    className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+                                  >
+                                    Admin
+                                  </Link>
+                                </li>
+                              )}
                               <li>
                                 <LogoutButton />
                               </li>

@@ -4,6 +4,7 @@ import AdminSidebar from '../components/AdminSidebar'
 
 interface User {
   id: string
+  username: string
   email: string
   role: string
 }

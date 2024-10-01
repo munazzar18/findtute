@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
-import { FaEnvelope, FaPhone } from 'react-icons/fa'
+import { FaAngleRight, FaEnvelope, FaPhone } from 'react-icons/fa'
 
 const Contact = () => {
   return (
@@ -51,7 +51,7 @@ const Contact = () => {
                     </Link>
                   </li>
                   <li>
-                    <i className="fa-solid fa-angle-right"></i>
+                    <FaAngleRight />
                   </li>
                   <li>
                     <Link

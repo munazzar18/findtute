@@ -10,7 +10,7 @@ import {
   GetSubjects,
   UpdateProfileAction,
   UploadProfileImageAction,
-} from '../dashboard/[id]/profile/_action'
+} from '../dashboard/profile/_action'
 import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
 
 interface OptionType {
@@ -139,6 +139,7 @@ const UserProfileData = () => {
         const url = 'http://localhost:3500'
         const path = url + res.data
         setImage(path)
+        console.log(image)
       } else {
         toast.error(res.message)
       }
@@ -328,7 +329,7 @@ const UserProfileData = () => {
             <button
               color="primary"
               type="button"
-              className="text-sm text-nowrap sm:text-sm md:text-lg  lg:text-lg  bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn "
+              className="text-sm text-nowrap sm:text-sm md:text-lg  lg:text-lg  bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn "
               onClick={handleFileUpload}
             >
               Upload picture
@@ -345,7 +346,7 @@ const UserProfileData = () => {
             <button
               color="primary"
               type="button"
-              className="w-full text-lg bg-red-600 text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-full text-lg bg-red-600 text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               onClick={handleRemove}
             >
               Remove
@@ -944,7 +945,7 @@ const UserProfileData = () => {
               type="submit"
               color="primary"
               aria-label="Submit"
-              className="w-full text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-full text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
             >
               Save
             </button>

@@ -10,9 +10,11 @@ import {
 } from 'react-icons/fa6'
 import { FaMapMarkedAlt, FaPhoneAlt, FaRegEnvelope } from 'react-icons/fa'
 import LogoutButton from './LogoutButton'
+import React from 'react'
 
 interface User {
   id: string
+  username: string
   email: string
   role: string
 }
@@ -64,7 +66,7 @@ const MobileMenu = ({
               </li>
               <li className="leading-[164%] relative w-full">
                 <Link
-                  href={`/dashboard/${userData?.id}`}
+                  href="/dashboard"
                   className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                   onClick={handleSwitchNav}
                 >
@@ -73,7 +75,7 @@ const MobileMenu = ({
               </li>
               <li className="leading-[164%] relative w-full dropdown">
                 <Link
-                  href={`/onboarding/${userData?.id}`}
+                  href="/onboarding"
                   className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                   onClick={handleSwitchNav}
                 >
