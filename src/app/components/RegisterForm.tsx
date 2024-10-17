@@ -13,6 +13,7 @@ interface RegisterFormProps {
     email: string
     password: string
     roles: string
+    privacy_terms_conditions: boolean
   }) => Promise<Response>
 }
 
@@ -26,6 +27,7 @@ interface Response {
     id: string
     username: string
     roles: string
+    privacy_terms_conditions: boolean
   }
 }
 
@@ -41,6 +43,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
       email: '',
       password: '',
       roles: '',
+      privacy_terms_conditions: false,
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -56,7 +59,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
         .min(8, 'Password must be 8 characters or more')
         .required('Password is required')
         .label('Password'),
-      roles: Yup.string().required('Role is required').label('Role'), // Role validation
+      roles: Yup.string().required('Role is required').label('Role'),
+      privacy_terms_conditions: Yup.boolean().oneOf(
+        [true],
+        'Please accept our Privacy and Terms and Conditions'
+      ),
     }),
     onSubmit: async (values) => {
       isSetLoading(true)
@@ -218,6 +225,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
                 ) : null}
               </span>
             </div>
+          </div>
+          <div className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text me-2">
+                I accept Privacy Policy & Terms and Conditions
+              </span>
+              <input
+                type="checkbox"
+                value="true"
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    'privacy_terms_conditions',
+                    e.target.checked
+                  )
+                }
+                className="checkbox"
+              />
+            </label>
           </div>
           <div>
             <p className="text-destructive-foreground">

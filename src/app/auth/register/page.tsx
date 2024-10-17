@@ -15,6 +15,7 @@ interface Response {
     id: string
     username: string
     roles: string
+    privacy_terms_conditions: boolean
   }
 }
 
@@ -24,6 +25,7 @@ const Register = () => {
     email: string
     password: string
     roles: string
+    privacy_terms_conditions: boolean
   }): Promise<Response> => {
     'use server'
 
@@ -31,6 +33,7 @@ const Register = () => {
     const email = formData.email
     const password = formData.password
     const roles = formData.roles
+    const privacy_terms_conditions = formData.privacy_terms_conditions
     const saveCookes = cookies()
     const url = process.env.NEXT_PUBLIC_API_URL as string
 
@@ -40,7 +43,13 @@ const Register = () => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, email, password, roles }),
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        roles,
+        privacy_terms_conditions,
+      }),
     })
     try {
       const auth = await res.json()
@@ -73,6 +82,7 @@ const Register = () => {
           id: '',
           username: '',
           roles: '',
+          privacy_terms_conditions: false,
         },
       }
     }
