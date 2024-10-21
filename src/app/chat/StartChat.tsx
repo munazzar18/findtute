@@ -1,136 +1,253 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
-import useChatSocket from './useChatSocket'
-import { IoEnter } from 'react-icons/io5'
-
-interface User {
-  id: string
-  username: string
-  email: string
-  role: string
-}
-
+import React, { useState, useEffect, useRef } from 'react'
+import { useSocket } from '../../utils/socket'
+import { get } from 'http'
 interface ChatProps {
-  room: string
-  userId: string
   token: string
-  user: User
+  chatId: string
+  applicationId: string
+  currentUserId: string
 }
 
-const StartChat: React.FC<ChatProps> = ({ room, userId, token, user }) => {
+interface Messages {
+  id: string
+  content: string
+  created_at: string
+  chatId: string
+  sender: any
+  receiver: any
+}
+
+const url = process.env.NEXT_PUBLIC_API_URL as string
+
+const Chat: React.FC<ChatProps> = ({
+  token,
+  chatId,
+  applicationId,
+  currentUserId,
+}) => {
+  const socket = useSocket(token)
   const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState<Messages[]>([])
+  const [userId, setUserId] = useState<string>('')
+  const [isScreenSharing, setIsScreenSharing] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const screenRef = useRef<HTMLDivElement>(null)
+  const chatRef = useRef<HTMLDivElement>(null)
 
-  const { messages, sendMessage, startScreenSharing, myVideo, userVideo } =
-    useChatSocket({ room, userId, token })
-  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+  const getChat = async () => {
+    const response = await fetch(`${url}chat/${chatId}/messages`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    setMessages(data?.data?.messages)
+    return data
+  }
 
-  // Scroll to the latest message
+  const scrollToBottom = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' || event.key === 'NumpadEnter') {
+      event.preventDefault()
+      sendMessage()
+    }
+  }
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (!socket) return
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (message.trim()) {
-      sendMessage(message)
-      setMessage('') // Clear input
+    getChat()
+
+    scrollToBottom()
+
+    socket.emit('joinChat', { applicationId })
+
+    setUserId(currentUserId)
+
+    socket.on('newMessage', (message: any) => {
+      setMessages((prevMessages) => [...prevMessages, message])
+    })
+
+    socket.on(
+      'receiveScreenData',
+      ({ userId, screenData }: { userId: string; screenData: string }) => {
+        console.log('Received screen data:', screenData) // Added logging
+        setIsScreenSharing(true)
+        if (screenRef.current) {
+          screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
+        }
+      }
+    )
+
+    // Listen for screen share stop
+    socket.on('screenShareStopped', () => {
+      setIsScreenSharing(false)
+      if (screenRef.current) {
+        screenRef.current.innerHTML = ''
+      }
+    })
+
+    return () => {
+      socket.off('newMessage')
+      socket.off('receiveScreenData')
+      socket.off('screenShareStopped')
+      socket.disconnect()
+    }
+  }, [socket, applicationId])
+
+  // useEffect(() => {
+  //   if (!socket) return
+  //   socket.emit('joinChat', { applicationId })
+  // }, [socket])
+
+  const sendMessage = () => {
+    if (message.trim() === '') return
+    socket?.emit('sendMessage', { chatId, content: message })
+    setMessage('')
+  }
+
+  useEffect(() => {
+    getChat()
+    scrollToBottom()
+  }, [sendMessage])
+
+  const startScreenShare = async () => {
+    try {
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      })
+      const videoTrack = screenStream.getVideoTracks()[0]
+
+      setIsScreenSharing(true)
+      socket?.emit('startScreenShare', { chatId })
+
+      const captureFrame = () => {
+        const imageCapture = new (window as any).ImageCapture(videoTrack)
+        imageCapture.grabFrame().then((bitmap: any) => {
+          const canvas = document.createElement('canvas')
+          canvas.width = bitmap.width
+          canvas.height = bitmap.height
+          const context = canvas.getContext('2d')
+          context?.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+          const screenData = canvas.toDataURL() // Convert to a base64 string
+          if (screenRef.current) {
+            screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
+          }
+          socket?.emit('shareScreenData', { chatId, screenData })
+        })
+      }
+
+      const intervalId = setInterval(captureFrame, 100)
+
+      // Stop screen sharing when the user stops the track
+      videoTrack.onended = () => {
+        clearInterval(intervalId)
+        socket?.emit('stopScreenShare', { chatId })
+        setIsScreenSharing(false)
+        if (screenRef.current) {
+          screenRef.current.innerHTML = '' // Clear the screen
+        }
+      }
+    } catch (err) {
+      console.error('Error starting screen share:', err)
+    }
+  }
+
+  const stopScreenShare = () => {
+    socket?.emit('stopScreenShare', { chatId })
+    setIsScreenSharing(false)
+    if (screenRef.current) {
+      screenRef.current.innerHTML = '' // Clear the screen
     }
   }
 
   return (
-    <div className="w-full h-[800px] flex flex-col">
-      {/* Messages List */}
-      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-        {messages.map((msg, index) => {
-          return (
-            <div
-              key={index}
-              className={`flex ${
-                msg.userId === room ? 'justify-end' : ''
-              } gap-2.5 mb-4 relative`}
-            >
-              {msg.userId !== room && (
-                <img
-                  src="https://pagedone.io/asset/uploads/1710412177.png"
-                  alt="User avatar"
-                  className="w-10 h-11"
-                />
-              )}
-              <div className="grid relative">
-                <h5
-                  className={`text-sm font-semibold leading-snug pb-1 ${
-                    msg.userId === room
-                      ? 'text-right text-gray-900'
-                      : 'text-gray-900'
-                  }`}
-                >
-                  {msg.userId === room ? 'You' : 'User'}
-                </h5>
-                <div
-                  className={`px-3.5 py-2 ${
-                    msg.userId === room ? 'bg-indigo-600' : 'bg-gray-100'
-                  } rounded inline-flex items-center gap-3`}
-                >
-                  <h5
-                    className={`${
-                      msg.userId === room ? 'text-white' : 'text-gray-900'
-                    } text-sm font-normal leading-snug`}
-                  >
-                    {msg.message}
-                  </h5>
+    <div className="p-4 bg-white rounded-lg shadow-lg">
+      {/* Chat Box */}
+      <div
+        className="mb-4 h-64 overflow-y-scroll border rounded-lg p-2"
+        ref={chatRef}
+      >
+        {messages.map((msg, index) => (
+          <div key={index}>
+            {userId === msg.sender.id ? (
+              // User's own message (You)
+              <div className="chat chat-end">
+                <div className="chat-header">
+                  You
+                  <time className="text-xs opacity-50 mx-2">
+                    {msg.created_at
+                      ? new Date(msg.created_at).toLocaleString()
+                      : ''}
+                  </time>
+                </div>
+                <div className="chat-bubble">{msg.content}</div>
+              </div>
+            ) : (
+              // Message from the other user
+              <div className="chat chat-start">
+                <div className="chat-header">
+                  {msg.sender.username}
+                  <time className="text-xs opacity-50 mx-2">
+                    {msg.created_at
+                      ? new Date(msg.created_at).toLocaleString()
+                      : ''}
+                  </time>
+                </div>
+                <div className="chat-bubble chat-bubble-info">
+                  {msg.content}
                 </div>
               </div>
-            </div>
-          )
-        })}
-        <div ref={messagesEndRef} />
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* Sticky Input Field */}
-      <div className="sticky bottom-0 w-full p-3 bg-white border-t border-gray-200">
-        <div className="w-full pl-3 pr-1 py-1 rounded-3xl border border-gray-200 items-center gap-2 inline-flex justify-between">
-          <div className="flex items-center gap-2 w-full">
-            <input
-              className="grow !text-black text-lg leading-4 focus:outline-none"
-              placeholder="Type here..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSendMessage(e)
-                }
-              }}
-            />
-            <button
-              className="items-center flex py-2 border border-gray-200 rounded-full btn"
-              onClick={handleSendMessage}
-            >
-              <IoEnter size={30} />
-              <h3 className=" text-lg font-semibold leading-4 ">Send</h3>
-            </button>
+      {/* Input Box */}
+      <div className="flex items-center">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="input input-bordered flex-grow"
+          placeholder="Type your message"
+        />
+        <button onClick={sendMessage} className="btn btn-primary ml-2">
+          Send
+        </button>
+      </div>
+
+      {/* Screen Sharing Section */}
+      <div className="mt-4">
+        {!isScreenSharing ? (
+          <button onClick={startScreenShare} className="btn btn-secondary">
+            Start Screen Share
+          </button>
+        ) : (
+          <button onClick={stopScreenShare} className="btn btn-error">
+            Stop Screen Share
+          </button>
+        )}
+
+        {/* Screen Share Preview */}
+        <div className="mt-4 p-2 border rounded-lg">
+          <div
+            ref={screenRef}
+            className="screen-share-container h-96 bg-gray-200"
+          >
+            {/* The shared screen will be rendered here */}
           </div>
         </div>
       </div>
-      <div></div>
-      <div>
-        <video ref={myVideo} autoPlay muted style={{ width: '300px' }}></video>
-        <video ref={userVideo} autoPlay style={{ width: '300px' }}></video>
-      </div>
-      <button
-        className="border border-gray-200 rounded-md !leading-0 mx-2 btn"
-        type="button"
-        onClick={startScreenSharing}
-      >
-        Start Screen Share
-      </button>
-      <button
-        className="border border-gray-200 rounded-md !leading-0 mx-2 btn"
-        type="button"
-      >
-        Stop Screen Share
-      </button>
     </div>
   )
 }
 
-export default StartChat
+export default Chat
