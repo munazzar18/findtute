@@ -7,6 +7,7 @@ interface ChatProps {
   chatId: string
   applicationId: string
   currentUserId: string
+  roomId: string
 }
 
 interface Messages {
@@ -25,10 +26,12 @@ const Chat: React.FC<ChatProps> = ({
   chatId,
   applicationId,
   currentUserId,
+  roomId,
 }) => {
   const socket = useSocket(token)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Messages[]>([])
+  const [isSent, setIsSent] = useState(false)
   const [userId, setUserId] = useState<string>('')
   const [isScreenSharing, setIsScreenSharing] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -43,6 +46,8 @@ const Chat: React.FC<ChatProps> = ({
     })
     const data = await response.json()
     setMessages(data?.data?.messages)
+    scrollToBottom()
+    setIsSent(false)
     return data
   }
 
@@ -64,26 +69,21 @@ const Chat: React.FC<ChatProps> = ({
 
     getChat()
 
-    scrollToBottom()
-
-    socket.emit('joinChat', { applicationId })
+    socket.emit('joinChat', { applicationId, chatId })
 
     setUserId(currentUserId)
 
     socket.on('newMessage', (message: any) => {
+      scrollToBottom()
       setMessages((prevMessages) => [...prevMessages, message])
     })
 
-    socket.on(
-      'receiveScreenData',
-      ({ userId, screenData }: { userId: string; screenData: string }) => {
-        console.log('Received screen data:', screenData) // Added logging
-        setIsScreenSharing(true)
-        if (screenRef.current) {
-          screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
-        }
+    socket.on('receiveScreenData', (screenData: string) => {
+      setIsScreenSharing(true)
+      if (screenRef.current) {
+        screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
       }
-    )
+    })
 
     // Listen for screen share stop
     socket.on('screenShareStopped', () => {
@@ -99,23 +99,21 @@ const Chat: React.FC<ChatProps> = ({
       socket.off('screenShareStopped')
       socket.disconnect()
     }
-  }, [socket, applicationId])
-
-  // useEffect(() => {
-  //   if (!socket) return
-  //   socket.emit('joinChat', { applicationId })
-  // }, [socket])
+  }, [socket])
 
   const sendMessage = () => {
     if (message.trim() === '') return
     socket?.emit('sendMessage', { chatId, content: message })
+    setIsSent(true)
+    getChat()
+    scrollToBottom()
     setMessage('')
   }
 
   useEffect(() => {
     getChat()
     scrollToBottom()
-  }, [sendMessage])
+  }, [isSent])
 
   const startScreenShare = async () => {
     try {
@@ -231,9 +229,7 @@ const Chat: React.FC<ChatProps> = ({
             Start Screen Share
           </button>
         ) : (
-          <button onClick={stopScreenShare} className="btn btn-error">
-            Stop Screen Share
-          </button>
+          ''
         )}
 
         {/* Screen Share Preview */}

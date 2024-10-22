@@ -23,13 +23,19 @@ interface Messages {
 export const getChats = async (chatId: string) => {
   const url = process.env.NEXT_PUBLIC_API_URL as string
   const token = cookies().get('access_token')?.value
-  const response = await fetch(`${url}chat/${chatId}/messages`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  const data = await response.json()
-  return data
+
+  try {
+    const response = await fetch(`${url}chat/${chatId}/messages`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
 }
 
 const MessageWithUser = async ({
@@ -37,7 +43,7 @@ const MessageWithUser = async ({
   searchParams,
 }: {
   params: { chatId: string }
-  searchParams: { applicationId: string }
+  searchParams: { applicationId: string; roomId: string }
 }) => {
   const token = cookies().get('access_token')?.value
 
@@ -47,6 +53,8 @@ const MessageWithUser = async ({
 
   const { applicationId } = searchParams
 
+  const { roomId } = searchParams
+
   const chatData: Messages = await getChats(chatId)
 
   return (
@@ -54,6 +62,7 @@ const MessageWithUser = async ({
       <StartChat
         token={token ? token : ''}
         chatId={chatId}
+        roomId={roomId}
         applicationId={applicationId}
         currentUserId={user.id}
       />
