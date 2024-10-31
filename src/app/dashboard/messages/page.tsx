@@ -1,4 +1,3 @@
-import StartChat from '@/app/chat/StartChat'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React from 'react'
@@ -46,6 +45,7 @@ const Messages = async () => {
 
   return (
     <div className="overflow-x-auto">
+      <h4 className="text-xl font-bold">Start discussion with</h4>
       <table className="table">
         <thead>
           <tr>

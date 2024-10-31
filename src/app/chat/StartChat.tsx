@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
-import { get } from 'http'
 interface ChatProps {
   token: string
   chatId: string
@@ -33,10 +32,8 @@ const Chat: React.FC<ChatProps> = ({
   const [messages, setMessages] = useState<Messages[]>([])
   const [isSent, setIsSent] = useState(false)
   const [userId, setUserId] = useState<string>('')
-  const [isScreenSharing, setIsScreenSharing] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const screenRef = useRef<HTMLDivElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
+  const [otherUser, setOtherUser] = useState<any>(null)
 
   const getChat = async () => {
     const response = await fetch(`${url}chat/${chatId}/messages`, {
@@ -45,6 +42,7 @@ const Chat: React.FC<ChatProps> = ({
       },
     })
     const data = await response.json()
+    setOtherUser(data?.data?.otherUser.username)
     setMessages(data?.data?.messages)
     scrollToBottom()
     setIsSent(false)
@@ -61,8 +59,13 @@ const Chat: React.FC<ChatProps> = ({
     if (event.key === 'Enter' || event.key === 'NumpadEnter') {
       event.preventDefault()
       sendMessage()
+      scrollToBottom()
     }
   }
+
+  useEffect(() => {
+    getChat()
+  }, [])
 
   useEffect(() => {
     if (!socket) return
@@ -74,29 +77,12 @@ const Chat: React.FC<ChatProps> = ({
     setUserId(currentUserId)
 
     socket.on('newMessage', (message: any) => {
-      scrollToBottom()
       setMessages((prevMessages) => [...prevMessages, message])
-    })
-
-    socket.on('receiveScreenData', (screenData: string) => {
-      setIsScreenSharing(true)
-      if (screenRef.current) {
-        screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
-      }
-    })
-
-    // Listen for screen share stop
-    socket.on('screenShareStopped', () => {
-      setIsScreenSharing(false)
-      if (screenRef.current) {
-        screenRef.current.innerHTML = ''
-      }
     })
 
     return () => {
       socket.off('newMessage')
-      socket.off('receiveScreenData')
-      socket.off('screenShareStopped')
+
       socket.disconnect()
     }
   }, [socket])
@@ -104,72 +90,20 @@ const Chat: React.FC<ChatProps> = ({
   const sendMessage = () => {
     if (message.trim() === '') return
     socket?.emit('sendMessage', { chatId, content: message })
+    scrollToBottom()
     setIsSent(true)
-    getChat()
-    scrollToBottom()
     setMessage('')
-  }
-
-  useEffect(() => {
-    getChat()
-    scrollToBottom()
-  }, [isSent])
-
-  const startScreenShare = async () => {
-    try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      })
-      const videoTrack = screenStream.getVideoTracks()[0]
-
-      setIsScreenSharing(true)
-      socket?.emit('startScreenShare', { chatId })
-
-      const captureFrame = () => {
-        const imageCapture = new (window as any).ImageCapture(videoTrack)
-        imageCapture.grabFrame().then((bitmap: any) => {
-          const canvas = document.createElement('canvas')
-          canvas.width = bitmap.width
-          canvas.height = bitmap.height
-          const context = canvas.getContext('2d')
-          context?.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-          const screenData = canvas.toDataURL() // Convert to a base64 string
-          if (screenRef.current) {
-            screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
-          }
-          socket?.emit('shareScreenData', { chatId, screenData })
-        })
-      }
-
-      const intervalId = setInterval(captureFrame, 100)
-
-      // Stop screen sharing when the user stops the track
-      videoTrack.onended = () => {
-        clearInterval(intervalId)
-        socket?.emit('stopScreenShare', { chatId })
-        setIsScreenSharing(false)
-        if (screenRef.current) {
-          screenRef.current.innerHTML = '' // Clear the screen
-        }
-      }
-    } catch (err) {
-      console.error('Error starting screen share:', err)
-    }
-  }
-
-  const stopScreenShare = () => {
-    socket?.emit('stopScreenShare', { chatId })
-    setIsScreenSharing(false)
-    if (screenRef.current) {
-      screenRef.current.innerHTML = '' // Clear the screen
-    }
   }
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-lg">
       {/* Chat Box */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">{otherUser}</h3>
+      </div>
+      {/* Messages Container */}
       <div
-        className="mb-4 h-64 overflow-y-scroll border rounded-lg p-2"
+        className="mb-4  sm:h-[300px] md:h-[400px] lg:h-[450px] overflow-y-scroll border rounded-lg p-2"
         ref={chatRef}
       >
         {messages.map((msg, index) => (
@@ -220,27 +154,6 @@ const Chat: React.FC<ChatProps> = ({
         <button onClick={sendMessage} className="btn btn-primary ml-2">
           Send
         </button>
-      </div>
-
-      {/* Screen Sharing Section */}
-      <div className="mt-4">
-        {!isScreenSharing ? (
-          <button onClick={startScreenShare} className="btn btn-secondary">
-            Start Screen Share
-          </button>
-        ) : (
-          ''
-        )}
-
-        {/* Screen Share Preview */}
-        <div className="mt-4 p-2 border rounded-lg">
-          <div
-            ref={screenRef}
-            className="screen-share-container h-96 bg-gray-200"
-          >
-            {/* The shared screen will be rendered here */}
-          </div>
-        </div>
       </div>
     </div>
   )

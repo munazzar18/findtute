@@ -1,3 +1,4 @@
+import ScreenShare from '@/app/chat/ScreenShare'
 import StartChat from '@/app/chat/StartChat'
 import { cookies } from 'next/headers'
 
@@ -20,7 +21,7 @@ interface Messages {
   }
 }
 
-const MessageWithUser = async ({
+const OnlineSessionWithUser = async ({
   params,
   searchParams,
 }: {
@@ -39,7 +40,7 @@ const MessageWithUser = async ({
 
   return (
     <div>
-      <StartChat
+      <ScreenShare
         token={token ? token : ''}
         chatId={chatId}
         roomId={roomId}
@@ -50,4 +51,4 @@ const MessageWithUser = async ({
   )
 }
 
-export default MessageWithUser
+export default OnlineSessionWithUser
