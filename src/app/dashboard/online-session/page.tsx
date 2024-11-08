@@ -1,3 +1,4 @@
+import { getRooms } from '@/app/lib/getRooms'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React from 'react'
@@ -17,25 +18,6 @@ interface Rooms {
     application: {
       id: string
     }
-  }
-}
-
-export const getRooms = async () => {
-  const url = process.env.NEXT_PUBLIC_API_URL as string
-  const token = cookies().get('access_token')?.value
-
-  try {
-    const response = await fetch(`${url}chat/rooms`, {
-      next: { revalidate: 10 },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const data = await response.json()
-    return data?.data
-  } catch (error) {
-    console.log(error)
-    return []
   }
 }
 
