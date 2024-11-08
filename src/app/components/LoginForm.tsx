@@ -63,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
           toast.error(res.message)
         } else {
           toast.success(res.message)
-          router.push('/')
+          router.push('/dashboard')
         }
       } catch (error) {
         console.error(error)

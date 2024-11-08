@@ -16,7 +16,7 @@ const Footer = () => {
               only platform find teachers onsite or online for learning online
               or onsite
             </p>
-            <ul className="flex items-center gap-5 pt-7.5">
+            {/* <ul className="flex items-center gap-5 pt-7.5">
               <li>
                 <a
                   href="#"
@@ -85,7 +85,7 @@ const Footer = () => {
                   </svg>
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
 
           <div className="wow fadeInUp" data-wow-delay=".5s">

@@ -78,7 +78,7 @@ const OnlineSession = async () => {
           ) : (
             <tr>
               <td colSpan={3} className="text-center">
-                No messages found
+                No connection found
               </td>
             </tr>
           )}

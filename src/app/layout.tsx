@@ -5,6 +5,8 @@ import './styles/animate.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
+import UserStatus from '@/utils/userStatus'
+import { cookies } from 'next/headers'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -32,9 +34,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const token = cookies().get('access_token')?.value
+
   return (
     <html lang="en" className="light">
       <body className={nunito.className}>
+        {token && <UserStatus token={token} status={false} />}
         <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
         {children}
       </body>

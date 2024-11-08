@@ -26,7 +26,7 @@ export const getRooms = async () => {
 
   try {
     const response = await fetch(`${url}chat/rooms`, {
-      next: { revalidate: 10 },
+      cache: 'no-store',
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -42,7 +42,6 @@ export const getRooms = async () => {
 const Messages = async () => {
   const user = JSON.parse(cookies().get('user')?.value || '{}')
   const rooms: Rooms[] = await getRooms()
-
   return (
     <div className="overflow-x-auto">
       <h4 className="text-xl font-bold">Start discussion with</h4>
@@ -51,6 +50,7 @@ const Messages = async () => {
           <tr>
             <th></th>
             <th>Name</th>
+            <th>Status</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -69,6 +69,9 @@ const Messages = async () => {
                   </Link>
                 </td>
                 <td>
+                  {room.other_user.is_online === true ? 'Online' : 'Offline'}
+                </td>
+                <td>
                   {room.created_at
                     ? new Date(room.created_at).toDateString()
                     : ''}
@@ -78,7 +81,7 @@ const Messages = async () => {
           ) : (
             <tr>
               <td colSpan={3} className="text-center">
-                No messages found
+                No chats found
               </td>
             </tr>
           )}

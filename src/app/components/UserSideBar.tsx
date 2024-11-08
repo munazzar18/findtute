@@ -8,6 +8,7 @@ import {
 } from 'react-icons/io5'
 import Sidebar from './Sidebar'
 import { FaFile } from 'react-icons/fa'
+import { FaDollarSign, FaUserLarge } from 'react-icons/fa6'
 
 interface User {
   id: string
@@ -50,29 +51,44 @@ const UserSideBar = () => {
     },
     {
       id: 2,
+      name: 'Profile',
+      link: `/dashboard/profile`,
+      icon: <FaUserLarge />,
+    },
+    {
+      id: 3,
       name: 'Browse',
       link: `/dashboard/browse`,
       icon: <IoPeopleSharp />,
     },
     {
-      id: 3,
+      id: 4,
       name: 'Messages',
       link: `/dashboard/messages`,
       icon: <IoChatbubbles />,
     },
     {
-      id: 4,
+      id: 5,
       name: 'Online Session',
       link: `/dashboard/online-session`,
       icon: <IoTv />,
     },
     {
-      id: 5,
-      name: 'Order',
-      link: `/dashboard/order`,
-      icon: <FaFile />,
+      id: 6,
+      name: 'Payment Request',
+      link: `/dashboard/payment-request`,
+      icon: <FaDollarSign />,
     },
   ]
+
+  if (user?.role === 'teacher') {
+    items.push({
+      id: items.length + 1,
+      name: 'Application',
+      link: '/dashboard/application',
+      icon: <FaFile />,
+    })
+  }
 
   return (
     <div>
