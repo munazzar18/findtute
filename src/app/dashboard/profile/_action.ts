@@ -24,7 +24,7 @@ try {
 
 export const GetGrades = async () => {
     try {
-        const res = await fetch(`${url}grade`, { next: { revalidate: 10 } })
+        const res = await fetch(`${url}grade?page=1`, { next: { revalidate: 10 } })
         const data = await res.json()
         return data
     } catch (error) {
@@ -42,6 +42,36 @@ export const GetSubjects = async () => {
     }
 }
 
+export const GetCountry = async () => {
+    try {
+        const res = await fetch(`${url}location/countries`, { next: { revalidate: 10 } })
+        const data = await res.json()
+        return data.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const GetState = async (countryCode: string) => {
+    try {
+        const res = await fetch(`${url}location/states/${countryCode}`, { next: { revalidate: 10 } })
+        const data = await res.json()
+        return data.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const GetCity = async (countryCode: string, stateCode: string) => {
+    try {
+        const res = await fetch(`${url}location/cities/${countryCode}/${stateCode}`, { next: { revalidate: 10 } })
+        const data = await res.json()
+        return data.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export const UploadProfileImageAction = async (formData: FormData) => {
     try {
         const res = await fetch(`${url}user/upload`, {
@@ -49,20 +79,24 @@ export const UploadProfileImageAction = async (formData: FormData) => {
             body: formData,
         })
         const data = await res.json()
-        console.log(data)
         return data
     } catch (error) {
         console.error(error)
     }
 }
 
+
+
 export const UpdateProfileAction = async (formData: FormData) => {
     const first_name = formData.get('first_name')
     const last_name = formData.get('last_name')
     const cnic = formData.get('cnic')
     const mobile = formData.get('mobile')
+    const country = formData.get('country')
+    const state = formData.get('state')
+    const city = formData.get('city')
     const address = formData.get('address')
-    const latitude = Number(formData.get('latitude'))
+    const lattitude = Number(formData.get('lattitude'))
     const longitude = Number(formData.get('longitude'))
     const avatar = formData.get('avatar')
     const preference = formData.get('preference')
@@ -80,11 +114,10 @@ export const UpdateProfileAction = async (formData: FormData) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ first_name, last_name, cnic, mobile, address, latitude, longitude, avatar, preference, education, experience, grades_ids, subjects_ids }),
+            body: JSON.stringify({ first_name, last_name, cnic, mobile, country, state, city, address, lattitude, longitude, avatar, preference, education, experience, grades_ids, subjects_ids }),
 
         })
         const data = await res.json()
-        console.log(data)
         return data
     } catch (error) {
         console.error(error)
