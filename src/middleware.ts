@@ -45,6 +45,10 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url)) // Redirect to home if not admin
     }
 
+    if (token && user && user.role === 'admin' && !isAdminRoute) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+    }
+
     // Allow request to proceed
     return NextResponse.next()
 }
