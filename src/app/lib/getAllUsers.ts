@@ -1,9 +1,7 @@
 import { cookies } from "next/headers";
 
-
-const token = cookies().get('access_token')?.value
-
 export const getAllUsers = async () => {
+    const token = cookies().get('access_token')?.value
     const url = process.env.NEXT_PUBLIC_API_URL as string
 
     try {
