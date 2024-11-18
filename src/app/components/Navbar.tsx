@@ -89,6 +89,22 @@ export default function App() {
                           </li>
                           <li>
                             <Link
+                              href="/terms-condition"
+                              className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                            >
+                              Terms & Conditions
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/privacy-policy"
+                              className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
+                            >
+                              Privacy Policy
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
                               href="/how-it-works"
                               className="block py-3 px-4 font-semibold text-gray-700 hover:text-white hover:bg-[#F6972C] transition-colors duration-300 border-b border-gray-200"
                             >

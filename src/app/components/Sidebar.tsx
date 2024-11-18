@@ -26,13 +26,18 @@ const Sidebar = ({
   }
 
   return (
-    <div className="h-screen bg-primary w-16 lg:!w-64 xl:!w-72 flex flex-col">
+    <div className="h-screen min-h-screen bg-primary w-16 lg:!w-64 xl:!w-72 flex flex-col">
       <div className="overflow-y-auto flex-grow">
         <ul className="flex flex-col py-4 space-y-1">
           <li className="text-white p-4">
-            <Link href="/" className="flex items-center gap-1">
+            <Link
+              href="/"
+              className="flex items-center gap-1 flex-col sm:flex-row"
+            >
               <img src="/logo_white_small.png" alt="findtute logo" />
-              <span className="font-bold text-3xl ">FindTute</span>
+              <span className="font-bold text-xs sm:block sm:ml-2 sm:text-xs md:text-lg lg:text-3xl">
+                FindTute
+              </span>
             </Link>
           </li>
 

@@ -35,8 +35,8 @@ export default function Layout({
       <div className="flex min-w-0">
         <UserSideBar />
         <UserStatus token={token} status={true} />
-        <div className="flex-1 p-6">
-          <main className="flex-grow p-6 overflow-auto bg-primary-foreground">
+        <div className="flex-1 p-0 sm:p-0 md:p-4 lg:p-6">
+          <main className="flex-grow p-0 sm:p-0 md:p-4 lg:p-6 overflow-auto bg-primary-foreground">
             {children}
           </main>{' '}
         </div>

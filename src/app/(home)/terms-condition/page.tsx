@@ -535,6 +535,31 @@ const TermsConditions = () => {
 
           <div className="mb-4">
             <h1 className="text-3xl font-bold text-[#f7941e] mb-2">
+              Cancellation
+            </h1>
+
+            <p className="text-lg mb-2">
+              <ul className="mx-5">
+                <li className="list-decimal">
+                  According to our payment plan monthly and yearly, if the user
+                  cancels the subscription before the due date, the subscription
+                  will be cancelled. If user unable to pay for the subscription,
+                  the subscription will be cancelled after due date valid for
+                  both monthly and yearly subscription.
+                </li>
+                <li className="list-decimal">
+                  You agree to payy all fees and charges incurred in connection
+                  with your account (including any applicable taxes) at the
+                  rates, if your subscription is expired and cancelled and then
+                  to reactivate the subscription again, you agree to pay 300 PKR
+                  for reactivation.
+                </li>
+              </ul>
+            </p>
+          </div>
+
+          <div className="mb-4">
+            <h1 className="text-3xl font-bold text-[#f7941e] mb-2">
               Satisfaction Guarantee
             </h1>
 
