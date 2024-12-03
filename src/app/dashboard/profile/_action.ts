@@ -85,6 +85,17 @@ export const UploadProfileImageAction = async (formData: FormData) => {
     }
 }
 
+export const GetProfileByIdAction = async () => {
+    const res = await fetch(`${url}user/id/${user?.id}`, {
+        next: { revalidate: 10 },
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+    const data = await res.json()
+    return data.data
+}
 
 
 export const UpdateProfileAction = async (formData: FormData) => {

@@ -56,7 +56,7 @@ const Checkout: React.FC = () => {
       expiryDate: token,
       merchantPaymentMethod,
       orderRefNum: orderID,
-      // paymentMethod: 'MA_PAYMENT_METHOD',
+      paymentMethod: 'MA_PAYMENT_METHOD',
       postBackURL,
       storeId: storeID,
       timeStamp: new Date().toISOString().split('Z')[0],
@@ -67,10 +67,10 @@ const Checkout: React.FC = () => {
       storeId: storeID, // Default to an empty string if null
       orderId: orderID,
       transactionAmount: amount,
-      // transactionType: 'MA_PAYMENT_METHOD',
+      transactionType: 'MA_PAYMENT_METHOD',
       tokenExpiry: token,
       postBackURL: postBackURL,
-      // merchantPaymentMethod: merchantPaymentMethod,
+      merchantPaymentMethod: merchantPaymentMethod,
       encryptedHashRequest: hash,
       timeStamp: new Date().toISOString().split('Z')[0],
     })
@@ -92,20 +92,20 @@ const Checkout: React.FC = () => {
     <div>
       {/* Required hidden inputs */}
       <input type="hidden" id="storeId" value="664939" />
-      <input type="hidden" id="amount" value="10.00" />
+      <input type="hidden" id="amount" value="10" />
       <input type="hidden" id="orderId" value="MANT12345" />
       <input type="hidden" id="token" value="20241231 111111" />
-      <input type="hidden" id="bankId" value="" />
+      {/* <input type="hidden" id="bankId" value="" /> */}
       <input
         type="hidden"
         id="postBackURL"
         value="http://localhost:3000/payment-completed"
       />
-      {/* <input
+      <input
         type="hidden"
         id="merchantPaymentMethod"
         value="MA_PAYMENT_METHOD"
-      /> */}
+      />
 
       {/* Payment button */}
       <button

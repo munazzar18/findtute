@@ -43,7 +43,7 @@ const Application = async () => {
               </div>
               <div>
                 <p className="font-semibold">Subjects</p>
-                {application.subjects.map((subject: string) => (
+                {application?.subjects?.map((subject: string) => (
                   <p key={subject} className="font-bold">
                     {subject}
                   </p>
@@ -51,7 +51,7 @@ const Application = async () => {
               </div>
               <div>
                 <p className="font-semibold">Grades</p>
-                {application.grades.map((grade: string) => (
+                {application?.grades?.map((grade: string) => (
                   <p key={grade} className="font-bold">
                     {grade}
                   </p>

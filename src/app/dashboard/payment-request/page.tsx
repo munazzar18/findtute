@@ -10,9 +10,9 @@ const PaymentRequest = () => {
       </div>
       <div>
         {/* <CheckoutForm
-          amount={100}
-          orderRefNum="1354"
-          postBackURL="http://localhost:3000/dashboard/payment-request"
+          amount={10}
+          orderRefNum="1054"
+          postBackURL="https://findtute.com/dashboard/payment-request"
           storeId={664939}
         /> */}
         <EasyCheckOut />

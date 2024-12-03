@@ -37,8 +37,8 @@ const PrivacyPolicy = () => {
         <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
       </Head>
 
-      <div className="">
-        <div className="card shadow-xl mx-32">
+      <div className="px-4 sm:px-8 lg:px-16 xl:px-32">
+        <div className="card shadow-xl">
           <div className="card-body">
             <div className="flex flex-col items-center justify-center w-full mb-6">
               <div>

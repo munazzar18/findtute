@@ -37,7 +37,7 @@ const TermsConditions = () => {
         />
         <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
       </Head>
-      <div className="card shadow-xl mx-32">
+      <div className="card shadow-xl px-4 sm:px-8 lg:px-16 xl:px-32">
         <div className="card-body">
           <div className="flex flex-col items-center justify-center w-full mb-6">
             <h1 className="text-4xl font-bold">Terms and Conditions</h1>

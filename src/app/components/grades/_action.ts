@@ -14,7 +14,6 @@ if (!token) {
 
 export const CreateGradeAction = async (formData: FormData) => {
     const grade = formData.get('grade')
-    console.log("FORMDATA:", grade)
     const res = await fetch(`${url}grade`, {
         method: 'POST',
         headers: {
