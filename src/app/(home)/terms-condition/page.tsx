@@ -560,6 +560,30 @@ const TermsConditions = () => {
 
           <div className="mb-4">
             <h1 className="text-3xl font-bold text-[#f7941e] mb-2">
+              Refund Policy
+            </h1>
+
+            <p className="text-lg mb-2">
+              <ul className="mx-5">
+                <li className="list-decimal">
+                  All purchases made through the Site are final and
+                  non-refundable. By completing your payment and creating an
+                  account, you acknowledge and agree that you are not entitled
+                  to a refund for any reason, including but not limited to
+                  partial use, non-use, or cancellation of the service.
+                </li>
+                <li className="list-decimal">
+                  You agree to this no-refund policy as a condition of your
+                  purchase and account creation. Any exception to this policy
+                  will be at our sole discretion and will only be provided in
+                  writing by our authorized representatives.
+                </li>
+              </ul>
+            </p>
+          </div>
+
+          <div className="mb-4">
+            <h1 className="text-3xl font-bold text-[#f7941e] mb-2">
               Satisfaction Guarantee
             </h1>
 
