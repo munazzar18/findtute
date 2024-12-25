@@ -33,7 +33,7 @@ const AdminSidebar = () => {
     {
       id: 5,
       name: 'Subjects',
-      link: '/admin/subjects',
+      link: '/admin/subjects?page=1',
       icon: <FaBookOpen />,
     },
   ]
