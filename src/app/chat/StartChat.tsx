@@ -42,7 +42,7 @@ const Chat: React.FC<ChatProps> = ({
   currentUserId,
   roomId,
 }) => {
-  const socket = useSocket(token)
+  const socket = useSocket(token, currentUserId)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Messages[]>([])
   const [isSent, setIsSent] = useState(false)

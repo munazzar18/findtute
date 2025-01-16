@@ -1,5 +1,7 @@
 import logoutAction from '@/app/auth/logout/_action'
 import UserSideBar from '@/app/components/UserSideBar'
+import CustomToast from '@/utils/customToast'
+import DashboardSocket from '@/utils/dashboardSocket'
 import UserStatus from '@/utils/userStatus'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
@@ -33,8 +35,10 @@ export default function Layout({
   return (
     <>
       <div className="flex min-w-0">
+        <DashboardSocket token={token} currentUserId={user ? user.id : ''} />
         <UserSideBar />
         <UserStatus token={token} status={true} />
+        <CustomToast token={token} currentUserId={user ? user.id : ''} />
         <div className="flex-1 p-0 sm:p-0 md:p-4 lg:p-6">
           <main className="flex-grow p-0 sm:p-0 md:p-4 lg:p-6 overflow-auto bg-primary-foreground">
             {children}

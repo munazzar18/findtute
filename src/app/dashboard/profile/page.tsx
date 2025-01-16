@@ -284,12 +284,12 @@ const UserProfileData = () => {
 
   const handleLastEducation = (index: number) => {
     if (index > 0) {
-      return index === education.length - 1
+      return index === education?.length - 1
     }
   }
 
   const handleAddLastEducation = (index: number) => {
-    return index === education.length - 1
+    return index === education?.length - 1
   }
 
   const handleAddExperience = () => {
@@ -299,19 +299,19 @@ const UserProfileData = () => {
   }
 
   const handleRemoveExperience = (index: number) => {
-    const newexperience = experience.filter((_, i) => i !== index)
+    const newexperience = experience?.filter((_, i) => i !== index)
     setexperience(newexperience)
     formik.setFieldValue('experience', newexperience)
   }
 
   const handleLastExperience = (index: number) => {
     if (index > 0) {
-      return index === experience.length - 1
+      return index === experience?.length - 1
     }
   }
 
   const handleAddLastExperience = (index: number) => {
-    return index === experience.length - 1
+    return index === experience?.length - 1
   }
 
   const handleLocation = () => {
@@ -877,7 +877,7 @@ const UserProfileData = () => {
             <h1 className="text-2xl font-bold">Education</h1>
           </div>
           <div className="col-span-12">
-            {formik.values.education.map((education, index) => (
+            {formik.values.education?.map((education, index) => (
               <div
                 className="grid grid-cols-12 gap-4 items-baseline"
                 key={index}
@@ -1065,7 +1065,7 @@ const UserProfileData = () => {
             <h1 className="text-2xl font-bold">Experience</h1>
           </div>
           <div className="col-span-12 mb-2">
-            {formik.values.experience.map((experience, index) => (
+            {formik.values.experience?.map((experience, index) => (
               <div
                 className="grid grid-cols-12 gap-4 items-baseline mb-4"
                 key={index}

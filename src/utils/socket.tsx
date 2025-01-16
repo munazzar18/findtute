@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client'
 
 const URL = process.env.NEXT_PUBLIC_SOCKET_URL as string
 
-export const useSocket = (token: string): Socket | null => {
+export const useSocket = (token: string, userId?: string): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null)
 
   useEffect(() => {
@@ -16,6 +16,7 @@ export const useSocket = (token: string): Socket | null => {
 
       newSocket.on('connect', () => {
         console.log('Socket successfully connected', newSocket.id)
+        newSocket.emit('socketId', userId)
       })
 
       newSocket.on('disconnect', (reason) => {
