@@ -1,8 +1,8 @@
 import CheckoutForm from '@/app/components/CheckoutForm'
-import EasyCheckOut from '@/app/components/EasyCheckOut'
-import React from 'react'
+//import EasyCheckOut from '@/app/components/EasyCheckOut'
+import LandingGUI from '@/app/components/LandingGUI'
 
-const PaymentRequest = () => {
+const page = () => {
   return (
     <>
       <div className="mb-6">
@@ -15,10 +15,11 @@ const PaymentRequest = () => {
           postBackURL="https://findtute.com/dashboard/payment-request"
           storeId={664939}
         /> */}
-        <EasyCheckOut />
+        {/* <EasyCheckOut /> */}
+        <LandingGUI />
       </div>
     </>
   )
 }
 
-export default PaymentRequest
+export default page
