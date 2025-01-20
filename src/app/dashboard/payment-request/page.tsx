@@ -55,6 +55,7 @@ const page = () => {
                         btnClass="border border-primary rounded-[10px] btn"
                         amount={499}
                         description="monthly"
+                        ApplicationPackage="monthly"
                       />
                     </div>
                   </div>
@@ -105,6 +106,7 @@ const page = () => {
                         btnClass="bg-primary text-cream-foreground rounded-[10px] btn"
                         amount={3999}
                         description="yearly"
+                        ApplicationPackage="yearly"
                       />
                     </div>
                   </div>
