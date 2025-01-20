@@ -47,13 +47,12 @@ const page: React.FC = () => {
     </h1>
 
     <p className="mb-8 text-xl text-gray-700">
-      Something went wrong! - Please try again, 
+      Something went wrong!
     </p>
 
     <div className="p-6 mb-8 rounded-lg bg-red-100">
       <p className="text-lg font-medium text-blue-700">
-        Your tool <span className="font-bold">"http://findtute.com"</span> will
-        be listed shortly.
+      <span className='mr-4'> Please try again - <Link className='underline' href='/dashboard/payment-request'>click here  </Link> </span>
       </p>
     </div>
 

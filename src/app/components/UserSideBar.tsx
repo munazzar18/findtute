@@ -73,13 +73,16 @@ const UserSideBar = () => {
       link: `/dashboard/online-session`,
       icon: <IoTv />,
     },
-    {
-      id: 6,
-      name: 'Payment Request',
-      link: `/dashboard/payment-request`,
-      icon: <FaDollarSign />,
-    },
   ]
+
+  if (user?.role === 'teacher') {
+    items.push({
+      id: items.length + 1,
+      name: 'Payment Request',
+      link: '/dashboard/payment-request',
+      icon: <FaDollarSign />,
+    })
+  }
 
   if (user?.role === 'teacher') {
     items.push({

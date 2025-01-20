@@ -1,7 +1,12 @@
 import React from 'react';
 import Link from 'next/link'
+import { getUserPaymentId } from '@/app/lib/getUserPayments';
 
-const PaymentSuccess: React.FC = () => {
+const PaymentSuccess: React.FC = async() => {
+
+  // const userpayments = await getUserPaymentId();
+
+
   return (
     <div className="flex items-center justify-center min-h-screen">
   <div className="w-full max-w-4xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-md hover:shadow-xl">
@@ -33,11 +38,10 @@ const PaymentSuccess: React.FC = () => {
 
     <div className="p-6 mb-8 rounded-lg bg-blue-50">
       <p className="text-lg font-medium text-blue-700">
-        Your tool <span className="font-bold">"http://findtute.com"</span> will
-        be listed shortly.
+        Your application is created Successfully -<span className="underline ml-2"><Link href='/dashboard/application'>click here</Link></span>
       </p>
     </div>
-
+   
     {/* Contact Information */}
     <div className="pt-8 mt-8 border-t border-gray-100">
       <p className="text-lg text-gray-700">Have questions? Contact us at:</p>
