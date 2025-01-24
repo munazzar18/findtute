@@ -95,35 +95,34 @@ const Chat: React.FC<ChatProps> = ({
       setMessages((prevMessages) => [...prevMessages, message])
     })
 
-    socket.on('notification', (notification: Notification) => {
-      if (notification.userId === currentUserId) return
+    // socket.on('notification', (notification: Notification) => {
+    //   console.log('Received notification in layout:', notification)
+    //   // if (notification.userId === currentUserId) return
 
-      toast.custom((t) => (
-        <div
-          className={`${
-            t.visible ? 'animate-enter' : 'animate-leave'
-          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        >
-          <div className="w-0 flex-1 p-4">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 pt-0.5">
-                <FaCircle className="text-green-400" />
-              </div>
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">
-                  {notification.from}
-                </p>
-                <p className="text-sm text-gray-500">{notification.content}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))
-    })
+    //   toast.custom((t) => (
+    //     <div
+    //       className={`${
+    //         t.visible ? 'animate-enter' : 'animate-leave'
+    //       } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+    //     >
+    //       <div className="w-0 flex-1 p-4">
+    //         <div className="flex items-start">
+    //           <div className="flex-shrink-0 pt-0.5">
+    //             <FaCircle className="text-green-400" />
+    //           </div>
+    //           <div className="ml-3 flex-1">
+    //             <p className="text-sm font-medium text-gray-900">
+    //               {notification.from}
+    //             </p>
+    //             <p className="text-sm text-gray-500">{notification.content}</p>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   ))
+    // })
 
-    socket.on('messageStatus', (messageStatus) => {
-      console.log('Received message status:', messageStatus)
-    })
+    socket.on('messageStatus', (messageStatus) => {})
 
     return () => {
       socket.off('newMessage')

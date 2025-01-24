@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
-import { get } from 'http'
+
 interface ChatProps {
   token: string
   chatId: string
@@ -9,17 +9,6 @@ interface ChatProps {
   currentUserId: string
   roomId: string
 }
-
-interface Messages {
-  id: string
-  content: string
-  created_at: string
-  chatId: string
-  sender: any
-  receiver: any
-}
-
-const url = process.env.NEXT_PUBLIC_API_URL as string
 
 const ScreenShare: React.FC<ChatProps> = ({
   token,
@@ -29,37 +18,52 @@ const ScreenShare: React.FC<ChatProps> = ({
   roomId,
 }) => {
   const socket = useSocket(token)
-  const [userId, setUserId] = useState<string>('')
   const [isScreenSharing, setIsScreenSharing] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const screenRef = useRef<HTMLDivElement>(null)
+  const localVideoRef = useRef<HTMLVideoElement>(null)
+  const remoteVideoRef = useRef<HTMLVideoElement>(null)
+  const peerConnectionRef = useRef<RTCPeerConnection | null>(null)
 
   useEffect(() => {
     if (!socket) return
 
     socket.emit('joinChat', { applicationId, chatId })
 
-    setUserId(currentUserId)
+    socket.on('screenShareOffer', async ({ sdp }) => {
+      if (!peerConnectionRef.current) {
+        peerConnectionRef.current = new RTCPeerConnection()
 
-    socket.on('receiveScreenData', (screenData: string) => {
-      setIsScreenSharing(true)
-      if (screenRef.current) {
-        screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
+        // Set up ontrack handler here
+        peerConnectionRef.current.ontrack = (event) => {
+          console.log('Incoming stream', event.streams[0])
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = event.streams[0]
+          }
+        }
       }
+
+      await peerConnectionRef.current.setRemoteDescription(
+        new RTCSessionDescription(sdp)
+      )
+      const answer = await peerConnectionRef.current.createAnswer()
+      await peerConnectionRef.current.setLocalDescription(answer)
+      socket.emit('screenShareAnswer', { chatId, sdp: answer })
     })
 
-    // Listen for screen share stop
-    socket.on('screenShareStopped', () => {
-      setIsScreenSharing(false)
-      if (screenRef.current) {
-        screenRef.current.innerHTML = ''
+    socket.on('iceCandidate', async ({ candidate }) => {
+      if (peerConnectionRef.current) {
+        await peerConnectionRef.current.addIceCandidate(
+          new RTCIceCandidate(candidate)
+        )
       }
     })
 
     return () => {
-      socket.off('receiveScreenData')
-      socket.off('screenShareStopped')
-      socket.disconnect()
+      socket.off('screenShareOffer')
+      socket.off('iceCandidate')
+      if (peerConnectionRef.current) {
+        peerConnectionRef.current.close()
+        peerConnectionRef.current = null
+      }
     }
   }, [socket])
 
@@ -69,37 +73,32 @@ const ScreenShare: React.FC<ChatProps> = ({
         video: true,
         audio: true,
       })
-      const videoTrack = screenStream.getVideoTracks()[0]
 
-      setIsScreenSharing(true)
-      socket?.emit('startScreenShare', { chatId })
-
-      const captureFrame = () => {
-        const imageCapture = new (window as any).ImageCapture(videoTrack)
-        imageCapture.grabFrame().then((bitmap: any) => {
-          const canvas = document.createElement('canvas')
-          canvas.width = bitmap.width
-          canvas.height = bitmap.height
-          const context = canvas.getContext('2d')
-          context?.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-          const screenData = canvas.toDataURL() // Convert to a base64 string
-          if (screenRef.current) {
-            screenRef.current.innerHTML = `<img src="${screenData}" alt="Screen Share" />`
-          }
-          socket?.emit('shareScreenData', { chatId, screenData })
-        })
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = screenStream
+        console.log('Stream', screenStream)
       }
 
-      const intervalId = setInterval(captureFrame, 100)
+      peerConnectionRef.current = new RTCPeerConnection()
 
-      // Stop screen sharing when the user stops the track
-      videoTrack.onended = () => {
-        clearInterval(intervalId)
-        socket?.emit('stopScreenShare', { chatId })
-        setIsScreenSharing(false)
-        if (screenRef.current) {
-          screenRef.current.innerHTML = '' // Clear the screen
+      screenStream.getTracks().forEach((track) => {
+        peerConnectionRef.current?.addTrack(track, screenStream)
+      })
+
+      peerConnectionRef.current.onicecandidate = (event) => {
+        if (event.candidate) {
+          socket?.emit('iceCandidate', { chatId, candidate: event.candidate })
         }
+      }
+
+      const offer = await peerConnectionRef.current.createOffer()
+      await peerConnectionRef.current.setLocalDescription(offer)
+      socket?.emit('shareScreenData', { chatId, sdp: offer })
+
+      setIsScreenSharing(true)
+
+      screenStream.getVideoTracks()[0].onended = () => {
+        stopScreenShare()
       }
     } catch (err) {
       console.error('Error starting screen share:', err)
@@ -107,10 +106,15 @@ const ScreenShare: React.FC<ChatProps> = ({
   }
 
   const stopScreenShare = () => {
-    socket?.emit('stopScreenShare', { chatId })
+    if (peerConnectionRef.current) {
+      peerConnectionRef.current.close()
+      peerConnectionRef.current = null
+    }
+
     setIsScreenSharing(false)
-    if (screenRef.current) {
-      screenRef.current.innerHTML = '' // Clear the screen
+    if (localVideoRef.current && remoteVideoRef.current) {
+      localVideoRef.current.srcObject = null // Clear local video
+      remoteVideoRef.current.srcObject = null // Clear remote video
     }
   }
 
@@ -121,22 +125,25 @@ const ScreenShare: React.FC<ChatProps> = ({
           Start Screen Share
         </button>
       ) : (
-        ''
+        <button onClick={stopScreenShare} className="btn btn-danger">
+          Stop Screen Share
+        </button>
       )}
-      {/* Screen Sharing Section */}
-      <div className="flex justify-center items-center mt-4">
-        {/* Screen Share Preview */}
-        {isScreenSharing ? (
-          <div className="mt-4 px-2 border rounded-lg h-full ">
-            <div ref={screenRef} className="h-full  bg-gray-200">
-              {/* The shared screen will be rendered here */}
-              <video ref={videoRef} />
-            </div>
-          </div>
-        ) : (
-          'Screen Share Preview'
-        )}
-      </div>
+
+      <video
+        ref={localVideoRef}
+        autoPlay
+        muted
+        playsInline
+        style={{ width: '100%', height: 'auto' }}
+      />
+      <video
+        ref={remoteVideoRef}
+        autoPlay
+        muted
+        playsInline
+        style={{ width: '100%', height: 'auto' }}
+      />
     </div>
   )
 }

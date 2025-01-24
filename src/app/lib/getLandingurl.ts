@@ -7,6 +7,7 @@ export const GetLandingurl = async (formData: FormData) => {
 
     const amount = Number(formData.get('amount'))
     const description = formData.get('description')
+    const applicationPackage = formData.get('package')
 
     if (!amount && !token && !description) {
         return []
@@ -23,7 +24,8 @@ export const GetLandingurl = async (formData: FormData) => {
             },
             body: JSON.stringify({
                 amount,
-                description
+                description,
+                package: applicationPackage
 
             })
         })

@@ -39,6 +39,9 @@ export function middleware(request: NextRequest) {
     const isUnprotectedRoute = unprotectedRoute.includes(pathname);
     const isNextAsset = pathname.startsWith('/_next');
     const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
+    const paymentRoute = pathname.startsWith('/dashboard/payment-successfull');
+    const paymentFailedRoute = pathname.startsWith('/dashboard/payment-failed');
+
 
     // If there's no token and the route is protected
     if (!token && !isUnprotectedRoute && !isNextAsset) {
@@ -53,6 +56,20 @@ export function middleware(request: NextRequest) {
     // Redirect admin to dashboard if accessing non-admin routes
     if (token && user?.role === 'admin' && !isAdminRoute && pathname !== '/admin/dashboard') {
         return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+    }
+
+    if (paymentRoute) {
+        const hasQueryParameters = request.nextUrl.searchParams.toString() !== '';
+        if (!hasQueryParameters) {
+            return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
+    }
+
+    if (paymentFailedRoute) {
+        const hasQueryParameters = request.nextUrl.searchParams.toString() !== '';
+        if (!hasQueryParameters) {
+            return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
     }
 
     // Allow request to proceed

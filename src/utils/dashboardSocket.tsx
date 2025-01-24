@@ -18,6 +18,7 @@ const DashboardSocket = ({
       console.log('Socket successfully connected in dashboard', socket.id)
       socket.emit('socketId', currentUserId)
     })
+
     socket.on('disconnect', (reason) => {
       console.log('Socket disconnected in dashboard:', reason)
     })
@@ -27,6 +28,7 @@ const DashboardSocket = ({
 
     return () => {
       if (socket) {
+        socket.off('notification')
         socket.disconnect()
       }
     }

@@ -2,11 +2,14 @@
 
 import { cookies } from 'next/headers'
 
-const paymentStatusAction = async (formData: FormData,id: string) => {
+export const PaymentStatusAction = async (id: string, formData: FormData) => {
 
-    const status = formData.get('status') as string
+    const status = formData.get('status')
+    const transaction_id = formData.get('transaction_id')
+    const amount = Number(formData.get('amount'))
+    const appPackage = formData.get('package')
     const url = process.env.NEXT_PUBLIC_API_URL as string
-    const token = cookies().get('auth_token')?.value
+    const token = cookies().get('access_token')?.value
 
     try {
         const res = await fetch(`${url}payment/payment-status/paymentId/${id}`, {
@@ -14,15 +17,14 @@ const paymentStatusAction = async (formData: FormData,id: string) => {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ status }),
+            body: JSON.stringify({ status, transaction_id, amount, package: appPackage }),
         })
         const data = await res.json()
         return data
-       } catch (error) {
+    } catch (error) {
         console.error("payment update failed", error)
-       }
+    }
 }
 
-export { paymentStatusAction }
