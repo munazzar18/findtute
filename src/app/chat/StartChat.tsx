@@ -1,5 +1,7 @@
+
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
+import { TbSend2 } from "react-icons/tb";
+import React, { useState,useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
 import { FaCircle } from 'react-icons/fa6'
 import toast from 'react-hot-toast'
@@ -19,20 +21,18 @@ interface Messages {
   sender: any
   receiver: any
 }
-
 interface GroupProps {
-  messages: Messages[]
-  userId: string
-  chatRef: React.RefObject<HTMLDivElement>
-}
-
-interface Notification {
-  chatId: string
-  content: string
-  from: string
-  userId: string
-}
-
+    messages: Messages[]
+    userId: string
+    chatRef: React.RefObject<HTMLDivElement>
+  }
+  
+  interface Notification {
+    chatId: string
+    content: string
+    from: string
+    userId: string
+  }
 const url = process.env.NEXT_PUBLIC_API_URL as string
 
 const Chat: React.FC<ChatProps> = ({
@@ -71,14 +71,12 @@ const Chat: React.FC<ChatProps> = ({
     setIsSent(false)
     return data
   }
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' || event.key === 'NumpadEnter') {
       event.preventDefault()
       sendMessage()
     }
   }
-
   useEffect(() => {
     getChat()
   }, [])
@@ -87,15 +85,13 @@ const Chat: React.FC<ChatProps> = ({
     if (!socket) return
 
     socket.emit('joinChat', { applicationId, chatId })
-
     setUserId(currentUserId)
 
     socket.on('newMessage', (message: any) => {
       scrollToBottom()
       setMessages((prevMessages) => [...prevMessages, message])
     })
-
-    // socket.on('notification', (notification: Notification) => {
+     // socket.on('notification', (notification: Notification) => {
     //   console.log('Received notification in layout:', notification)
     //   // if (notification.userId === currentUserId) return
 
@@ -123,20 +119,22 @@ const Chat: React.FC<ChatProps> = ({
     // })
 
     socket.on('messageStatus', (messageStatus) => {})
-
     return () => {
       socket.off('newMessage')
-
       socket.disconnect()
     }
   }, [socket])
 
   const sendMessage = () => {
     if (message.trim() === '') return
+    const sound = new Audio('/assets/soundmessage.wav'); // Path to your sound file
+    sound.play();
     socket?.emit('sendMessage', { chatId, content: message })
-    setIsSent(true)
+    setIsSent(true); 
     setMessage('')
   }
+
+
 
   useEffect(() => {
     scrollToBottom()
@@ -155,66 +153,61 @@ const Chat: React.FC<ChatProps> = ({
   ).map(([date, msgs]) => ({ date, msgs }))
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg">
-      {/* Chat Box */}
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col h-[560px] bg-gray-100">
+      {/* Header */}
+      <div className="p-4 bg-white shadow">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           {otherUser?.id !== userId ? otherUser?.username : ownerUser?.username}
           {otherUser && otherUser?.is_online === true ? (
             <FaCircle className="text-yellow-500" />
           ) : (
             <FaCircle className="text-red-500" />
-          )}{' '}
+        )}{' '}
         </h3>
       </div>
+
       {/* Messages Container */}
-      <div
-        className="mb-4 sm:h-[300px] md:h-[400px] lg:h-[450px] overflow-y-scroll border rounded-lg p-2"
+      <div className="flex-1 overflow-y-auto p-4"
         ref={chatRef}
       >
         {groupedMessages.map(({ date, msgs }) => (
           <div key={date}>
-            {/* Date Header */}
-            <div className="divider divider-default my-2">
+            <div className="text-center text-gray-500 text-sm my-2">
               {new Date(date).toLocaleDateString() ===
               new Date().toLocaleDateString()
                 ? 'Today'
                 : date}
             </div>
-
-            {/* Messages for this date */}
             {msgs.map((msg, index) => (
               <div key={index}>
                 {userId === msg.sender.id ? (
-                  // User's own message (You)
                   <div className="chat chat-end">
                     <div className="chat-header">
                       You
                       <time className="text-xs opacity-50 mx-2">
-                        {msg.created_at
-                          ? `${new Date(msg.created_at).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              hour12: true,
-                            })}`
-                          : ''}
+                      {msg.created_at
+                        ? `${new Date(msg.created_at).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        })}`
+                        : ''}
                       </time>
                     </div>
                     <div className="chat-bubble">{msg.content}</div>
                   </div>
                 ) : (
-                  // Message from the other user
                   <div className="chat chat-start">
                     <div className="chat-header">
                       {msg.sender.username}
                       <time className="text-xs opacity-50 mx-2">
-                        {msg.created_at
+                      {msg.created_at
                           ? `${new Date(msg.created_at).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              hour12: true,
-                            })}`
-                          : ''}
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        })}`
+                        : ''}
                       </time>
                     </div>
                     <div className="chat-bubble chat-bubble-info">
@@ -229,17 +222,17 @@ const Chat: React.FC<ChatProps> = ({
       </div>
 
       {/* Input Box */}
-      <div className="flex items-center">
+      <div className="bg-white p-4 shadow-md flex justify-between items-center sticky bottom-0">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="input input-bordered flex-grow"
+          className="input w-full input-bordered flex-grow"
           placeholder="Type your message"
         />
-        <button onClick={sendMessage} className="btn btn-primary ml-2">
-          Send
+        <button onClick={sendMessage} className="btn btn-primary group ml-2">
+          <span>Send</span> <TbSend2 className="transform transition-transform group-hover:translate-x-4 duration-300 text-2xl font-bold text-white" />
         </button>
       </div>
     </div>
