@@ -17,7 +17,7 @@ const ScreenShare: React.FC<ChatProps> = ({
   currentUserId,
   roomId,
 }) => {
-  const socket = useSocket(token)
+  const socket = useSocket(token, currentUserId)
   const [isScreenSharing, setIsScreenSharing] = useState(false)
   const localVideoRef = useRef<HTMLVideoElement>(null)
   const remoteVideoRef = useRef<HTMLVideoElement>(null)

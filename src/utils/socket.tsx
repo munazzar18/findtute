@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { FaCircle } from 'react-icons/fa6'
 import toast from 'react-hot-toast'
+import Link from 'next/link'
 
 const URL = process.env.NEXT_PUBLIC_SOCKET_URL as string
 
@@ -22,7 +23,9 @@ export const useSocket = (token: string, userId?: string): Socket | null => {
       })
 
       newSocket.on('notification', (data) => {
+        console.log('Notification:', data)
         if (data.userId === userId) return
+
         toast.custom((t) => (
           <div
             className={`${
