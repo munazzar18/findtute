@@ -19,7 +19,7 @@ export const useSocket = (token: string, userId?: string): Socket | null => {
 
       newSocket.on('connect', () => {
         console.log('Socket successfully connected', newSocket.id)
-        newSocket.emit('socketId', userId)
+        // newSocket.emit('socketId', userId)
       })
 
       newSocket.on('notification', (data) => {

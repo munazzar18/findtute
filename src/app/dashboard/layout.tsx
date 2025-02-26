@@ -35,7 +35,7 @@ export default function Layout({
   return (
     <>
       <div className="flex min-w-0">
-        <DashboardSocket token={token} currentUserId={user ? user.id : ''} />
+        {/* <DashboardSocket token={token} currentUserId={user ? user.id : ''} /> */}
         <UserSideBar />
         <UserStatus token={token} status={true} />
         <CustomToast token={token} currentUserId={user ? user.id : ''} />

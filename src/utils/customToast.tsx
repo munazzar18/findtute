@@ -30,7 +30,7 @@ const CustomToast = ({
 
     const handleNotification = (notification: Notification) => {
       console.log('Received notification in layout:', notification)
-      //   if (notification.userId === currentUserId) return
+      if (notification.userId === currentUserId) return
 
       toast.custom((t) => (
         <div
