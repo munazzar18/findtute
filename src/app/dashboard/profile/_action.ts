@@ -34,7 +34,7 @@ export const GetGrades = async () => {
 
 export const GetSubjects = async () => {
     try {
-        const res = await fetch(`${url}subjects`, { next: { revalidate: 10 } })
+        const res = await fetch(`${url}subjects/all`, { next: { revalidate: 10 } })
         const data = await res.json()
         return data.data
     } catch (error) {

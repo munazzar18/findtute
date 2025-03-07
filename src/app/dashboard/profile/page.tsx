@@ -35,7 +35,7 @@ type GradeResponse = [
       grade: string
       created_at: string
     }
-  }
+  },
 ]
 
 type SubjectResponse = [
@@ -43,7 +43,7 @@ type SubjectResponse = [
     id: string
     subject: string
     created_at: string
-  }
+  },
 ]
 
 interface Education {
@@ -328,7 +328,7 @@ const UserProfileData = () => {
             toast.error('Error retrieving location.')
           }
           console.error(error)
-        }
+        },
       )
     } else {
       toast.error('Geolocation is not supported by this browser.')
@@ -394,7 +394,7 @@ const UserProfileData = () => {
           degree: Yup.string().required().label('Degree').max(30),
           start_year: Yup.string().required().label('Year').max(4),
           end_year: Yup.string().required().label('Year').max(4),
-        })
+        }),
       ),
       experience: Yup.array().of(
         Yup.object({
@@ -402,7 +402,7 @@ const UserProfileData = () => {
           title: Yup.string().label('Title').max(60),
           startDate: Yup.string().label('startDate').max(20),
           endDate: Yup.string().label('endDate').max(20),
-        })
+        }),
       ),
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -441,11 +441,11 @@ const UserProfileData = () => {
       formData.append('experience', JSON.stringify(values.experience))
       formData.append(
         'grades_ids',
-        JSON.stringify(newGrades.length ? newGrades : selectedGrades)
+        JSON.stringify(newGrades.length ? newGrades : selectedGrades),
       )
       formData.append(
         'subjects_ids',
-        JSON.stringify(newSubjects.length ? newSubjects : selectedSubjects)
+        JSON.stringify(newSubjects.length ? newSubjects : selectedSubjects),
       )
 
       const res = await UpdateProfileAction(formData)
@@ -645,13 +645,17 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allGrades}
-                value={formik.values.grades_ids}
+                value={allGrades.filter((grade) =>
+                  formik.values.grades_ids.includes(grade.value),
+                )}
                 onChange={(selected: OptionType[]) => {
-                  formik.setFieldValue('grades_ids', selected)
-                  filterSelectedGrades(selected)
+                  const selectedValues = selected.map((option) => option.value) // Extract UUIDs
+                  formik.setFieldValue('grades_ids', selectedValues)
+                  filterSelectedGrades(selected) // Keep full objects for filtering
                 }}
                 labelledBy="Select grades"
               />
+
               <span>
                 {formik.touched.grades_ids && formik.errors.grades_ids ? (
                   <span style={{ color: 'red' }}>
@@ -670,13 +674,17 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allSubjects}
-                value={formik.values.subjects_ids}
+                value={allSubjects.filter((subject) =>
+                  formik.values.subjects_ids.includes(subject.value),
+                )}
                 onChange={(selected: OptionType[]) => {
-                  formik.setFieldValue('subjects_ids', selected)
-                  filterSelectedSubjects(selected)
+                  const selectedValues = selected.map((option) => option.value) // Extract UUIDs
+                  formik.setFieldValue('subjects_ids', selectedValues)
+                  filterSelectedSubjects(selected) // Keep full objects for filtering
                 }}
                 labelledBy="Select subjects"
               />
+
               <span className="">
                 {formik.touched.subjects_ids && formik.errors.subjects_ids
                   ? formik.errors.subjects_ids.toString()
@@ -1095,9 +1103,9 @@ const UserProfileData = () => {
                     (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.institute
-                      ? (
-                          formik.errors.experience as FormikErrors<Experience>[]
-                        )[index]?.institute
+                      ? (formik.errors.experience as FormikErrors<
+                          Experience
+                        >[])[index]?.institute
                       : ''}
                   </span>
                 </div>
@@ -1126,9 +1134,9 @@ const UserProfileData = () => {
                     (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.title
-                      ? (
-                          formik.errors.experience as FormikErrors<Experience>[]
-                        )[index]?.title
+                      ? (formik.errors.experience as FormikErrors<
+                          Experience
+                        >[])[index]?.title
                       : ''}
                   </span>
                 </div>
@@ -1157,9 +1165,9 @@ const UserProfileData = () => {
                     (formik.errors.experience as FormikErrors<Experience>[])[
                       index
                     ]?.startDate
-                      ? (
-                          formik.errors.experience as FormikErrors<Experience>[]
-                        )[index]?.startDate
+                      ? (formik.errors.experience as FormikErrors<
+                          Experience
+                        >[])[index]?.startDate
                       : ''}
                   </span>
                 </div>
