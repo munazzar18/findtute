@@ -66,6 +66,7 @@ const Register = () => {
       }
       const user = auth?.data
       saveCookes.set('user', JSON.stringify(user), {
+        secure: true,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 30,
       })

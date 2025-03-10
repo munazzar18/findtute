@@ -51,11 +51,13 @@ const Login = () => {
     } else {
       const token = auth.data.access_token
       saveCookes.set('access_token', token, {
+        secure: true,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 30,
       })
       const user = auth.data.user
       saveCookes.set('user', JSON.stringify(user), {
+        secure: true,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 30,
       })

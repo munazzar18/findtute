@@ -6,6 +6,7 @@ interface User {
     username: string;
     email: string;
     role: string;
+    is_verified: boolean;
 }
 
 // Normalize paths for consistent comparison
@@ -53,9 +54,13 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
-    // Redirect admin to dashboard if accessing non-admin routes
-    if (token && user?.role === 'admin' && !isAdminRoute && pathname !== '/admin/dashboard') {
+    // Redirect admin to dashboard after login if accessing the root route
+    if (token && user?.role === 'admin' && pathname === '/') {
         return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+    }
+
+    if (token && user?.role !== 'admin' && user?.is_verified === false && pathname !== '/onboarding') {
+        return NextResponse.redirect(new URL('/onboarding', request.url));
     }
 
     if (paymentRoute) {

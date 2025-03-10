@@ -35,7 +35,7 @@ type GradeResponse = [
       grade: string
       created_at: string
     }
-  },
+  }
 ]
 
 type SubjectResponse = [
@@ -43,7 +43,7 @@ type SubjectResponse = [
     id: string
     subject: string
     created_at: string
-  },
+  }
 ]
 
 interface Education {
@@ -82,7 +82,7 @@ const UserProfileData = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [allGrades, setAllGrades] = useState<OptionType[]>([])
   const [allSubjects, setAllSubjects] = useState<OptionType[]>([])
-  const [selectedGrades, setSelectedGrades] = useState<any[]>()
+  const [selectedGrades, setSelectedGrades] = useState<any>()
   const [selectedSubjects, setSelectedSubjects] = useState<any>()
   const [isLoading, isSetLoading] = useState(false)
   const [allCountries, setAllCountries] = useState([])
@@ -92,7 +92,8 @@ const UserProfileData = () => {
   const [experience, setexperience] = useState<Experience[]>([
     initialExperience,
   ])
-  const [url, setUrl] = useState('http://localhost:3500')
+  const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
+  const [userRole, setUserRole] = useState('')
 
   const [profile, setProfile] = useState({
     first_name: '',
@@ -116,6 +117,7 @@ const UserProfileData = () => {
   const getProfile = async () => {
     setLoading(true)
     const res = await GetProfileByIdAction()
+
     setProfile({
       first_name: res.first_name,
       last_name: res.last_name,
@@ -151,14 +153,17 @@ const UserProfileData = () => {
       })
     })
     setImage(res?.avatar)
-    if (newGrades.length > 0) {
+    if (newGrades?.length > 0) {
       setSelectedGrades(newGrades)
     }
-    if (newSubjects.length > 0) {
+    if (newSubjects?.length > 0) {
       setSelectedSubjects(newSubjects)
     }
     seteducation(JSON.parse(res?.education))
     setexperience(JSON.parse(res?.experience))
+
+    setUserRole(res.roles)
+
     setLoading(false)
   }
 
@@ -328,7 +333,7 @@ const UserProfileData = () => {
             toast.error('Error retrieving location.')
           }
           console.error(error)
-        },
+        }
       )
     } else {
       toast.error('Geolocation is not supported by this browser.')
@@ -349,7 +354,7 @@ const UserProfileData = () => {
     selected.map((subject) => {
       newSubjects.push(subject.value)
     })
-
+    console.log('SELECTED SUBJECTS', newSubjects)
     setSelectedSubjects(newSubjects)
   }
 
@@ -394,7 +399,7 @@ const UserProfileData = () => {
           degree: Yup.string().required().label('Degree').max(30),
           start_year: Yup.string().required().label('Year').max(4),
           end_year: Yup.string().required().label('Year').max(4),
-        }),
+        })
       ),
       experience: Yup.array().of(
         Yup.object({
@@ -402,7 +407,7 @@ const UserProfileData = () => {
           title: Yup.string().label('Title').max(60),
           startDate: Yup.string().label('startDate').max(20),
           endDate: Yup.string().label('endDate').max(20),
-        }),
+        })
       ),
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -441,11 +446,11 @@ const UserProfileData = () => {
       formData.append('experience', JSON.stringify(values.experience))
       formData.append(
         'grades_ids',
-        JSON.stringify(newGrades.length ? newGrades : selectedGrades),
+        JSON.stringify(newGrades?.length ? newGrades : selectedGrades)
       )
       formData.append(
         'subjects_ids',
-        JSON.stringify(newSubjects.length ? newSubjects : selectedSubjects),
+        JSON.stringify(newSubjects?.length ? newSubjects : selectedSubjects)
       )
 
       const res = await UpdateProfileAction(formData)
@@ -477,7 +482,7 @@ const UserProfileData = () => {
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
             <img
-              src={image ? url + image : '/user.png'}
+              src={image && url ? `${url}${image}` : '/user.png'}
               alt="your profile image"
               width={200}
               height={200}
@@ -596,48 +601,54 @@ const UserProfileData = () => {
               </span>
             </label>
           </div>
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">Hourly Rate (Rs)</span>
-              </div>
-              <input
-                type="text"
-                color={formik.errors.hourly_rate ? 'danger' : 'primary'}
-                onChange={(e) =>
-                  formik.setFieldValue('hourly_rate', e.target.value)
-                }
-                value={formik.values.hourly_rate}
-                className="input input-bordered input-primary w-full"
-              />
-              <span>
-                {formik.touched.hourly_rate && formik.errors.hourly_rate
-                  ? formik.errors.hourly_rate
-                  : ''}
-              </span>
-            </label>
-          </div>
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">Monthly Rate (Rs)</span>
-              </div>
-              <input
-                type="text"
-                color={formik.errors.monthly_rate ? 'danger' : 'primary'}
-                onChange={(e) =>
-                  formik.setFieldValue('monthly_rate', e.target.value)
-                }
-                value={formik.values.monthly_rate}
-                className="input input-bordered input-primary w-full"
-              />
-              <span>
-                {formik.touched.monthly_rate && formik.errors.monthly_rate
-                  ? formik.errors.monthly_rate
-                  : ''}
-              </span>
-            </label>
-          </div>
+          {userRole === 'teacher' && (
+            <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">Hourly Rate (Rs)</span>
+                </div>
+                <input
+                  type="text"
+                  color={formik.errors.hourly_rate ? 'danger' : 'primary'}
+                  onChange={(e) =>
+                    formik.setFieldValue('hourly_rate', e.target.value)
+                  }
+                  value={formik.values.hourly_rate}
+                  className="input input-bordered input-primary w-full"
+                />
+                <span>
+                  {formik.touched.hourly_rate && formik.errors.hourly_rate
+                    ? formik.errors.hourly_rate
+                    : ''}
+                </span>
+              </label>
+            </div>
+          )}
+
+          {userRole === 'teacher' && (
+            <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">Monthly Rate (Rs)</span>
+                </div>
+                <input
+                  type="text"
+                  color={formik.errors.monthly_rate ? 'danger' : 'primary'}
+                  onChange={(e) =>
+                    formik.setFieldValue('monthly_rate', e.target.value)
+                  }
+                  value={formik.values.monthly_rate}
+                  className="input input-bordered input-primary w-full"
+                />
+                <span>
+                  {formik.touched.monthly_rate && formik.errors.monthly_rate
+                    ? formik.errors.monthly_rate
+                    : ''}
+                </span>
+              </label>
+            </div>
+          )}
+
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
@@ -645,13 +656,11 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allGrades}
-                value={allGrades.filter((grade) =>
-                  formik.values.grades_ids.includes(grade.value),
-                )}
+                value={selectedGrades ? selectedGrades : []}
                 onChange={(selected: OptionType[]) => {
-                  const selectedValues = selected.map((option) => option.value) // Extract UUIDs
+                  const selectedValues = selected.map((option) => option.value)
                   formik.setFieldValue('grades_ids', selectedValues)
-                  filterSelectedGrades(selected) // Keep full objects for filtering
+                  filterSelectedGrades(selected)
                 }}
                 labelledBy="Select grades"
               />
@@ -674,13 +683,11 @@ const UserProfileData = () => {
               </div>
               <MultiSelect
                 options={allSubjects}
-                value={allSubjects.filter((subject) =>
-                  formik.values.subjects_ids.includes(subject.value),
-                )}
+                value={selectedSubjects ? selectedSubjects : []}
                 onChange={(selected: OptionType[]) => {
-                  const selectedValues = selected.map((option) => option.value) // Extract UUIDs
+                  const selectedValues = selected.map((option) => option.value)
                   formik.setFieldValue('subjects_ids', selectedValues)
-                  filterSelectedSubjects(selected) // Keep full objects for filtering
+                  filterSelectedSubjects(selected)
                 }}
                 labelledBy="Select subjects"
               />
@@ -1069,172 +1076,182 @@ const UserProfileData = () => {
               </div>
             ))}
           </div>
-          <div className="col-span-12 mb-2">
-            <h1 className="text-2xl font-bold">Experience</h1>
-          </div>
-          <div className="col-span-12 mb-2">
-            {formik.values.experience?.map((experience, index) => (
-              <div
-                className="grid grid-cols-12 gap-4 items-baseline mb-4"
-                key={index}
-              >
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-                  <input
-                    type="text"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.experience &&
-                      formik.errors.experience[index] &&
-                      (formik.errors.experience as FormikErrors<Experience>[])[
-                        index
-                      ]?.institute
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.experience[index].institute}
-                    name={`experience[${index}].institute`}
-                  />
-                  <span>
-                    {formik.touched.experience &&
-                    formik.touched.experience[index] &&
-                    formik.errors.experience &&
-                    formik.errors.experience[index] &&
-                    (formik.errors.experience as FormikErrors<Experience>[])[
-                      index
-                    ]?.institute
-                      ? (formik.errors.experience as FormikErrors<
-                          Experience
-                        >[])[index]?.institute
-                      : ''}
-                  </span>
-                </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-                  <input
-                    type="text"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.experience &&
-                      formik.errors.experience[index] &&
-                      (formik.errors.experience as FormikErrors<Experience>[])[
-                        index
-                      ]?.title
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.experience[index].title}
-                    name={`experience[${index}].title`}
-                  />
-                  <span>
-                    {formik.touched.experience &&
-                    formik.touched.experience[index] &&
-                    formik.errors.experience &&
-                    formik.errors.experience[index] &&
-                    (formik.errors.experience as FormikErrors<Experience>[])[
-                      index
-                    ]?.title
-                      ? (formik.errors.experience as FormikErrors<
-                          Experience
-                        >[])[index]?.title
-                      : ''}
-                  </span>
-                </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                  <input
-                    type="date"
-                    className="input input-bordered input-primary w-full"
-                    color={
-                      formik.errors.experience &&
-                      formik.errors.experience[index] &&
-                      (formik.errors.experience as FormikErrors<Experience>[])[
-                        index
-                      ]?.startDate
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onChange={formik.handleChange}
-                    value={formik.values.experience[index].startDate}
-                    name={`experience[${index}].startDate`}
-                  />
-                  <span>
-                    {formik.touched.experience &&
-                    formik.touched.experience[index] &&
-                    formik.errors.experience &&
-                    formik.errors.experience[index] &&
-                    (formik.errors.experience as FormikErrors<Experience>[])[
-                      index
-                    ]?.startDate
-                      ? (formik.errors.experience as FormikErrors<
-                          Experience
-                        >[])[index]?.startDate
-                      : ''}
-                  </span>
-                </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                  {formik.values.experience[index].present == false ? (
-                    <input
-                      type="date"
-                      className="input input-bordered input-primary w-full"
-                      onChange={formik.handleChange}
-                      value={
-                        formik.values.experience[index].present == false
-                          ? formik.values.experience[index].endDate
-                          : ''
-                      }
-                      name={`experience[${index}].endDate`}
-                    />
-                  ) : (
-                    ''
-                  )}
-                </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
-                  <div className="form-control">
-                    <label className="label cursor-pointer">
-                      <span className="label-text">Present</span>
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-primary"
-                        onChange={formik.handleChange}
-                        checked={formik.values.experience[index].present}
-                        value={
-                          formik.values.experience[index].present == true
-                            ? 'true'
-                            : 'false'
-                        }
-                        name={`experience[${index}].present`}
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
-                  {handleAddLastExperience(index) ? (
-                    <button
-                      color="primary"
-                      onClick={handleAddExperience}
-                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
-                    >
-                      <FaCirclePlus />
-                    </button>
-                  ) : (
-                    ''
-                  )}
-
-                  {handleLastExperience(index) ? (
-                    <button
-                      color="primary"
-                      onClick={() => handleRemoveExperience(index)}
-                      className="mx-1 w-full sm:w-full md:w-full lg:w-10"
-                    >
-                      <FaCircleMinus />
-                    </button>
-                  ) : (
-                    ''
-                  )}
-                </div>
+          {userRole === 'teacher' && (
+            <>
+              <div className="col-span-12 mb-2">
+                <h1 className="text-2xl font-bold">Experience</h1>
               </div>
-            ))}
-          </div>
+              <div className="col-span-12 mb-2">
+                {formik.values.experience?.map((experience, index) => (
+                  <div
+                    className="grid grid-cols-12 gap-4 items-baseline mb-4"
+                    key={index}
+                  >
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+                      <input
+                        type="text"
+                        className="input input-bordered input-primary w-full"
+                        color={
+                          formik.errors.experience &&
+                          formik.errors.experience[index] &&
+                          (
+                            formik.errors
+                              .experience as FormikErrors<Experience>[]
+                          )[index]?.institute
+                            ? 'danger'
+                            : 'primary'
+                        }
+                        onChange={formik.handleChange}
+                        value={formik.values.experience[index].institute}
+                        name={`experience[${index}].institute`}
+                      />
+                      <span>
+                        {formik.touched.experience &&
+                        formik.touched.experience[index] &&
+                        formik.errors.experience &&
+                        formik.errors.experience[index] &&
+                        (
+                          formik.errors.experience as FormikErrors<Experience>[]
+                        )[index]?.institute
+                          ? (
+                              formik.errors
+                                .experience as FormikErrors<Experience>[]
+                            )[index]?.institute
+                          : ''}
+                      </span>
+                    </div>
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
+                      <input
+                        type="text"
+                        className="input input-bordered input-primary w-full"
+                        color={
+                          formik.errors.experience &&
+                          formik.errors.experience[index] &&
+                          (
+                            formik.errors
+                              .experience as FormikErrors<Experience>[]
+                          )[index]?.title
+                            ? 'danger'
+                            : 'primary'
+                        }
+                        onChange={formik.handleChange}
+                        value={formik.values.experience[index].title}
+                        name={`experience[${index}].title`}
+                      />
+                      <span>
+                        {formik.touched.experience &&
+                        formik.touched.experience[index] &&
+                        formik.errors.experience &&
+                        formik.errors.experience[index] &&
+                        (
+                          formik.errors.experience as FormikErrors<Experience>[]
+                        )[index]?.title
+                          ? (
+                              formik.errors
+                                .experience as FormikErrors<Experience>[]
+                            )[index]?.title
+                          : ''}
+                      </span>
+                    </div>
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                      <input
+                        type="date"
+                        className="input input-bordered input-primary w-full"
+                        color={
+                          formik.errors.experience &&
+                          formik.errors.experience[index] &&
+                          (
+                            formik.errors
+                              .experience as FormikErrors<Experience>[]
+                          )[index]?.startDate
+                            ? 'danger'
+                            : 'primary'
+                        }
+                        onChange={formik.handleChange}
+                        value={formik.values.experience[index].startDate}
+                        name={`experience[${index}].startDate`}
+                      />
+                      <span>
+                        {formik.touched.experience &&
+                        formik.touched.experience[index] &&
+                        formik.errors.experience &&
+                        formik.errors.experience[index] &&
+                        (
+                          formik.errors.experience as FormikErrors<Experience>[]
+                        )[index]?.startDate
+                          ? (
+                              formik.errors
+                                .experience as FormikErrors<Experience>[]
+                            )[index]?.startDate
+                          : ''}
+                      </span>
+                    </div>
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+                      {formik.values.experience[index].present == false ? (
+                        <input
+                          type="date"
+                          className="input input-bordered input-primary w-full"
+                          onChange={formik.handleChange}
+                          value={
+                            formik.values.experience[index].present == false
+                              ? formik.values.experience[index].endDate
+                              : ''
+                          }
+                          name={`experience[${index}].endDate`}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
+                      <div className="form-control">
+                        <label className="label cursor-pointer">
+                          <span className="label-text">Present</span>
+                          <input
+                            type="checkbox"
+                            className="checkbox checkbox-primary"
+                            onChange={formik.handleChange}
+                            checked={formik.values.experience[index].present}
+                            value={
+                              formik.values.experience[index].present == true
+                                ? 'true'
+                                : 'false'
+                            }
+                            name={`experience[${index}].present`}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-2">
+                      {handleAddLastExperience(index) ? (
+                        <button
+                          color="primary"
+                          onClick={handleAddExperience}
+                          className="mx-1 w-full sm:w-full md:w-full lg:w-10"
+                        >
+                          <FaCirclePlus />
+                        </button>
+                      ) : (
+                        ''
+                      )}
+
+                      {handleLastExperience(index) ? (
+                        <button
+                          color="primary"
+                          onClick={() => handleRemoveExperience(index)}
+                          className="mx-1 w-full sm:w-full md:w-full lg:w-10"
+                        >
+                          <FaCircleMinus />
+                        </button>
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
           <div className="col-span-12">
             <button

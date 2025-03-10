@@ -6,6 +6,7 @@ interface User {
     id: string
     email: string
     role: string
+    is_verified: boolean
 }
 
 const url = process.env.NEXT_PUBLIC_API_URL as string
@@ -34,7 +35,11 @@ export const GetGrades = async () => {
 
 export const GetSubjects = async () => {
     try {
-        const res = await fetch(`${url}subjects/all`, { next: { revalidate: 10 } })
+        const res = await fetch(`${url}subjects/all`, {
+            cache: 'no-cache',
+
+        })
+
         const data = await res.json()
         return data.data
     } catch (error) {
@@ -87,7 +92,7 @@ export const UploadProfileImageAction = async (formData: FormData) => {
 
 export const GetProfileByIdAction = async () => {
     const res = await fetch(`${url}user/id/${user?.id}`, {
-        next: { revalidate: 10 },
+        cache: 'no-cache',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
@@ -129,6 +134,14 @@ export const UpdateProfileAction = async (formData: FormData) => {
 
         })
         const data = await res.json()
+        cookies().set('user', JSON.stringify({
+            ...user,
+            is_verified: data?.data.is_verified
+        }), {
+            secure: true,
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 30,
+        })
         return data
     } catch (error) {
         console.error(error)

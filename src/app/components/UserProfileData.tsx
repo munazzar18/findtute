@@ -90,6 +90,8 @@ const UserProfileData = () => {
     initialExperience,
   ])
 
+  const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
+
   const getAllGrades = async () => {
     const res = await GetGrades()
     if (res) {
@@ -363,7 +365,7 @@ const UserProfileData = () => {
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
             <img
-              src={image ? image : '/user.png'}
+              src={image && url ? `${url}/${image}` : '/user.png'}
               alt="your profile image"
               width={200}
               height={200}
