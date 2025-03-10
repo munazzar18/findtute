@@ -144,7 +144,7 @@ export default function page() {
         <div className="container">
           <div className="grid xl:grid-cols-2 lg:grid-cols-[40%_auto] grid-cols-1 gap-7.5">
             <div className="lg:max-w-[600px]">
-              <p className="text-primary-foreground font-bubblegum-sans text-[19px] wow fadeInUp">
+              <p className="text-red-500 font-bubblegum-sans text-[19px] underline decoration-sky-500	 decoration-wavy  wow fadeInUp">
                 Number Talks
               </p>
               <h2
