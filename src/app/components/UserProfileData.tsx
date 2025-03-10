@@ -367,6 +367,9 @@ const UserProfileData = () => {
 
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4  sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
+      <h3 className="text-red-500 text-xl m-3 font-bold text-center">
+        To access FindTute services, you must complete your profile first.
+      </h3>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
