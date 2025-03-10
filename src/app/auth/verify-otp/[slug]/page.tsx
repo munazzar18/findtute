@@ -13,6 +13,7 @@ interface Response {
       id: string
       username: string
       role: string
+      is_verified: boolean
     }
   }
 }

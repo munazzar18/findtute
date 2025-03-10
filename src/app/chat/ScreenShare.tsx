@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
+import SimplePeer from 'simple-peer'
 
 interface ChatProps {
   token: string
@@ -8,6 +9,11 @@ interface ChatProps {
   applicationId: string
   currentUserId: string
   roomId: string
+}
+
+interface PeerData {
+  userId: string
+  peer: SimplePeer.Instance
 }
 
 const ScreenShare: React.FC<ChatProps> = ({
@@ -19,240 +25,299 @@ const ScreenShare: React.FC<ChatProps> = ({
 }) => {
   const socket = useSocket(token, currentUserId)
   const [isScreenSharing, setIsScreenSharing] = useState(false)
-  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null)
-  const localVideoRef = useRef<HTMLVideoElement>(null)
-  const remoteVideoRef = useRef<HTMLVideoElement>(null)
-  const peerConnection = useRef<RTCPeerConnection | null>(null)
-  const localStream = useRef<MediaStream | null>(null)
+  const [viewingUserId, setViewingUserId] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
+  const localStreamRef = useRef<MediaStream | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const peersRef = useRef<PeerData[]>([])
+
+  // Handle socket events for screen sharing
   useEffect(() => {
     if (!socket) return
 
-    // Join the chat room
     socket.emit('joinChat', { applicationId, chatId })
 
-    // Handle incoming screen share offer
-    socket.on('screenShareOffer', async ({ sdp, userId }) => {
-      console.log('Received screen share offer')
-      try {
-        // Create new peer connection for receiver
-        const pc = new RTCPeerConnection({
-          iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+    const handleScreenShareStarted = ({
+      userId,
+      roomId,
+    }: {
+      userId: string
+      roomId: string
+    }) => {
+      console.log('I AM HANDLE SCREEN SHARE STARTED CALLED')
+      console.log(`User ${userId} started screen sharing in room ${roomId}`)
+
+      if (userId !== currentUserId) {
+        setViewingUserId(userId)
+
+        // Create a peer to receive the stream
+        const peer = new SimplePeer({
+          initiator: true,
+          trickle: true,
         })
-        peerConnection.current = pc
 
-        // Handle incoming tracks
-        pc.ontrack = (event) => {
-          console.log('Received track', event.track.kind)
-          setRemoteStream(event.streams[0])
-        }
+        peer.on('signal', (signal) => {
+          socket?.emit('signal', {
+            signal,
+            to: userId,
+            roomId,
+          })
+        })
 
-        // Send ICE candidates
-        pc.onicecandidate = (event) => {
-          if (event.candidate) {
-            socket.emit('iceCandidate', {
-              chatId,
-              candidate: event.candidate,
-              to: userId,
-            })
+        peer.on('stream', (stream) => {
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream
+          }
+        })
+
+        // Store the peer
+        peersRef.current.push({ userId, peer })
+      }
+    }
+
+    const handleScreenShareEnded = ({
+      userId,
+      roomId,
+    }: {
+      userId: string
+      roomId: string
+    }) => {
+      console.log(`User ${userId} stopped screen sharing in room ${roomId}`)
+
+      if (roomId) {
+        if (userId === currentUserId) {
+          stopScreenSharing()
+        } else if (userId === viewingUserId) {
+          setViewingUserId(null)
+
+          // Clean up video
+          if (videoRef.current) {
+            videoRef.current.srcObject = null
+          }
+
+          // Clean up peers
+          const peerIndex = peersRef.current.findIndex(
+            (p) => p.userId === userId
+          )
+          if (peerIndex !== -1) {
+            peersRef.current[peerIndex].peer.destroy()
+            peersRef.current.splice(peerIndex, 1)
           }
         }
-
-        // Set remote description and create answer
-        await pc.setRemoteDescription(new RTCSessionDescription(sdp))
-        const answer = await pc.createAnswer()
-        await pc.setLocalDescription(answer)
-
-        // Send answer back
-        socket.emit('screenShareAnswer', {
-          chatId,
-          sdp: answer,
-          to: userId,
-        })
-      } catch (error) {
-        console.error('Error handling offer:', error)
       }
-    })
+    }
 
-    // Handle incoming screen share answer
-    socket.on('screenShareAnswer', async ({ sdp }) => {
-      console.log('Received screen share answer')
-      try {
-        if (peerConnection.current) {
-          await peerConnection.current.setRemoteDescription(
-            new RTCSessionDescription(sdp)
-          )
+    const handleActiveScreen = ({
+      userId,
+      roomId,
+    }: {
+      userId: string
+      roomId: string
+    }) => {
+      console.log(
+        `Active screen share detected from user ${userId} in room ${roomId}`
+      )
+
+      if (userId !== currentUserId) {
+        setViewingUserId(userId)
+      }
+    }
+
+    const handleSignal = ({
+      signal,
+      from,
+    }: {
+      signal: string
+      from: string
+    }) => {
+      console.log(`Received signal from ${from}`)
+
+      // If we're sharing, handle incoming signals
+      if (isScreenSharing) {
+        // Find or create peer for this user
+        let peer = peersRef.current.find((p) => p.userId === from)?.peer
+
+        if (!peer) {
+          peer = new SimplePeer({
+            initiator: false,
+            trickle: true,
+            stream: localStreamRef.current || undefined,
+          })
+
+          peer.on('signal', (signal) => {
+            socket?.emit('signal', {
+              signal,
+              to: from,
+              roomId,
+            })
+          })
+
+          peersRef.current.push({ userId: from, peer })
         }
-      } catch (error) {
-        console.error('Error handling answer:', error)
-      }
-    })
 
-    // Handle incoming ICE candidates
-    socket.on('iceCandidate', async ({ candidate }) => {
-      try {
-        if (peerConnection.current) {
-          await peerConnection.current.addIceCandidate(
-            new RTCIceCandidate(candidate)
-          )
-        }
-      } catch (error) {
-        console.error('Error adding ICE candidate:', error)
+        // Signal the peer
+        peer.signal(signal)
       }
-    })
+      // If we're viewing someone's screen
+      else if (viewingUserId === from) {
+        const peer = peersRef.current.find((p) => p.userId === from)?.peer
+        if (peer) {
+          peer.signal(signal)
+        }
+      }
+    }
+
+    // Register event listeners
+    socket.on('screenShare:started', handleScreenShareStarted)
+    socket.on('signal', handleSignal)
+    socket.on('screenShare:active', handleActiveScreen)
+    socket.on('screenShare:ended', handleScreenShareEnded)
 
     return () => {
-      // Clean up
-      if (peerConnection.current) {
-        peerConnection.current.close()
-      }
-      if (localStream.current) {
-        localStream.current.getTracks().forEach((track) => track.stop())
-      }
-      socket.off('screenShareOffer')
-      socket.off('screenShareAnswer')
-      socket.off('iceCandidate')
-    }
-  }, [socket, chatId, applicationId])
+      // Clean up event listeners
+      socket.off('screenShare:started', handleScreenShareStarted)
+      socket.off('signal', handleSignal)
+      socket.off('screenShare:active', handleActiveScreen)
+      socket.off('screenShare:ended', handleScreenShareEnded)
 
-  const startScreenShare = async () => {
+      // Stop sharing if we were
+      if (isScreenSharing) {
+        stopScreenSharing()
+      }
+    }
+  }, [socket, roomId, currentUserId, isScreenSharing, viewingUserId])
+
+  const startScreenSharing = async () => {
+    if (!socket || !socket.connected) {
+      console.warn('Socket is not connected yet.')
+      return
+    }
     try {
-      // Get screen sharing stream
+      setIsScreenSharing(true)
+      setLoading(true)
+      setError(null)
+
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-        },
+        audio: true,
       })
 
-      // Save stream reference
-      localStream.current = stream
+      localStreamRef.current = stream
 
-      // Display local stream
-      if (localVideoRef.current) {
-        localVideoRef.current.srcObject = stream
+      // Display our own stream
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
       }
 
-      // Create peer connection for sender
-      const pc = new RTCPeerConnection({
-        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-      })
-      peerConnection.current = pc
+      // Tell the server we're starting to share
+      socket?.emit('screenShare:start', { roomId })
 
-      // Add tracks to peer connection
-      stream.getTracks().forEach((track) => {
-        pc.addTrack(track, stream)
-      })
-
-      // Send ICE candidates
-      pc.onicecandidate = (event) => {
-        if (event.candidate) {
-          socket?.emit('iceCandidate', {
-            chatId,
-            candidate: event.candidate,
-          })
-        }
-      }
-
-      // Create and send offer
-      const offer = await pc.createOffer()
-      await pc.setLocalDescription(offer)
-      socket?.emit('shareScreenData', {
-        chatId,
-        sdp: offer,
-      })
-
-      setIsScreenSharing(true)
-
-      // Handle stream end
+      // Handle stream ended event
       stream.getVideoTracks()[0].onended = () => {
-        stopScreenShare()
+        stopScreenSharing()
       }
+
+      setLoading(false)
     } catch (error) {
       console.error('Error starting screen share:', error)
-      stopScreenShare()
+      setError(
+        'Failed to start screen sharing. Please make sure you have granted screen sharing permissions.'
+      )
+      setLoading(false)
     }
   }
 
-  const stopScreenShare = () => {
-    // Stop all tracks
-    if (localStream.current) {
-      localStream.current.getTracks().forEach((track) => track.stop())
-      localStream.current = null
-    }
-
-    // Close peer connection
-    if (peerConnection.current) {
-      peerConnection.current.close()
-      peerConnection.current = null
-    }
-
-    // Clear video elements
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = null
-    }
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null
-    }
-
+  const stopScreenSharing = () => {
+    setLoading(true)
     setIsScreenSharing(false)
-    setRemoteStream(null)
-  }
-
-  // Update remote video when stream changes
-  useEffect(() => {
-    if (remoteVideoRef.current && remoteStream) {
-      remoteVideoRef.current.srcObject = remoteStream
+    // Stop all tracks
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach((track) => track.stop())
+      localStreamRef.current = null
     }
-  }, [remoteStream])
+
+    // Tell the server we're stopping
+    if (socket && isScreenSharing) {
+      socket?.emit('screenShare:stop', { roomId })
+    }
+
+    // Clean up peers
+    peersRef.current.forEach(({ peer }) => {
+      peer.destroy()
+    })
+    peersRef.current = []
+
+    // Clean up video
+    if (videoRef.current) {
+      videoRef.current.srcObject = null
+    }
+
+    setLoading(false)
+  }
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg">
-      <div className="mb-4">
-        {!isScreenSharing ? (
+    <div className="flex flex-col space-y-4 w-full bg-gray-100 p-4 rounded-lg">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-medium text-gray-900">Screen Sharing</h3>
+
+        {!isScreenSharing && !viewingUserId && !loading && (
           <button
-            onClick={startScreenShare}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={startScreenSharing}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Start Screen Share
+            Share Screen
           </button>
+        )}
+
+        {isScreenSharing && !loading && (
+          <button
+            onClick={stopScreenSharing}
+            className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Stop Sharing
+          </button>
+        )}
+
+        {loading && <div className="px-4 py-2 text-gray-500">Loading...</div>}
+      </div>
+
+      {error && (
+        <div className="p-3 bg-red-100 text-red-800 rounded-md text-sm">
+          {error}
+        </div>
+      )}
+
+      <div
+        className="relative w-full bg-black rounded-md overflow-hidden"
+        style={{ aspectRatio: '16/9' }}
+      >
+        {isScreenSharing || viewingUserId ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-full h-full object-contain"
+          />
         ) : (
-          <button
-            onClick={stopScreenShare}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Stop Screen Share
-          </button>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {isScreenSharing && (
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Your Screen</h3>
-            <video
-              ref={localVideoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-full border rounded"
-            />
-          </div>
-        )}
-
-        {remoteStream && (
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Remote Screen</h3>
-            <video
-              ref={remoteVideoRef}
-              autoPlay
-              playsInline
-              className="w-full border rounded"
-            />
+          <div className="absolute inset-0 flex items-center justify-center text-white text-sm">
+            {loading ? 'Connecting...' : 'No active screen share'}
           </div>
         )}
       </div>
+
+      {isScreenSharing && (
+        <div className="text-sm text-center text-green-600 font-medium">
+          You are sharing your screen
+        </div>
+      )}
+
+      {viewingUserId && (
+        <div className="text-sm text-center text-blue-600 font-medium">
+          Viewing screen from user {viewingUserId}
+        </div>
+      )}
     </div>
   )
 }
