@@ -15,6 +15,7 @@ import {
   UploadProfileImageAction,
 } from '../dashboard/profile/_action'
 import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
+import { useRouter } from 'next/navigation'
 
 interface OptionType {
   label: string
@@ -91,6 +92,8 @@ const UserProfileData = () => {
   ])
 
   const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
+
+  const router = useRouter()
 
   const getAllGrades = async () => {
     const res = await GetGrades()
@@ -342,6 +345,9 @@ const UserProfileData = () => {
       if (res.status && res.status === true) {
         toast.success(res.message)
         resetForm()
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 2000)
       } else {
         toast.error(res.message)
       }
