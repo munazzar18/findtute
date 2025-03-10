@@ -2,11 +2,10 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 interface LoginFormProps {
   getLoginData: (values: {
@@ -27,6 +26,7 @@ interface Response {
       id: string
       username: string
       role: string
+      is_verified: boolean
     }
   }
 }
@@ -59,12 +59,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
       try {
         if (res.statusCode !== 200 && res.error === 'Unauthorized') {
           toast.error(res.message)
-          //how to navigate to home here
         } else if (res.status === false) {
           toast.error(res.message)
         } else {
           toast.success(res.message)
-          router.push('/')
+          if (res.data.user.is_verified === false) {
+            router.push('/onboarding')
+          } else {
+            router.push('/dashboard')
+          }
         }
       } catch (error) {
         console.error(error)
@@ -76,15 +79,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
   return (
     <div className="flex justify-center items-center">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center gap-3 justify-center">
+        <div className="flex flex-col items-center gap-2 justify-center">
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Email
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Email</span>
+              </div>
               <input
                 name="email"
-                tabIndex={0}
                 type="email"
-                className="grow"
+                className="input input-bordered input-primary w-80"
                 placeholder="Enter you email"
                 color={formik.errors.email ? 'danger' : 'default'}
                 onChange={(e) => formik.setFieldValue('email', e.target.value)}
@@ -98,46 +102,43 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
             </span>
           </div>
           <div>
-            <div className="flex justify-end">
-              <Link
-                className="text-destructive-foreground font-bold"
-                href="/auth/forgot-password"
-              >
-                Forgot Password
-              </Link>
-            </div>
             <div>
-              <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-                Password
-                <input
-                  name="password"
-                  tabIndex={1}
-                  type={isVisible ? 'text' : 'password'}
-                  className="grow"
-                  placeholder="Enter your password"
-                  color={formik.errors.password ? 'danger' : 'default'}
-                  onChange={(e) =>
-                    formik.setFieldValue('password', e.target.value)
-                  }
-                  value={formik.values.password}
-                />
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={toggleVisibility}
-                >
-                  {isVisible ? (
-                    <FontAwesomeIcon
-                      icon={faEye}
-                      className="text-md text-default-400 pointer-events-none"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faEyeSlash}
-                      className="text-md text-default-400 pointer-events-none"
-                    />
-                  )}
-                </button>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text text-xl">Password</span>
+                  <span className="label-text-alt text-lg">
+                    <Link
+                      className="text-destructive-foreground font-bold"
+                      href="/auth/forgot-password"
+                    >
+                      Forgot Password
+                    </Link>
+                  </span>
+                </div>
+                <div className="relative">
+                  <input
+                    name="password"
+                    type={isVisible ? 'text' : 'password'}
+                    className="input input-bordered input-primary w-80"
+                    placeholder="Enter your password"
+                    color={formik.errors.password ? 'danger' : 'default'}
+                    onChange={(e) =>
+                      formik.setFieldValue('password', e.target.value)
+                    }
+                    value={formik.values.password}
+                  />
+                  <button
+                    className="focus:outline-none absolute right-2 top-1/3"
+                    type="button"
+                    onClick={toggleVisibility}
+                  >
+                    {isVisible ? (
+                      <FaEye className="text-md text-default-400 pointer-events-none" />
+                    ) : (
+                      <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
+                    )}
+                  </button>
+                </div>
               </label>
               <span className="flex justify-start">
                 {formik.touched.password && formik.errors.password ? (
@@ -163,7 +164,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
             {isLoading ? (
               <button
                 disabled
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               >
                 <span className="loading loading-spinner loading-xs"></span>
                 Please wait
@@ -172,7 +173,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
               <button
                 type="submit"
                 aria-label="Submit"
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               >
                 Login
               </button>

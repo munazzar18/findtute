@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.findtute.com
+
+# Sitemaps
+Sitemap: https://www.findtute.com/sitemap.xml

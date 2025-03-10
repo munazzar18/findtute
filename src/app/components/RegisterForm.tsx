@@ -2,17 +2,18 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 interface RegisterFormProps {
   getLoginData: (values: {
+    username: string
     email: string
     password: string
     roles: string
+    privacy_terms_conditions: boolean
   }) => Promise<Response>
 }
 
@@ -26,6 +27,7 @@ interface Response {
     id: string
     username: string
     roles: string
+    privacy_terms_conditions: boolean
   }
 }
 
@@ -37,11 +39,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
 
   const formik = useFormik({
     initialValues: {
+      username: '',
       email: '',
       password: '',
       roles: '',
+      privacy_terms_conditions: false,
     },
     validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, 'Username must be 3 characters or more')
+        .max(30, 'Username must be 30 characters or less')
+        .required('Username is required')
+        .label('Username'),
       email: Yup.string()
         .email('Invalid email address')
         .required('Email is required')
@@ -50,7 +59,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
         .min(8, 'Password must be 8 characters or more')
         .required('Password is required')
         .label('Password'),
-      roles: Yup.string().required('Role is required').label('Role'), // Role validation
+      roles: Yup.string().required('Role is required').label('Role'),
+      privacy_terms_conditions: Yup.boolean().oneOf(
+        [true],
+        'Please accept our Privacy and Terms and Conditions'
+      ),
     }),
     onSubmit: async (values) => {
       isSetLoading(true)
@@ -75,14 +88,40 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
   return (
     <div className="flex justify-center items-start ">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center gap-4 justify-center">
+        <div className="flex flex-col items-center gap-2 justify-center">
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Email
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Username</span>
+              </div>
+              <input
+                type="text"
+                autoComplete="on"
+                className="input input-bordered input-primary w-80"
+                placeholder="Enter you username"
+                color={formik.errors.username ? 'danger' : 'default'}
+                onChange={(e) =>
+                  formik.setFieldValue('username', e.target.value)
+                }
+                value={formik.values.username}
+              />
+            </label>
+            <span className="flex justify-start">
+              {formik.touched.username && formik.errors.username ? (
+                <div>{formik.errors.username}</div>
+              ) : null}
+            </span>
+          </div>
+          <div>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Email</span>
+              </div>
               <input
                 type="email"
-                className="grow"
-                placeholder="info@findtute.com"
+                autoComplete="on"
+                className="input input-bordered input-primary w-80"
+                placeholder="Enter you email"
                 color={formik.errors.email ? 'danger' : 'default'}
                 onChange={(e) => formik.setFieldValue('email', e.target.value)}
                 value={formik.values.email}
@@ -95,34 +134,33 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
             </span>
           </div>
           <div>
-            <label className="input input-bordered input-primary flex items-center gap-2 w-80">
-              Password
-              <input
-                type={isVisible ? 'text' : 'password'}
-                className="grow"
-                color={formik.errors.password ? 'danger' : 'default'}
-                onChange={(e) =>
-                  formik.setFieldValue('password', e.target.value)
-                }
-                value={formik.values.password}
-              />
-              <button
-                className="focus:outline-none"
-                type="button"
-                onClick={toggleVisibility}
-              >
-                {isVisible ? (
-                  <FontAwesomeIcon
-                    icon={faEye}
-                    className="text-md text-default-400 pointer-events-none"
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faEyeSlash}
-                    className="text-md text-default-400 pointer-events-none"
-                  />
-                )}
-              </button>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text text-xl">Password</span>
+              </div>
+              <div className="relative">
+                <input
+                  type={isVisible ? 'text' : 'password'}
+                  className=" input input-bordered input-primary w-80"
+                  placeholder="Enter you password"
+                  color={formik.errors.password ? 'danger' : 'default'}
+                  onChange={(e) =>
+                    formik.setFieldValue('password', e.target.value)
+                  }
+                  value={formik.values.password}
+                />
+                <button
+                  className="focus:outline-none absolute right-2 top-1/3 "
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <FaEye className="text-md text-default-400 pointer-events-none" />
+                  ) : (
+                    <FaEyeSlash className="text-md text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              </div>
             </label>
             <span className="flex justify-start">
               {formik.touched.password && formik.errors.password ? (
@@ -188,6 +226,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
               </span>
             </div>
           </div>
+          <div className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text me-2">
+                I accept Privacy Policy & Terms and Conditions
+              </span>
+              <input
+                type="checkbox"
+                value="true"
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    'privacy_terms_conditions',
+                    e.target.checked
+                  )
+                }
+                className="checkbox"
+              />
+            </label>
+          </div>
           <div>
             <p className="text-destructive-foreground">
               Already have an account?{' '}
@@ -200,7 +256,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
             {isLoading ? (
               <button
                 disabled
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               >
                 <span className="loading loading-spinner loading-xs"></span>
                 Please wait
@@ -209,7 +265,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ getLoginData }) => {
               <button
                 type="submit"
                 aria-label="Submit"
-                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] btn"
+                className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] customBtn"
               >
                 Register
               </button>

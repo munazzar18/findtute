@@ -1,35 +1,40 @@
-import Head from 'next/head';
-import {
-  faEnvelope,
-  faLocationDot,
-  faPhone,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
-
-
-
+import { FaAngleRight, FaEnvelope, FaPhone } from 'react-icons/fa'
 
 const Contact = () => {
   return (
     <>
- <Head>
- <link rel="canonical" href="https://www.findtute.com/contact" />
+      <Head>
+        <link rel="canonical" href="https://www.findtute.com/contact" />
         <title>Contact Us | Best Online Teachers</title>
-        <meta name="description" content="Get in touch with us for inquiries about online teaching and tutoring services." />
-        <meta name="keywords" content="Contact Us, Online Tutors, Inquiry, Education Support" />
+        <meta
+          name="description"
+          content="Get in touch with us for inquiries about online teaching and tutoring services."
+        />
+        <meta
+          name="keywords"
+          content="Contact Us, Online Tutors, Inquiry, Education Support"
+        />
         <meta property="og:title" content="Contact Us | Best Online Teachers" />
-        <meta property="og:description" content="Reach out to us for more information about our online teaching services." />
+        <meta
+          property="og:description"
+          content="Reach out to us for more information about our online teaching services."
+        />
         <meta property="og:image" content="https://i.imgur.com/WbQnbas.png" />
         <meta property="og:url" content="https://findtute.com/contact" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Us | Best Online Teachers" />
-        <meta name="twitter:description" content="Contact us for all your online teaching needs." />
+        <meta
+          name="twitter:title"
+          content="Contact Us | Best Online Teachers"
+        />
+        <meta
+          name="twitter:description"
+          content="Contact us for all your online teaching needs."
+        />
         <meta name="twitter:image" content="https://i.imgur.com/WbQnbas.png" />
       </Head>
-
-
 
       <div className="lg:pb-15 pb-10">
         <div className="bg-warm lg:py-15 py-10">
@@ -46,7 +51,7 @@ const Contact = () => {
                     </Link>
                   </li>
                   <li>
-                    <i className="fa-solid fa-angle-right"></i>
+                    <FaAngleRight />
                   </li>
                   <li>
                     <Link
@@ -205,7 +210,7 @@ const Contact = () => {
             >
               <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
                 <span className="text-cream-foreground text-[28px]">
-                  <FontAwesomeIcon icon={faLocationDot} />
+                  <FaPhone />
                 </span>
               </div>
               <h5 className="font-bold text-xl mt-5 pb-2.5">Location</h5>
@@ -220,7 +225,7 @@ const Contact = () => {
             >
               <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
                 <span className="text-cream-foreground text-[28px]">
-                  <FontAwesomeIcon icon={faEnvelope} />
+                  <FaEnvelope />
                 </span>
               </div>
               <h5 className="font-bold text-xl mt-5 pb-2.5">Mail</h5>
@@ -235,7 +240,7 @@ const Contact = () => {
             >
               <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
                 <span className="text-cream-foreground text-[28px]">
-                  <FontAwesomeIcon icon={faPhone} />
+                  <FaPhone />
                 </span>
               </div>
               <h5 className="font-bold text-xl mt-5 pb-2.5">Contact</h5>
@@ -247,22 +252,18 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9297281835396!2d71.66935401507212!3d29.406032698582283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1630975049084!5m2!1sen!2sbd"
-          width="1920"
-          height="497"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </div>
+      <div className="lg:pt-15 lg;pb-15 pb-10 pt-10 overflow-x-hidden"></div>
 
       <section className="p-8 bg-gray-100">
-      <blockquote className="mt-8 p-4 bg-white border-l-4 border-blue-500 text-gray-700 italic text-center">
-        <p>Our platform connects online tutors and learners globally. Whether you're looking for the best tutors online or want to enhance your skills via online teaching, we have the right solutions for you. Join thousands of students and tutors in an immersive learning experience</p>
-      </blockquote>
+        <blockquote className="mt-8 p-4 bg-white border-l-4 border-blue-500 text-gray-700 italic text-center">
+          <p>
+            Our platform connects online tutors and learners globally. Whether
+            you're looking for the best tutors online or want to enhance your
+            skills via online teaching, we have the right solutions for you.
+            Join thousands of students and tutors in an immersive learning
+            experience
+          </p>
+        </blockquote>
       </section>
 
       <section className="lg:pt-15 pt-10 ">
@@ -280,7 +281,12 @@ const Contact = () => {
                   The path to success starts with education
                 </h2>
                 <p className="mt-5 wow fadeInUp" data-wow-delay=".4s">
-                  At Stay With Us, success begins with quality education led by expert teachers online. Our personalized online teaching connects students with experienced online tutors for tailored learning experiences. With flexible tutors online, we help students unlock their potential and achieve academic success from anywhere.
+                  At Stay With Us, success begins with quality education led by
+                  expert teachers online. Our personalized online teaching
+                  connects students with experienced online tutors for tailored
+                  learning experiences. With flexible tutors online, we help
+                  students unlock their potential and achieve academic success
+                  from anywhere.
                 </p>
                 <div className="mt-9">
                   <Link href="/services" className="btn-rounded-full">
@@ -308,4 +314,4 @@ const Contact = () => {
   )
 }
 
-export default Contact;
+export default Contact

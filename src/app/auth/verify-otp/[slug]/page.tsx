@@ -47,8 +47,16 @@ const VerifyOtp = ({ params }: { params: { slug: string } }) => {
       return auth
     } else {
       const token = auth?.data?.access_token
+      const user = auth?.data?.user
+
+      saveCookes.set('user', JSON.stringify(user), {
+        secure: true,
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 30,
+      })
 
       saveCookes.set('access_token', token, {
+        secure: true,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 30,
       })

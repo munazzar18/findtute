@@ -112,7 +112,6 @@ const VerifyOTPForm = ({ verifyOtpData, getEmail }: any) => {
         .label('One time password'),
     }),
     onSubmit: async (values) => {
-      console.log('Values', values)
       setIsLoading(true)
       let res = await verifyOtpData(values)
       try {
@@ -205,7 +204,7 @@ const VerifyOTPForm = ({ verifyOtpData, getEmail }: any) => {
           {isLoading ? (
             <button
               disabled
-              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
             >
               <span className="loading loading-spinner loading-xs"></span>
               Please wait
@@ -214,7 +213,7 @@ const VerifyOTPForm = ({ verifyOtpData, getEmail }: any) => {
             <button
               type="submit"
               aria-label="Submit"
-              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-72 text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
             >
               Verify
             </button>

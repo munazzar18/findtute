@@ -5,14 +5,17 @@ import { MultiSelect } from 'react-multi-select-component'
 import { FormikErrors, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import {
+  GetCity,
+  GetCountry,
   GetGrades,
+  GetState,
   GetSubjects,
   UpdateProfileAction,
   UploadProfileImageAction,
-} from '../dashboard/[id]/profile/_action'
+} from '../dashboard/profile/_action'
+import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
+import { useRouter } from 'next/navigation'
 
 interface OptionType {
   label: string
@@ -26,9 +29,11 @@ interface FormValues {
 
 type GradeResponse = [
   {
-    id: string
-    grade: string
-    created_at: string
+    data: {
+      id: string
+      grade: string
+      created_at: string
+    }
   }
 ]
 
@@ -75,18 +80,25 @@ const UserProfileData = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [allGrades, setAllGrades] = useState<OptionType[]>([])
   const [allSubjects, setAllSubjects] = useState<OptionType[]>([])
-  const [selectedGrades, setSelectedGrades] = useState<GradeResponse>()
-  const [selectedSubjects, setSelectedSubjects] = useState<SubjectResponse>()
+  const [selectedGrades, setSelectedGrades] = useState()
+  const [selectedSubjects, setSelectedSubjects] = useState()
   const [isLoading, isSetLoading] = useState(false)
+  const [allCountries, setAllCountries] = useState([])
+  const [allStates, setAllStates] = useState([])
+  const [allCities, setAllCities] = useState([])
   const [education, seteducation] = useState<Education[]>([initialEducation])
   const [experience, setexperience] = useState<Experience[]>([
     initialExperience,
   ])
 
+  const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
+
+  const router = useRouter()
+
   const getAllGrades = async () => {
-    const res: GradeResponse = await GetGrades()
+    const res = await GetGrades()
     if (res) {
-      res.map((grade: { id: string; grade: string }) => {
+      res.data.map((grade: { id: string; grade: string }) => {
         setAllGrades((prev) => [
           ...prev,
           {
@@ -100,7 +112,7 @@ const UserProfileData = () => {
   }
 
   const getAllSubjects = async () => {
-    const res: SubjectResponse = await GetSubjects()
+    const res = await GetSubjects()
     if (res) {
       res.map((subject: { id: string; subject: string }) => {
         setAllSubjects((prev) => [
@@ -115,9 +127,31 @@ const UserProfileData = () => {
     return res
   }
 
+  const getCountry = async () => {
+    const res = await GetCountry()
+    if (res) {
+      setAllCountries(res)
+    }
+  }
+
+  const getStates = async () => {
+    const res = await GetState(formik.values.country)
+    if (res) {
+      setAllStates(res)
+    }
+  }
+
+  const getCities = async () => {
+    const res = await GetCity(formik.values.country, formik.values.state)
+    if (res) {
+      setAllCities(res)
+    }
+  }
+
   useEffect(() => {
     getAllGrades()
     getAllSubjects()
+    getCountry()
   }, [])
 
   const handleFileUpload = () => {
@@ -133,13 +167,11 @@ const UserProfileData = () => {
     formData.append('file', file)
     try {
       const res = await UploadProfileImageAction(formData)
-      console.log(res)
       if (res.status && res.status === true) {
         toast.success(res.message)
 
         //only temporary for now
-        const url = 'http://localhost:3500'
-        const path = url + res.data
+        const path = res.data
         setImage(path)
       } else {
         toast.error(res.message)
@@ -204,7 +236,7 @@ const UserProfileData = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          formik.setFieldValue('latitude', pos.coords.latitude)
+          formik.setFieldValue('lattitude', pos.coords.latitude)
           formik.setFieldValue('longitude', pos.coords.longitude)
         },
         (error) => {
@@ -246,8 +278,11 @@ const UserProfileData = () => {
       last_name: '',
       cnic: '',
       mobile: '',
-      latitude: 0,
+      lattitude: 0,
       longitude: 0,
+      city: '',
+      state: '',
+      country: '',
       address: '',
       avatar: '',
       preference: '',
@@ -261,9 +296,12 @@ const UserProfileData = () => {
       last_name: Yup.string().label('Last Name').required().max(30),
       cnic: Yup.string().label('CNIC').required().max(13),
       mobile: Yup.string().label('Mobile').required(),
+      city: Yup.string().label('City').required().max(30),
+      state: Yup.string().label('State').required().max(30),
+      country: Yup.string().label('Country').required().max(30),
       address: Yup.string().label('Address').required().max(300),
       preference: Yup.string().required().label('Preference'),
-      latitude: Yup.number().required().label('Latitude'),
+      lattitude: Yup.number().required().label('lattitude'),
       longitude: Yup.number().required().label('Longitude'),
       education: Yup.array().of(
         Yup.object({
@@ -277,8 +315,8 @@ const UserProfileData = () => {
         Yup.object({
           institute: Yup.string().label('Institute').max(60),
           title: Yup.string().label('Title').max(60),
-          startDate: Yup.string().label('Institute').max(20),
-          endDate: Yup.string().label('Institute').max(20),
+          startDate: Yup.string().label('startDate').max(20),
+          endDate: Yup.string().label('endDate').max(20),
         })
       ),
     }),
@@ -290,8 +328,11 @@ const UserProfileData = () => {
       formData.append('last_name', values.last_name)
       formData.append('cnic', values.cnic)
       formData.append('mobile', values.mobile)
-      formData.append('latitude', values.latitude.toString())
+      formData.append('lattitude', values.lattitude.toString())
       formData.append('longitude', values.longitude.toString())
+      formData.append('city', values.city)
+      formData.append('state', values.state)
+      formData.append('country', values.country)
       formData.append('address', values.address)
       formData.append('avatar', image)
       formData.append('preference', values.preference)
@@ -304,6 +345,9 @@ const UserProfileData = () => {
       if (res.status && res.status === true) {
         toast.success(res.message)
         resetForm()
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 2000)
       } else {
         toast.error(res.message)
       }
@@ -313,13 +357,24 @@ const UserProfileData = () => {
   })
   //validation
 
+  useEffect(() => {
+    getStates()
+  }, [formik.values.country])
+
+  useEffect(() => {
+    getCities()
+  }, [formik.values.state])
+
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4  sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
+      <h3 className="text-red-500 text-xl m-3 font-bold text-center">
+        To access FindTute services, you must complete your profile first.
+      </h3>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>
             <img
-              src={image ? image : '/user.png'}
+              src={image && url ? `${url}/${image}` : '/user.png'}
               alt="your profile image"
               width={200}
               height={200}
@@ -330,7 +385,7 @@ const UserProfileData = () => {
             <button
               color="primary"
               type="button"
-              className="text-sm text-nowrap sm:text-sm md:text-lg  lg:text-lg  bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn "
+              className="text-sm text-nowrap sm:text-sm md:text-lg  lg:text-lg  bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn "
               onClick={handleFileUpload}
             >
               Upload picture
@@ -347,7 +402,7 @@ const UserProfileData = () => {
             <button
               color="primary"
               type="button"
-              className="w-full text-lg bg-red-600 text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-full text-lg bg-red-600 text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
               onClick={handleRemove}
             >
               Remove
@@ -510,20 +565,20 @@ const UserProfileData = () => {
               <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text">Latitude</span>
+                    <span className="label-text">lattitude</span>
                   </div>
                   <input
                     className="input input-bordered input-primary w-full"
                     type="number"
-                    color={formik.errors.latitude ? 'danger' : 'primary'}
+                    color={formik.errors.lattitude ? 'danger' : 'primary'}
                     onChange={(e) =>
-                      formik.setFieldValue('latitude', e.target.value)
+                      formik.setFieldValue('lattitude', e.target.value)
                     }
-                    value={formik.values.latitude.toString()}
+                    value={formik.values.lattitude.toString()}
                   />
                   <span>
-                    {formik.touched.latitude && formik.errors.latitude
-                      ? formik.errors.latitude
+                    {formik.touched.lattitude && formik.errors.lattitude
+                      ? formik.errors.lattitude
                       : ''}
                   </span>
                 </label>
@@ -565,6 +620,86 @@ const UserProfileData = () => {
                 </label>
               </div>
             </div>
+          </div>
+
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Select country</span>
+              </div>
+              <select
+                className="select select-primary w-full"
+                color={formik.errors.country ? 'danger' : 'primary'}
+                onChange={(e) =>
+                  formik.setFieldValue('country', e.target.value)
+                }
+                value={formik.values.country}
+              >
+                <option value="">Select country</option>
+                {allCountries.map((country: any) => (
+                  <option key={country.isoCode} value={country.isoCode}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+              <span>
+                {formik.touched.country && formik.errors.country
+                  ? formik.errors.country
+                  : ''}
+              </span>
+            </label>
+          </div>
+
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Select State</span>
+              </div>
+              <select
+                className="select select-primary w-full"
+                color={formik.errors.state ? 'danger' : 'primary'}
+                onChange={(e) => formik.setFieldValue('state', e.target.value)}
+                value={formik.values.state}
+              >
+                <option value="">Select state</option>
+                {allStates.map((state: any) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+              <span>
+                {formik.touched.country && formik.errors.country
+                  ? formik.errors.country
+                  : ''}
+              </span>
+            </label>
+          </div>
+
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Select City</span>
+              </div>
+              <select
+                className="select select-primary w-full"
+                color={formik.errors.city ? 'danger' : 'primary'}
+                onChange={(e) => formik.setFieldValue('city', e.target.value)}
+                value={formik.values.city}
+              >
+                <option value="">Select city</option>
+                {allCities.map((city: any) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+              <span>
+                {formik.touched.country && formik.errors.country
+                  ? formik.errors.country
+                  : ''}
+              </span>
+            </label>
           </div>
 
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12">
@@ -754,7 +889,7 @@ const UserProfileData = () => {
                         type="button"
                         className="mx-1 w-full sm:w-full md:w-full lg:w-10 "
                       >
-                        <FontAwesomeIcon icon={faPlus} />
+                        <FaCirclePlus />
                       </button>
                     ) : (
                       ''
@@ -767,7 +902,7 @@ const UserProfileData = () => {
                         onClick={() => handleRemoveEducation(index)}
                         className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                       >
-                        <FontAwesomeIcon icon={faMinus} />
+                        <FaCircleMinus />
                       </button>
                     ) : (
                       ''
@@ -801,7 +936,7 @@ const UserProfileData = () => {
                     }
                     onChange={formik.handleChange}
                     value={formik.values.experience[index].institute}
-                    name={`experience[${index}].instituteExp`}
+                    name={`experience[${index}].institute`}
                   />
                   <span>
                     {formik.touched.experience &&
@@ -919,7 +1054,7 @@ const UserProfileData = () => {
                       onClick={handleAddExperience}
                       className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FaCirclePlus />
                     </button>
                   ) : (
                     ''
@@ -931,7 +1066,7 @@ const UserProfileData = () => {
                       onClick={() => handleRemoveExperience(index)}
                       className="mx-1 w-full sm:w-full md:w-full lg:w-10"
                     >
-                      <FontAwesomeIcon icon={faMinus} />
+                      <FaCircleMinus />
                     </button>
                   ) : (
                     ''
@@ -946,7 +1081,7 @@ const UserProfileData = () => {
               type="submit"
               color="primary"
               aria-label="Submit"
-              className="w-full text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] btn"
+              className="w-full text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn"
             >
               Save
             </button>

@@ -5,7 +5,7 @@ Allow: /
 Disallow: /private/
 
 # Include the location of your sitemap
-Sitemap: https://acme.com/sitemap.xml
+Sitemap: https://www.findtute.com/sitemap.xml
 
 # Optional: Specify crawl delay to avoid overloading your server
 Crawl-Delay: 10

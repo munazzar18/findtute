@@ -1,35 +1,30 @@
-import React from "react";
-import Counter from "../helper/Counter";
-import Head from "next/head";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
-import { FaLaptop, FaBook, FaUsers, FaGlobe, FaDollarSign } from 'react-icons/fa';
-import { FaArrowRightToBracket } from "react-icons/fa6";
-
+import React from 'react'
+import Counter from '../helper/Counter'
+import Head from 'next/head'
+import Link from 'next/link'
 import {
-  faArrowRight,
-  faBook,
-  faBookOpen,
-  faEarthAsia,
-  faGlobe,
-  faHandsHoldingChild,
-  faIdBadge,
-  faMagnifyingGlass,
-  faNetworkWired,
-  faPersonChalkboard,
-  faPersonSnowboarding,
-  faRocket,
-  faSchool,
-} from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-
-
+  FaArrowRight,
+  FaBook,
+  FaBookOpen,
+  FaChalkboard,
+  FaGlobe,
+  FaIdBadge,
+  FaLaptop,
+  FaQuoteLeft,
+  FaQuoteRight,
+  FaRocket,
+  FaSchool,
+  FaUserGraduate,
+  FaUsers,
+} from 'react-icons/fa'
+import { FaEarthAsia, FaHandsHoldingCircle } from 'react-icons/fa6'
+import { BiNetworkChart } from 'react-icons/bi'
 
 export default function page() {
   return (
     <>
       <Head>
-      <link rel="canonical" href="https://www.findtute.com/" />
+        <link rel="canonical" href="https://www.findtute.com/" />
         <script type="application/ld+json">
           {`
           {
@@ -75,12 +70,12 @@ export default function page() {
           <div className="flex flex-col items-center text-center relative z-10">
             <h1 className="font-normal xl:text-[70px] lg:text-6xl md:text-5xl text-4xl xl:leading-[128%] lg:leading-[125%] md:leading-[120%] max-w-[776px]">
               <span className="relative">
-                Level Up Your Skills{" "}
+                Level Up Your Skills{' '}
                 <span className="absolute -left-6 top-1 text-3xl">
                   <i className="icon-three-line"></i>
                 </span>
               </span>
-              <span className="font-bold">Find Your Perfect Tutor </span>{" "}
+              <span className="font-bold">Find Your Perfect Tutor </span>{' '}
               <span className="font-bold text-destructive-foreground">
                 Online or Nearby!
               </span>
@@ -101,13 +96,21 @@ export default function page() {
             </div>
 
             <p className="pt-5 max-w-[731px]">
-            Discover top online teachers and tutors for personalized learning, Findtute available 24/7 for all subjects, including exam preparation. Explore affordable online teaching Findtute platforms that provide flexible and high-quality education for students of all levels, from K-12 to corporate training. Benefit from virtual learning, interactive online classes, and remote tutors tailored to your specific educational needs.
+              Discover top online teachers and tutors for personalized learning,
+              Findtute available 24/7 for all subjects, including exam
+              preparation. Explore affordable online teaching Findtute platforms
+              that provide flexible and high-quality education for students of
+              all levels, from K-12 to corporate training. Benefit from virtual
+              learning, interactive online classes, and remote tutors tailored
+              to your specific educational needs.
             </p>
 
             <p className="pt-5 max-w-[731px]">
               Stop searching, start learning! We make finding the perfect tutor
               a breeze. Browse profiles of highly qualified teachers across a
-              wide range of subjects. Connect with experienced educators today and enhance your learning journey with comprehensive online education services
+              wide range of subjects. Connect with experienced educators today
+              and enhance your learning journey with comprehensive online
+              education services
             </p>
           </div>
           <div className="absolute left-2.5 lg:top-0 top-10 lg:max-w-full max-w-[200px] sm:block hidden animate-up-down">
@@ -171,10 +174,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-primary lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <FontAwesomeIcon
-                    icon={faSchool}
-                    className="lg:text-[40px] text-3xl text-cream-foreground"
-                  />
+                  <FaSchool className="lg:text-[40px] text-3xl text-cream-foreground" />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
@@ -189,10 +189,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-destructive lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <FontAwesomeIcon
-                    icon={faBook}
-                    className="lg:text-[40px] text-3xl text-cream-foreground"
-                  />
+                  <FaBook className="lg:text-[40px] text-3xl text-cream-foreground" />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
@@ -208,10 +205,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-green lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <FontAwesomeIcon
-                    icon={faPersonChalkboard}
-                    className="lg:text-[40px] text-3xl text-cream-foreground"
-                  />
+                  <FaChalkboard className="lg:text-[40px] text-3xl text-cream-foreground" />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
@@ -225,10 +219,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="rounded-full bg-secondary lg:w-20 lg:h-20 w-16 h-16 flex items-center justify-center">
-                  <FontAwesomeIcon
-                    icon={faHandsHoldingChild}
-                    className="lg:text-[40px] text-3xl text-cream-foreground"
-                  />
+                  <FaHandsHoldingCircle className="lg:text-[40px] text-3xl text-cream-foreground" />
                 </div>
                 <div>
                   <h4 className="font-bold lg:text-[32px] md:text-[28px] text-2xl">
@@ -262,10 +253,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faRocket}
-                  />
+                  <FaRocket className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -290,7 +278,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -300,10 +288,7 @@ export default function page() {
                 data-wow-delay=".4s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faEarthAsia}
-                  />
+                  <FaEarthAsia className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -330,7 +315,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -340,10 +325,7 @@ export default function page() {
                 data-wow-delay=".5s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faIdBadge}
-                  />
+                  <FaIdBadge className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -370,7 +352,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -380,10 +362,7 @@ export default function page() {
                 data-wow-delay=".6s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faBookOpen}
-                  />
+                  <FaBookOpen className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -410,7 +389,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -448,10 +427,7 @@ export default function page() {
                 data-wow-delay=".3s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faPersonSnowboarding}
-                  />
+                  <i className="icon-kindergarden md:text-6xl text-[40px]"></i>
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -477,7 +453,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -487,10 +463,7 @@ export default function page() {
                 data-wow-delay=".4s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faNetworkWired}
-                  />
+                  <BiNetworkChart className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -515,7 +488,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -525,10 +498,7 @@ export default function page() {
                 data-wow-delay=".5s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faGlobe}
-                  />
+                  <FaGlobe className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -553,7 +523,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -563,10 +533,7 @@ export default function page() {
                 data-wow-delay=".6s"
               >
                 <div className="md:max-w-[88px] max-w-[70px] w-full max-h-[88px] flex justify-center items-center rounded-[10px] border border-[#F2F2F2] bg-background sm:p-[14px] p-2.5 static lg:absolute -left-11 top-1/2 lg:-translate-y-1/2 transition-all duration-500 text-green-foreground group-hover/card:bg-green group-hover/card:text-cream-foreground">
-                  <FontAwesomeIcon
-                    className="md:text-6xl text-[40px]"
-                    icon={faMagnifyingGlass}
-                  />
+                  <FaUserGraduate className="md:text-6xl text-[40px]" />
                 </div>
                 <div className="lg:pl-11 mt-4 lg:mt-0">
                   <h4>
@@ -593,7 +560,7 @@ export default function page() {
                       Read More
                     </span>
                     <span className="group-hover/btn:ml-1 group-hover/btn:text-green-foreground transition-all duration-500">
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <FaArrowRight />
                     </span>
                   </Link>
                 </div>
@@ -661,57 +628,81 @@ export default function page() {
         </div>
       </section>
 
-
-
-
       <section className="bg-gray-50">
-      <div className="container mx-auto px-6">
-        <h1 className="text-4xl font-bold text-center mb-8 text-[#ED145B]">
-       Explore the World of Online Tutoring
-        </h1>
-        <p className="text-lg text-center mb-12 text-gray-700">
-          In today's digital age, online tutoring has become an increasingly popular option for those looking to work from home or earn extra income. If you're considering a career shift or a side job, online tutoring jobs offer a flexible and rewarding opportunity. Whether you're seeking online tutoring jobs from home or looking for the best platforms to start your journey, there's a wide array of options available.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
-            <FaLaptop className="text-blue-500 text-4xl mb-4" />
-            <h2 className="text-2xl font-semibold mb-2">Flexible Work From Home</h2>
-            <p className="text-gray-600">
-              For students, online tutoring jobs can be a great way to gain experience, earn money, and enhance your teaching skills. If you're a beginner teacher, many online tutoring websites for teachers provide the necessary resources and training to help you get started.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
-            <FaBook className="text-green-500 text-4xl mb-4" />
-            <h2 className="text-2xl font-semibold mb-2">Educational Support</h2>
-            <p className="text-gray-600">
-              Websites like these also offer a variety of opportunities to connect with students and provide valuable educational support. If you’re based in Pakistan, you can find specific platforms that cater to your region.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
-            <FaUsers className="text-purple-500 text-4xl mb-4" />
-            <h2 className="text-2xl font-semibold mb-2">Local and Global Opportunities</h2>
-            <p className="text-gray-600">
-              For those interested in making money online, there are numerous online tutoring sites to earn money that offer competitive rates and a range of subjects to teach. Sites focusing on online teaching provide comprehensive tools and resources for effective learning experiences.
-            </p>
-          </div>
-        </div>
-        <div className="text-center mt-12 flex justify-items-center items-center flex-col">
-          <h2 className="text-3xl font-bold text-[#ED145B] mb-4">Start Your Journey Today!</h2>
-          <p className="text-lg text-gray-700 mb-4">
-            Whether you are a teacher looking to expand your reach or a student seeking flexible job opportunities, the landscape of online tutoring offers something for everyone. Explore the myriad opportunities available and start your journey into the world of online education today.
+        <div className="container mx-auto px-6">
+          <h1 className="text-4xl font-bold text-center mb-8 text-[#ED145B]">
+            Explore the World of Online Tutoring
+          </h1>
+          <p className="text-lg text-center mb-12 text-gray-700">
+            In today's digital age, online tutoring has become an increasingly
+            popular option for those looking to work from home or earn extra
+            income. If you're considering a career shift or a side job, online
+            tutoring jobs offer a flexible and rewarding opportunity. Whether
+            you're seeking online tutoring jobs from home or looking for the
+            best platforms to start your journey, there's a wide array of
+            options available.
           </p>
-          <span>
-          <Link 
-         href="/">
-         <button className="relative px-3 flex justify-center items-center gap-2  py-3 border-2 border-[#ED145B] rounded-lg font-bold tracking-widest uppercase text-black text-sm cursor-pointer overflow-hidden transition-all duration-1000 hover:text-white hover:scale-110 hover:border-[#ED145B] hover:shadow-[4px_5px_17px_-4px_#268391] before:absolute before:left-[-50px] before:top-0 before:w-0 before:h-full before:bg-[#ED145B] before:skew-x-[45deg] before:z-[-1] before:transition-all before:duration-1000 hover:before:w-[250%]">
-           Apply Now    <FaArrowRightToBracket className="text-xl" />
-
-          </button>
-        </Link>
-        </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+              <FaLaptop className="text-blue-500 text-4xl mb-4" />
+              <h2 className="text-2xl font-semibold mb-2">
+                Flexible Work From Home
+              </h2>
+              <p className="text-gray-600">
+                For students, online tutoring jobs can be a great way to gain
+                experience, earn money, and enhance your teaching skills. If
+                you're a beginner teacher, many online tutoring websites for
+                teachers provide the necessary resources and training to help
+                you get started.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+              <FaBook className="text-green-500 text-4xl mb-4" />
+              <h2 className="text-2xl font-semibold mb-2">
+                Educational Support
+              </h2>
+              <p className="text-gray-600">
+                Websites like these also offer a variety of opportunities to
+                connect with students and provide valuable educational support.
+                If you’re based in Pakistan, you can find specific platforms
+                that cater to your region.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl">
+              <FaUsers className="text-purple-500 text-4xl mb-4" />
+              <h2 className="text-2xl font-semibold mb-2">
+                Local and Global Opportunities
+              </h2>
+              <p className="text-gray-600">
+                For those interested in making money online, there are numerous
+                online tutoring sites to earn money that offer competitive rates
+                and a range of subjects to teach. Sites focusing on online
+                teaching provide comprehensive tools and resources for effective
+                learning experiences.
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-12 flex justify-items-center items-center flex-col">
+            <h2 className="text-3xl font-bold text-[#ED145B] mb-4">
+              Start Your Journey Today!
+            </h2>
+            <p className="text-lg text-gray-700 mb-4">
+              Whether you are a teacher looking to expand your reach or a
+              student seeking flexible job opportunities, the landscape of
+              online tutoring offers something for everyone. Explore the myriad
+              opportunities available and start your journey into the world of
+              online education today.
+            </p>
+            <span className="mt-2">
+              <Link href="/">
+                <button className="text-lg bg-green text-cream-foreground rounded-md max-h-1 !leading-[0.2] customBtn">
+                  Apply Now
+                </button>
+              </Link>
+            </span>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
-  );
-} 
+  )
+}

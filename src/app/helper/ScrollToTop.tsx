@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { FaArrowUp } from 'react-icons/fa'
 
 const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -34,16 +33,15 @@ const ScrollToTopButton: React.FC = () => {
     <div
       id="scroll-up"
       onClick={scrollToTop}
-      className={`z-[999] fixed bottom-2 sm:left-1/2 md:left-1/2 xl:left-[98%] left-full -translate-x-1/2 w-12.5 h-12.5 flex justify-center items-center cursor-pointer ${
+      className={`z-[999] fixed bottom-2 sm:left-1/2 md:left-1/2 xl:left-[98%] left-full -translate-x-1/2 w-12.5 h-12.5 flex justify-center items-center cursor-pointer  ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ display: isVisible ? 'inline' : 'none' }}
       aria-label="Scroll to Top"
     >
-      <FontAwesomeIcon
-        className="text-primary-foreground"
-        icon={faArrowUp}
-        size="xl"
+      <FaArrowUp
+        className="text-primary-foreground hover:text-secondary transition-all duration-500"
+        size={25}
       />
     </div>
   )
