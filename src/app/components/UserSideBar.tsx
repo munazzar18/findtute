@@ -58,7 +58,7 @@ const UserSideBar = () => {
     {
       id: 3,
       name: 'Browse',
-      link: `/dashboard/browse`,
+      link: `/dashboard/browse?page=1`,
       icon: <IoPeopleSharp />,
     },
     {

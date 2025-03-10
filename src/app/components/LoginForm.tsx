@@ -26,6 +26,7 @@ interface Response {
       id: string
       username: string
       role: string
+      is_verified: boolean
     }
   }
 }
@@ -58,12 +59,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ getLoginData }) => {
       try {
         if (res.statusCode !== 200 && res.error === 'Unauthorized') {
           toast.error(res.message)
-          //how to navigate to home here
         } else if (res.status === false) {
           toast.error(res.message)
         } else {
           toast.success(res.message)
-          router.push('/dashboard')
+          if (res.data.user.is_verified === false) {
+            router.push('/onboarding')
+          } else {
+            router.push('/dashboard')
+          }
         }
       } catch (error) {
         console.error(error)
