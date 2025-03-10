@@ -16,6 +16,7 @@ import {
 } from '../dashboard/profile/_action'
 import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
+import { FaInfoCircle } from 'react-icons/fa'
 
 interface OptionType {
   label: string
@@ -367,9 +368,12 @@ const UserProfileData = () => {
 
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4  sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
-      <h3 className="text-red-500 text-xl m-3 font-bold text-center">
-        To access FindTute services, you must complete your profile first.
+    <div className='bg-red-500 py-2 w-full rounded-md spin mb-5'>
+      <h3 className=" text-xl text-white ml-3 p-2 gap-4 flex justify-start items-start font-bold">
+      <FaInfoCircle className="mt-1 animate-ping" />
+        <span>To access FindTute services, you must complete your profile first.</span>
       </h3>
+      </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
           <div>

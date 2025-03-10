@@ -55,7 +55,7 @@ export default function App() {
                       <li className="leading-[164%] relative group">
                         <Link
                           href="/about"
-                          className="font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500"
+                          className="font-semibold text-lg  group-hover:text-primary-foreground transition-all duration-500 "
                         >
                           About Us
                         </Link>
