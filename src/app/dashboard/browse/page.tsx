@@ -103,7 +103,7 @@ const Browse = async ({
         {matchingUsers?.users?.length === 0 && <p>No matching users found.</p>}
         {matchingUsers?.users?.map((user: User) => {
           const avatarUrl = user.avatar
-            ? `http://localhost:3500${user.avatar}`
+            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${user.avatar}`
             : '/images/default-avatar.png' // Placeholder image
 
           return (
