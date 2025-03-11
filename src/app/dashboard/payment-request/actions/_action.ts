@@ -28,3 +28,26 @@ export const PaymentStatusAction = async (id: string, formData: FormData) => {
     }
 }
 
+
+export const InquirePaymentStatus = async (transactionId: string) => {
+
+    const url = process.env.NEXT_PUBLIC_API_URL as string
+    const token = cookies().get('access_token')?.value
+
+    try {
+        const res = await fetch(`${url}payment/inquire-transaction`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ transaction_id: transactionId }),
+        })
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.error("payment update failed", error)
+    }
+}
+
