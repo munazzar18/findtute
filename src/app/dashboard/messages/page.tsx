@@ -37,7 +37,7 @@ const Messages = async () => {
           </tr>
         </thead>
         <tbody>
-          {rooms.length > 0 ? (
+          {rooms?.length > 0 ? (
             rooms.map((room, index) => (
               <tr key={room.id}>
                 <td>{index + 1}</td>
