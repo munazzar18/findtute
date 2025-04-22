@@ -20,9 +20,12 @@ const ScreenShare: React.FC<ChatProps> = ({
 }) => {
   // Initialize PeerJS
   const peerInstance = new Peer({
-    host: 'localhost',
-    port: 3001,
-    path: '/',
+    host: 'peerjs.findtute.com',
+    port: 443,
+    path: '/peerjs',
+    key: 'peerjs',
+    secure: true,
+    debug: 2,
   })
   const socket = useSocket(token)
   const localVideoRef = useRef<HTMLVideoElement | null>(null)
