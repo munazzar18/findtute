@@ -17,6 +17,7 @@ import {
 import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
 import { FaInfoCircle } from 'react-icons/fa'
+import MapSelector from './MapSelector'
 
 interface OptionType {
   label: string
@@ -75,6 +76,12 @@ const initialExperience: Experience = {
   present: false,
 }
 
+interface Location {
+  lat: number
+  lng: number
+  address?: string
+}
+
 const UserProfileData = () => {
   const [progress, setProgress] = useState(10)
   const [image, setImage] = useState<string>('')
@@ -93,6 +100,8 @@ const UserProfileData = () => {
   ])
 
   const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
+
+  const [locationInfo, setLocationInfo] = useState<Location>()
 
   const router = useRouter()
 
@@ -272,6 +281,17 @@ const UserProfileData = () => {
     setSelectedSubjects(newSubjects)
   }
 
+  const handleLocationSelect = (location: Location) => {
+    setLocationInfo({
+      lat: location.lat,
+      lng: location.lng,
+      address: location.address,
+    })
+    formik.setFieldValue('lattitude', location.lat)
+    formik.setFieldValue('longitude', location.lng)
+    formik.setFieldValue('address', location.address)
+  }
+
   //validation
   const formik = useFormik({
     initialValues: {
@@ -368,11 +388,13 @@ const UserProfileData = () => {
 
   return (
     <div className=" w-full bg-gray-100 shadow-2xl rounded-2xl p-2 mx-4  sm:mx-2 md:mx-8 lg:mx-16  sm:p-2 md:p-4 lg:p-8">
-    <div className='bg-red-500 py-2 w-full rounded-md spin mb-5'>
-      <h3 className=" text-xl text-white ml-3 p-2 gap-4 flex justify-start items-start font-bold">
-      <FaInfoCircle className="mt-1 animate-ping" />
-        <span>To access FindTute services, you must complete your profile first.</span>
-      </h3>
+      <div className="bg-red-500 py-2 w-full rounded-md spin mb-5">
+        <h3 className=" text-xl text-white ml-3 p-2 gap-4 flex justify-start items-start font-bold">
+          <FaInfoCircle className="mt-1 animate-ping" />
+          <span>
+            To access FindTute services, you must complete your profile first.
+          </span>
+        </h3>
       </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-center items-center gap-1 sm:gap-1 md:gap-2 lg:gap-3 mb-2 sm:mb-2 md:mb-4 lg:mb-4">
@@ -564,67 +586,6 @@ const UserProfileData = () => {
               </span>
             </label>
           </div>
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-            <div className="grid grid-cols-12 gap-4 items-baseline">
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text">lattitude</span>
-                  </div>
-                  <input
-                    className="input input-bordered input-primary w-full"
-                    type="number"
-                    color={formik.errors.lattitude ? 'danger' : 'primary'}
-                    onChange={(e) =>
-                      formik.setFieldValue('lattitude', e.target.value)
-                    }
-                    value={formik.values.lattitude.toString()}
-                  />
-                  <span>
-                    {formik.touched.lattitude && formik.errors.lattitude
-                      ? formik.errors.lattitude
-                      : ''}
-                  </span>
-                </label>
-              </div>
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text">Longitude</span>
-                  </div>
-                  <input
-                    type="number"
-                    className="input input-bordered input-primary w-full"
-                    color={formik.errors.longitude ? 'danger' : 'primary'}
-                    onChange={(e) =>
-                      formik.setFieldValue('longitude', e.target.value)
-                    }
-                    value={formik.values.longitude.toString()}
-                  />
-                  <span>
-                    {formik.touched.longitude && formik.errors.longitude
-                      ? formik.errors.longitude
-                      : ''}
-                  </span>
-                </label>
-              </div>
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text mb-1"></span>
-                  </div>
-                  <button
-                    type="button"
-                    color="primary"
-                    className="text-nowrap text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] btn"
-                    onClick={handleLocation}
-                  >
-                    Get Your Location
-                  </button>
-                </label>
-              </div>
-            </div>
-          </div>
 
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
             <label className="form-control w-full">
@@ -704,28 +665,6 @@ const UserProfileData = () => {
                   : ''}
               </span>
             </label>
-          </div>
-
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12">
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Address</span>
-              </div>
-              <textarea
-                color={formik.errors.address ? 'danger' : 'primary'}
-                onChange={(e) =>
-                  formik.setFieldValue('address', e.target.value)
-                }
-                value={formik.values.address}
-                className="textarea textarea-primary h-24"
-                placeholder="Please enter your complete address"
-              ></textarea>
-            </label>
-            <span>
-              {formik.touched.address && formik.errors.address
-                ? formik.errors.address
-                : ''}
-            </span>
           </div>
 
           <div className="col-span-12 mb-2">
@@ -1078,6 +1017,10 @@ const UserProfileData = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="col-span-12">
+            <MapSelector onLocationSelect={handleLocationSelect} />
           </div>
 
           <div className="col-span-12">

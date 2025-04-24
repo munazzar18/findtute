@@ -17,6 +17,7 @@ import {
 } from './_action'
 import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6'
 import Loader from '@/app/components/Loader'
+import MapSelector from '@/app/components/MapSelector'
 
 interface OptionType {
   label: string
@@ -75,6 +76,12 @@ const initialExperience: Experience = {
   present: false,
 }
 
+interface Location {
+  lat: number
+  lng: number
+  address?: string
+}
+
 const UserProfileData = () => {
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(10)
@@ -94,6 +101,10 @@ const UserProfileData = () => {
   ])
   const [url, setUrl] = useState(process.env.NEXT_PUBLIC_IMAGE_URL)
   const [userRole, setUserRole] = useState('')
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  )
+  const [locationInfo, setLocationInfo] = useState<Location>()
 
   const [profile, setProfile] = useState({
     first_name: '',
@@ -135,6 +146,12 @@ const UserProfileData = () => {
       longitude: res.longitude,
       avatar: res.avatar,
       preference: res.preference,
+    })
+
+    setLocationInfo({
+      lat: res.lattitude,
+      lng: res.longitude,
+      address: res.address,
     })
     const grades = res?.grades
     const subjects: any[] = res?.subjects
@@ -319,27 +336,6 @@ const UserProfileData = () => {
     return index === experience?.length - 1
   }
 
-  const handleLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          formik.setFieldValue('lattitude', pos.coords.latitude)
-          formik.setFieldValue('longitude', pos.coords.longitude)
-        },
-        (error) => {
-          if (error.code === error.PERMISSION_DENIED) {
-            toast.error('Permission to access location was denied.')
-          } else {
-            toast.error('Error retrieving location.')
-          }
-          console.error(error)
-        }
-      )
-    } else {
-      toast.error('Geolocation is not supported by this browser.')
-    }
-  }
-
   const filterSelectedGrades = (selected: OptionType[]) => {
     let newGrades: any = []
     selected.map((grade) => {
@@ -354,13 +350,21 @@ const UserProfileData = () => {
     selected.map((subject) => {
       newSubjects.push(subject.value)
     })
-    console.log('SELECTED SUBJECTS', newSubjects)
+
     setSelectedSubjects(newSubjects)
+  }
+
+  const handleLocationSelect = (location: Location) => {
+    setSelectedLocation({
+      lat: location.lat,
+      lng: location.lng,
+      address: location.address,
+    })
   }
 
   //validation
   const formik = useFormik({
-    enableReinitialize: true, // Allow reinitialization of values
+    enableReinitialize: true,
     initialValues: {
       first_name: profile.first_name || '',
       last_name: profile.last_name || '',
@@ -368,12 +372,12 @@ const UserProfileData = () => {
       mobile: profile.mobile || '',
       hourly_rate: profile.hourly_rate || 0,
       monthly_rate: profile.monthly_rate || 0,
-      lattitude: profile.lattitude || 0,
-      longitude: profile.longitude || 0,
+      lattitude: selectedLocation?.lat || 0,
+      longitude: selectedLocation?.lng || 0,
       city: profile.city || '',
       state: profile.state || '',
       country: profile.country || '',
-      address: profile.address || '',
+      address: selectedLocation?.address || '',
       avatar: profile.avatar || image || '',
       preference: profile.preference || '',
       education: education,
@@ -724,69 +728,8 @@ const UserProfileData = () => {
               </span>
             </label>
           </div>
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
-            <div className="grid grid-cols-12 gap-4 items-baseline">
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text">lattitude</span>
-                  </div>
-                  <input
-                    className="input input-bordered input-primary w-full"
-                    type="number"
-                    color={formik.errors.lattitude ? 'danger' : 'primary'}
-                    onChange={(e) =>
-                      formik.setFieldValue('lattitude', e.target.value)
-                    }
-                    value={formik.values.lattitude.toString()}
-                  />
-                  <span>
-                    {formik.touched.lattitude && formik.errors.lattitude
-                      ? formik.errors.lattitude
-                      : ''}
-                  </span>
-                </label>
-              </div>
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text">Longitude</span>
-                  </div>
-                  <input
-                    type="number"
-                    className="input input-bordered input-primary w-full"
-                    color={formik.errors.longitude ? 'danger' : 'primary'}
-                    onChange={(e) =>
-                      formik.setFieldValue('longitude', e.target.value)
-                    }
-                    value={formik.values.longitude.toString()}
-                  />
-                  <span>
-                    {formik.touched.longitude && formik.errors.longitude
-                      ? formik.errors.longitude
-                      : ''}
-                  </span>
-                </label>
-              </div>
-              <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
-                <label className="form-control w-full">
-                  <div className="label">
-                    <span className="label-text mb-1"></span>
-                  </div>
-                  <button
-                    type="button"
-                    color="primary"
-                    className="text-nowrap text-lg bg-green text-cream-foreground rounded-md max-h-1  !leading-[0.2] btn"
-                    onClick={handleLocation}
-                  >
-                    Get Your Location
-                  </button>
-                </label>
-              </div>
-            </div>
-          </div>
 
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Select country</span>
@@ -814,7 +757,7 @@ const UserProfileData = () => {
             </label>
           </div>
 
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Select State</span>
@@ -840,7 +783,7 @@ const UserProfileData = () => {
             </label>
           </div>
 
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-4">
+          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Select City</span>
@@ -865,29 +808,6 @@ const UserProfileData = () => {
               </span>
             </label>
           </div>
-
-          <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12">
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Address</span>
-              </div>
-              <textarea
-                color={formik.errors.address ? 'danger' : 'primary'}
-                onChange={(e) =>
-                  formik.setFieldValue('address', e.target.value)
-                }
-                value={formik.values.address}
-                className="textarea textarea-primary h-24"
-                placeholder="Please enter your complete address"
-              ></textarea>
-            </label>
-            <span>
-              {formik.touched.address && formik.errors.address
-                ? formik.errors.address
-                : ''}
-            </span>
-          </div>
-
           <div className="col-span-12 mb-2">
             <h1 className="text-2xl font-bold">Education</h1>
           </div>
@@ -1252,6 +1172,13 @@ const UserProfileData = () => {
               </div>
             </>
           )}
+
+          <div className="col-span-12">
+            <MapSelector
+              onLocationSelect={handleLocationSelect}
+              editLocation={locationInfo}
+            />
+          </div>
 
           <div className="col-span-12">
             <button

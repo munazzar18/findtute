@@ -120,7 +120,6 @@ export const UpdateProfileAction = async (formData: FormData) => {
     const experience = formData.get('experience')
     const grades_ids = formData.get('grades_ids')
     const subjects_ids = formData.get('subjects_ids')
-
     try {
         const res = await fetch(`${url}user/update-profile/${user?.id}`, {
             method: 'PUT',
