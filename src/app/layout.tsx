@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import UserStatus from '@/utils/userStatus'
 import { cookies } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="en" className="light">
       <body className={nunito.className}>
         <Analytics />
+        <SpeedInsights />
         {token && <UserStatus token={token} status={false} />}
         <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
         {children}
