@@ -23,3 +23,24 @@ export const getUserPaymentId = async () => {
     }
 
 }
+
+export const getAdminPayments = async (page: number) => {
+
+    const url = process.env.NEXT_PUBLIC_API_URL as string
+    const token = cookies().get('access_token')?.value
+    try {
+        const res = await fetch(`${url}payment/admin-payments?page=${page}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.error("Failed to fetch admin payments", error)
+        return error
+    }
+}

@@ -21,7 +21,7 @@ const AdminSidebar = () => {
     {
       id: 3,
       name: 'Payments',
-      link: '/admin/payments',
+      link: '/admin/payments?page=1',
       icon: <FaFileInvoiceDollar />,
     },
     {
