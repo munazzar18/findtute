@@ -1,4 +1,5 @@
 import GradePagination from '@/app/components/grades/GradePagination'
+import Pagination from '@/app/components/Pagination'
 import { getAdminPayments } from '@/app/lib/getUserPayments'
 import React from 'react'
 
@@ -33,8 +34,6 @@ const Payments = async ({
 }) => {
   const page = searchParams?.page
   const allPayments: Payments = await getAdminPayments(+page)
-
-  console.log('allPayments', allPayments)
 
   return (
     <div>
@@ -77,7 +76,11 @@ const Payments = async ({
         </table>
       </div>
       <div className="mt-4 flex items-center">
-        <GradePagination pageData={allPayments.data.pageData} />
+        {/* <GradePagination pageData={allPayments.data.pageData} /> */}
+        <Pagination
+          pageData={allPayments.data.pageData}
+          link="/admin/payments"
+        />
       </div>
     </div>
   )

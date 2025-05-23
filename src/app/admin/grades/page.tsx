@@ -21,9 +21,9 @@ interface Grade {
   }
 }
 
-const Grades = async ({ searchParams }: { searchParams: { page: number } }) => {
+const Grades = async ({ searchParams }: { searchParams: { page: string } }) => {
   const page = searchParams?.page
-  const allGrades: Grade = await getGrades(page)
+  const allGrades: Grade = await getGrades(+page)
   return (
     <div>
       <div className="flex justify-between w-full items-center gap-2 p-2 mb-4">

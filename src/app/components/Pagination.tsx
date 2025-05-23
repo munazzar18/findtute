@@ -10,14 +10,19 @@ interface PageProps {
   lastPage: number
 }
 
-const SubjectPagination = ({ pageData }: { pageData: PageProps }) => {
+const Pagination = ({
+  pageData,
+  link,
+}: {
+  pageData: PageProps
+  link: string
+}) => {
   const { total, perPage, currentPage, lastPage } = pageData
   const router = useRouter()
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= lastPage) {
-      // Navigate to the selected page using Next.js router
-      router.push(`/admin/subjects?page=${page}`)
+      router.push(`${link}?page=${page}`)
     }
   }
 
@@ -59,4 +64,4 @@ const SubjectPagination = ({ pageData }: { pageData: PageProps }) => {
   )
 }
 
-export default SubjectPagination
+export default Pagination
