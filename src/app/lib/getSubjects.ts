@@ -9,3 +9,12 @@ export const getSubjects = async (page: number) => {
     const data = await res.json()
     return data
 }
+
+export const fetchAllSubjects = async () => {
+    const res = await fetch(`${url}subjects/all`,
+        {
+            cache: 'no-store',
+        })
+    const data = await res.json()
+    return data
+}

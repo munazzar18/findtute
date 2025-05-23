@@ -1,16 +1,15 @@
 'use client'
-
 import React from 'react'
-import { StudentApplyAction } from '../dashboard/application/actions/_actions'
 import { toast } from 'react-hot-toast'
+import { StudentCancelAction } from '../dashboard/application/actions/_actions'
 
-const StudentApplyBtn = ({ appId }: { appId: string }) => {
+const StudentCancelBtn = ({ appId }: { appId: string }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData()
     formData.append('applicationId', appId)
 
-    const response = await StudentApplyAction(appId)
+    const response = await StudentCancelAction(appId)
 
     if (response.statusCode === 200) {
       toast.success(response.message)
@@ -22,12 +21,12 @@ const StudentApplyBtn = ({ appId }: { appId: string }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <button type="submit" className="btn btn-primary w-full">
-          Start Discussion
+        <button type="submit" className="btn btn-ghost">
+          Cancel Discussion
         </button>
       </form>
     </div>
   )
 }
 
-export default StudentApplyBtn
+export default StudentCancelBtn

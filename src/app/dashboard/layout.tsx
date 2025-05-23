@@ -1,10 +1,8 @@
-import logoutAction from '@/app/auth/logout/_action'
 import UserSideBar from '@/app/components/UserSideBar'
 import CustomToast from '@/utils/customToast'
-import DashboardSocket from '@/utils/dashboardSocket'
 import UserStatus from '@/utils/userStatus'
 import { cookies } from 'next/headers'
-import Link from 'next/link'
+import Browse from './browse/page'
 
 interface User {
   id: string

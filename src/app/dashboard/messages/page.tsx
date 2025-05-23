@@ -1,3 +1,4 @@
+import StudentCancelBtn from '@/app/components/StudentCancelBtn'
 import { getRooms } from '@/app/lib/getRooms'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
@@ -34,6 +35,7 @@ const Messages = async () => {
             <th>Name</th>
             <th>Status</th>
             <th>Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +59,9 @@ const Messages = async () => {
                   {room.created_at
                     ? new Date(room.created_at).toDateString()
                     : ''}
+                </td>
+                <td>
+                  <StudentCancelBtn appId={room.chat.application.id} />
                 </td>
               </tr>
             ))

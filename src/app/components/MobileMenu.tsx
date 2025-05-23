@@ -118,15 +118,15 @@ const MobileMenu = ({
                   <span>Services</span>
                 </Link>
               </li>
-              <li className="leading-[164%] relative w-full dropdown">
+              {/* <li className="leading-[164%] relative w-full dropdown">
                 <Link
-                  href="/blog"
+                  href="/"
                   className="font-jost py-2.5 border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                   onClick={handleSwitchNav}
                 >
                   <span>Blog</span>
                 </Link>
-              </li>
+              </li> */}
 
               <li className="leading-[164%] relative w-full ">
                 <Link

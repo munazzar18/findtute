@@ -206,21 +206,6 @@ const Contact = () => {
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7.5">
             <div
               className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
-              data-wow-delay=".3s"
-            >
-              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
-                <span className="text-cream-foreground text-[28px]">
-                  <FaPhone />
-                </span>
-              </div>
-              <h5 className="font-bold text-xl mt-5 pb-2.5">Location</h5>
-              <p>
-                Building No.3-A, Block 'Y' , Main Road Model Town C, Bahawalpur
-              </p>
-            </div>
-
-            <div
-              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
               data-wow-delay=".4s"
             >
               <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
@@ -231,21 +216,6 @@ const Contact = () => {
               <h5 className="font-bold text-xl mt-5 pb-2.5">Mail</h5>
               <p>
                 <a href="#">info@findtute.com</a>
-              </p>
-            </div>
-
-            <div
-              className="bg-background rounded-md shadow-3xl pt-5 pb-7.5 px-7.5 text-center flex flex-col items-center wow fadeInUp"
-              data-wow-delay=".5s"
-            >
-              <div className="w-16 h-16 rounded-full flex justify-center items-center bg-green">
-                <span className="text-cream-foreground text-[28px]">
-                  <FaPhone />
-                </span>
-              </div>
-              <h5 className="font-bold text-xl mt-5 pb-2.5">Contact</h5>
-              <p>
-                <a href="#">92304727400</a>
               </p>
             </div>
           </div>

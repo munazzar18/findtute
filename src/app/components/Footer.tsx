@@ -129,7 +129,7 @@ const Footer = () => {
           <div className=" wow fadeInUp" data-wow-delay=".5s">
             <h3 className="text-2xl font-semibold">Contact</h3>
             <ul className="flex flex-col gap-[15px] pt-5">
-              <li>
+              {/* <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
                     <FaMapMarkerAlt />
@@ -139,7 +139,7 @@ const Footer = () => {
                     Bahawalpur
                   </span>
                 </p>
-              </li>
+              </li> */}
               <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
@@ -148,14 +148,14 @@ const Footer = () => {
                   <a href="#">findtute@info.com</a>
                 </p>
               </li>
-              <li>
+              {/* <li>
                 <p className="text-[#686868] flex items-center gap-4">
                   <span className="w-11 h-11 rounded-full border border-gray-200 flex justify-center items-center text-green-foreground">
                     <FaPhoneAlt />
                   </span>{' '}
                   <a href="#">0923047279400</a>
                 </p>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

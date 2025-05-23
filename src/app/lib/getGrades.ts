@@ -11,3 +11,12 @@ export const getGrades = async (page: number) => {
     const data = await res.json()
     return data
 }
+
+export const getAllGrades = async () => {
+    const res = await fetch(`${url}grade/all`, {
+        cache: 'no-store',
+    })
+
+    const data = await res.json()
+    return data
+}
