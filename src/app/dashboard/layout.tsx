@@ -32,15 +32,16 @@ export default function Layout({
 
   return (
     <>
-      <div className="flex min-w-0">
-        {/* <DashboardSocket token={token} currentUserId={user ? user.id : ''} /> */}
+      <div className="flex h-screen min-w-0">
         <UserSideBar />
-        <UserStatus token={token} status={true} />
-        <CustomToast token={token} currentUserId={user ? user.id : ''} />
-        <div className="flex-1 p-0 sm:p-0 md:p-4 lg:p-6">
-          <main className="flex-grow p-0 sm:p-0 md:p-4 lg:p-6 overflow-auto bg-primary-foreground">
+
+        <UserStatus token={token} status />
+        <CustomToast token={token} currentUserId={user?.id ?? ''} />
+
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <main className="flex-1 p-4 lg:p-6 overflow-y-auto bg-primary-foreground">
             {children}
-          </main>{' '}
+          </main>
         </div>
       </div>
     </>

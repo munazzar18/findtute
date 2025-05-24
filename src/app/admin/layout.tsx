@@ -26,10 +26,10 @@ export default function Layout({
 
   return (
     <>
-      <div className="flex min-w-0">
+      <div className="flex h-screen min-w-0">
         <AdminSidebar />
-        <div className="flex-1 p-6">
-          <main className="flex-grow p-6 overflow-auto bg-primary-foreground">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <main className="flex-1 p-4 lg:p-6 overflow-y-auto bg-primary-foreground">
             {children}
           </main>{' '}
         </div>

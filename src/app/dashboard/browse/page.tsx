@@ -101,7 +101,6 @@ const Browse = async ({
     grade,
     rating
   )
-  console.log('Applications', applications)
   const totalPages = applications?.data?.pageData?.totalPages || 1
 
   return (

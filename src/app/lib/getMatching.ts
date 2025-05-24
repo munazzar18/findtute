@@ -3,10 +3,9 @@ import { cookies } from "next/headers"
 const url = process.env.NEXT_PUBLIC_API_URL as string
 
 interface Location {
-    geoLat: number
-    geoLong: number
+    geoLat: number;
+    geoLong: number;
 }
-
 
 export const getMatchingUsers = async (
     page: number,
@@ -18,17 +17,23 @@ export const getMatchingUsers = async (
     const token = cookies().get('access_token')?.value
 
     try {
-        // Build query parameters properly
         const params = new URLSearchParams();
         params.append('page', page.toString());
 
-        // Only append parameters if they have valid values
-        if (rating !== undefined && rating !== null && !isNaN(rating)) {
+        // Rating filter (using hourly_rate on backend)
+        if (rating !== undefined && rating !== null && !isNaN(rating) && rating > 0) {
             params.append('rating', rating.toString());
         }
 
-        if (location !== undefined && location !== null && location.geoLat !== 0 && location.geoLong !== 0) {
-            params.append('location', location.toString());
+        // Location filter with proper validation
+        if (location !== undefined && location !== null &&
+            typeof location === 'object' &&
+            typeof location.geoLat === 'number' && location.geoLat !== 0 &&
+            typeof location.geoLong === 'number' && location.geoLong !== 0) {
+
+            // Send as separate parameters for easier backend handling
+            params.append('lat', location.geoLat.toString());
+            params.append('lng', location.geoLong.toString());
         }
 
         if (subject !== undefined && subject !== null && subject !== '' && subject !== 'undefined') {
@@ -43,17 +48,20 @@ export const getMatchingUsers = async (
             cache: 'no-store',
             headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
 
         const data = await response.json()
         return data
     } catch (error) {
-        console.log('Error fetching matching users:', error)
+        console.error('Error fetching matching users:', error)
         return {
             data: [],
             pageData: {

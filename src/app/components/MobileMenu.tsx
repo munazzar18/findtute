@@ -82,6 +82,16 @@ const MobileMenu = ({
                   <span>Profile</span>
                 </Link>
               </li>
+              {userData?.role === 'admin' && (
+                <li>
+                  <Link
+                    href="/admin/dashboard"
+                    className=" font-semibold  hover:text-cream-foreground hover:bg-primary transition-all duration-500 py-3 px-2.5 block border-b border-b-slate-300"
+                  >
+                    Admin
+                  </Link>
+                </li>
+              )}
               <li
                 className="leading-[164%] relative font-jost border-b border-b-slate-300 text-[#385469] flex justify-between items-center"
                 onClick={handleSwitchNav}
