@@ -1,3 +1,4 @@
+import Pagination from '@/app/components/Pagination'
 import { getAllUsers } from '@/app/lib/getAllUsers'
 import React from 'react'
 
@@ -29,8 +30,23 @@ interface User {
   updated_at: string
 }
 
-const Users = async () => {
-  const users = await getAllUsers()
+interface userData {
+  status: boolean
+  message: string
+  data: {
+    allUsers: User[]
+    pageData: {
+      total: number
+      perPage: number
+      currentPage: number
+      lastPage: number
+    }
+  }
+}
+
+const Users = async ({ searchParams }: { searchParams: { page: string } }) => {
+  const page = searchParams?.page
+  const users: userData = await getAllUsers(+page)
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -46,7 +62,7 @@ const Users = async () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: User) => {
+          {users?.data?.allUsers?.map((user: User) => {
             return (
               <tr key={user.id}>
                 <td>
@@ -79,6 +95,9 @@ const Users = async () => {
           })}
         </tbody>
       </table>
+      <div className="mt-4 flex items-center">
+        <Pagination pageData={users.data.pageData} link="/admin/users" />
+      </div>
     </div>
   )
 }

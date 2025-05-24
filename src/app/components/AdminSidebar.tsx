@@ -15,7 +15,7 @@ const AdminSidebar = () => {
     {
       id: 2,
       name: 'Users',
-      link: '/admin/users',
+      link: '/admin/users?page=1',
       icon: <IoPeopleSharp />,
     },
     {
