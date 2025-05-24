@@ -46,6 +46,7 @@ export const getMatchingUsers = async (
 
         const response = await fetch(`${url}user/match?${params.toString()}`, {
             cache: 'no-store',
+            next: { revalidate: 0 },
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

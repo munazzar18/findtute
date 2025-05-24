@@ -74,7 +74,7 @@ interface Browse {
   status: string
   message: string
   data: {
-    users: User[]
+    data: User[]
     pageData: {
       total: number
       perPage: number
@@ -119,6 +119,8 @@ const Browse = async ({
 
   const totalPages = applications?.data?.pageData?.totalPages || 1
 
+  console.log('Applications', applications)
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-8">
@@ -126,14 +128,14 @@ const Browse = async ({
       </h1>
       <BrowseFilters />
       <div className="flex flex-wrap gap-4">
-        {applications?.data?.users?.length === 0 && (
+        {applications?.data?.data?.length === 0 && (
           <p>No matching applications found.</p>
         )}
         {applications &&
-          applications?.data?.users?.map((data) => {
+          applications?.data?.data?.map((data) => {
             const avatarUrl = data.avatar
               ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${data.avatar}`
-              : '/images/default-avatar.png' // Placeholder image
+              : '/images/default-avatar.png'
 
             return (
               <div
@@ -174,7 +176,9 @@ const Browse = async ({
                   </div>
                   {authUser.role === 'student' && (
                     <div>
-                      <StudentApplyBtn appId={data.create_application[0].id} />
+                      <StudentApplyBtn
+                        appId={data?.create_application[0]?.id}
+                      />
                     </div>
                   )}
                 </div>
