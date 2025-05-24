@@ -74,7 +74,7 @@ interface Browse {
   status: string
   message: string
   data: {
-    data: User[]
+    users: User[]
     pageData: {
       total: number
       perPage: number
@@ -128,11 +128,11 @@ const Browse = async ({
       </h1>
       <BrowseFilters />
       <div className="flex flex-wrap gap-4">
-        {applications?.data?.data?.length === 0 && (
+        {applications?.data?.users?.length === 0 && (
           <p>No matching applications found.</p>
         )}
         {applications &&
-          applications?.data?.data?.map((data) => {
+          applications?.data?.users?.map((data) => {
             const avatarUrl = data.avatar
               ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${data.avatar}`
               : '/images/default-avatar.png'
