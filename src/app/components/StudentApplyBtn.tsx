@@ -10,12 +10,12 @@ const StudentApplyBtn = ({ appId }: { appId: string }) => {
     const formData = new FormData()
     formData.append('applicationId', appId)
 
-    const response = await StudentApplyAction(appId)
+    const response = await StudentApplyAction(formData)
 
-    if (response.statusCode === 200) {
-      toast.success(response.message)
+    if (response?.status === true) {
+      toast.success(response?.message)
     } else {
-      toast.error(response.message)
+      toast.error(response?.message)
     }
   }
 

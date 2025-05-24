@@ -9,7 +9,7 @@ const StudentCancelBtn = ({ appId }: { appId: string }) => {
     const formData = new FormData()
     formData.append('applicationId', appId)
 
-    const response = await StudentCancelAction(appId)
+    const response = await StudentCancelAction(formData)
 
     if (response.statusCode === 200) {
       toast.success(response.message)

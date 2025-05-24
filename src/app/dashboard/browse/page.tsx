@@ -20,6 +20,20 @@ interface Location {
   geoLong: number
 }
 
+interface Application {
+  id: string
+  name: string
+  hourly_rate: number
+  monthly_rate: number
+  rating: number
+  lattitude: number
+  longitude: number
+  avatar: string
+  preference: string
+  expiry_date: string
+  user_id: string
+}
+
 interface User {
   id: string
   username: string
@@ -53,6 +67,7 @@ interface User {
   updated_at: string
   grades: Grade[]
   subjects: Subject[]
+  create_application: Application[]
 }
 
 interface Browse {
@@ -101,6 +116,7 @@ const Browse = async ({
     grade,
     rating
   )
+
   const totalPages = applications?.data?.pageData?.totalPages || 1
 
   return (
@@ -158,7 +174,7 @@ const Browse = async ({
                   </div>
                   {authUser.role === 'student' && (
                     <div>
-                      <StudentApplyBtn appId={data.id} />
+                      <StudentApplyBtn appId={data.create_application[0].id} />
                     </div>
                   )}
                 </div>
