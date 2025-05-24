@@ -32,6 +32,8 @@ interface Application {
   preference: string
   expiry_date: string
   user_id: string
+  teacherId: string
+  studentId: string
 }
 
 interface User {
@@ -119,8 +121,6 @@ const Browse = async ({
 
   const totalPages = applications?.data?.pageData?.totalPages || 1
 
-  console.log('Applications', applications)
-
   return (
     <div>
       <h1 className="text-2xl font-bold mb-8">
@@ -176,9 +176,25 @@ const Browse = async ({
                   </div>
                   {authUser.role === 'student' && (
                     <div>
-                      <StudentApplyBtn
-                        appId={data?.create_application[0]?.id}
-                      />
+                      {data?.create_application?.length > 0 &&
+                      data?.create_application?.[0] ? (
+                        <div>
+                          {authUser.id ===
+                          data.create_application[0].studentId ? (
+                            <p className="p-1 bg-green-500 text-white rounded-lg text-center">
+                              In discussion
+                            </p>
+                          ) : (
+                            <StudentApplyBtn
+                              appId={data.create_application[0].id}
+                            />
+                          )}
+                        </div>
+                      ) : (
+                        <p className="p-1 bg-red-600 text-white rounded-lg text-center">
+                          Inactive Application
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

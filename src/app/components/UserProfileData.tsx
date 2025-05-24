@@ -484,7 +484,7 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">CNIC</span>
+                <span className="label-text">CNIC (Without dashes)</span>
               </div>
               <input
                 type="text"
@@ -503,7 +503,7 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Mobile</span>
+                <span className="label-text">Mobile Number</span>
               </div>
               <input
                 type="text"
@@ -522,7 +522,9 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Select your grades</span>
+                <span className="label-text">
+                  Select your grades (You can select multiple)
+                </span>
               </div>
               <MultiSelect
                 options={allGrades}
@@ -543,7 +545,9 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Select your subjects</span>
+                <span className="label-text">
+                  Select your subjects (You can select multiple)
+                </span>
               </div>
               <MultiSelect
                 options={allSubjects}
@@ -564,7 +568,7 @@ const UserProfileData = () => {
           <div className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-6">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Select your subjects</span>
+                <span className="label-text">Select your preference</span>
               </div>
               <select
                 className="select select-primary w-full"
@@ -668,7 +672,12 @@ const UserProfileData = () => {
           </div>
 
           <div className="col-span-12 mb-2">
-            <h1 className="text-2xl font-bold">Education</h1>
+            <h1 className="text-2xl font-bold">
+              Education{' '}
+              <span className="text-sm">
+                (You can add multiple education by clicking + icon)
+              </span>
+            </h1>
           </div>
           <div className="col-span-12">
             {formik.values.education.map((education, index) => (
@@ -832,7 +841,7 @@ const UserProfileData = () => {
                         type="button"
                         className="mx-1 w-full sm:w-full md:w-full lg:w-10 "
                       >
-                        <FaCirclePlus />
+                        <FaCirclePlus size={20} />
                       </button>
                     ) : (
                       ''
@@ -856,7 +865,17 @@ const UserProfileData = () => {
             ))}
           </div>
           <div className="col-span-12 mb-2">
-            <h1 className="text-2xl font-bold">Experience</h1>
+            <div className="flex w-full flex-col">
+              <div className="divider text-lg font-bold">
+                Experience details only for teachers
+              </div>
+            </div>
+            <h1 className="text-2xl font-bold">
+              Experience{' '}
+              <span className="text-sm">
+                (You can add multiple experience by clicking + icon)
+              </span>
+            </h1>
           </div>
           <div className="col-span-12 mb-2">
             {formik.values.experience.map((experience, index) => (
@@ -1020,6 +1039,10 @@ const UserProfileData = () => {
           </div>
 
           <div className="col-span-12">
+            <div className="divider text-lg font-bold">
+              Please enter your accurate address or select your precise location
+              from map below
+            </div>
             <MapSelector onLocationSelect={handleLocationSelect} />
           </div>
 
