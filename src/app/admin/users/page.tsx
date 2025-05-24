@@ -68,8 +68,21 @@ const Users = async ({ searchParams }: { searchParams: { page: string } }) => {
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img src={user.avatar} alt={user.first_name} />
+                      <div className="mask mask-squircle h-12 w-12 bg-neutral text-neutral-content">
+                        {user?.avatar ? (
+                          <img
+                            src={
+                              process.env.NEXT_PUBLIC_IMAGE_URL + user?.avatar
+                            }
+                            alt={user?.first_name?.slice(0, 2).toUpperCase()}
+                          />
+                        ) : (
+                          <span className="flex h-12 w-12 justify-center items-center text-xl font-bold text-white">
+                            {(user?.first_name || user?.email)
+                              ?.slice(0, 2)
+                              .toUpperCase()}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div>
