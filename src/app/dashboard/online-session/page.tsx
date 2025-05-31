@@ -15,8 +15,10 @@ interface Rooms {
   chat: {
     id: string
     created_at: string
-    application: {
+    accepted_application: {
       id: string
+      application_id: string
+      student_id: string
     }
   }
 }
@@ -43,7 +45,7 @@ const OnlineSession = async () => {
                 <td>{index + 1}</td>
                 <td>
                   <Link
-                    href={`/dashboard/online-session/${room.chat.id}?applicationId=${room.chat.application.id}?roomId=${room.id}`}
+                    href={`/dashboard/online-session/${room.chat.id}?applicationId=${room.chat.accepted_application.id}?roomId=${room.id}`}
                   >
                     {user.id === room.owner.id
                       ? room.other_user.username

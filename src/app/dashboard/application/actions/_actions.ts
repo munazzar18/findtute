@@ -13,14 +13,14 @@ export const StudentApplyAction = async (formData: FormData) => {
 
     const token = cookies().get('access_token')?.value
     try {
-        const res = await fetch(`${url}application/student-apply`, {
+        const res = await fetch(`${url}accepted-application/create`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ application_id: applicationId }),
+            body: JSON.stringify({ applicationId }),
         })
         const data = await res.json()
         return data

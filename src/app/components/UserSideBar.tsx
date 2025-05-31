@@ -19,6 +19,7 @@ interface User {
 
 const UserSideBar = () => {
   const userCookies = cookies().get('user')
+  const token = cookies().get('access_token')?.value
   let user: User | null = null
 
   try {
@@ -95,7 +96,11 @@ const UserSideBar = () => {
 
   return (
     <div>
-      <Sidebar items={items} />
+      <Sidebar
+        items={items}
+        token={token ? token : ''}
+        currentUserId={user ? user.id : ''}
+      />
     </div>
   )
 }

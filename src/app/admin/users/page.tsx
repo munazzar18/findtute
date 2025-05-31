@@ -1,5 +1,6 @@
 import Pagination from '@/app/components/Pagination'
 import { getAllUsers } from '@/app/lib/getAllUsers'
+import Link from 'next/link'
 import React from 'react'
 
 interface User {
@@ -53,6 +54,7 @@ const Users = async ({ searchParams }: { searchParams: { page: string } }) => {
         {/* head */}
         <thead>
           <tr>
+            <th>Sr#</th>
             <th>Name</th>
             <th>CNIC</th>
             <th>Email</th>
@@ -62,9 +64,15 @@ const Users = async ({ searchParams }: { searchParams: { page: string } }) => {
           </tr>
         </thead>
         <tbody>
-          {users?.data?.allUsers?.map((user: User) => {
+          {users?.data?.allUsers?.map((user: User, index: number) => {
             return (
               <tr key={user.id}>
+                <th>
+                  {(users?.data?.pageData?.currentPage - 1) *
+                    users?.data?.pageData.perPage +
+                    index +
+                    1}
+                </th>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
@@ -87,22 +95,32 @@ const Users = async ({ searchParams }: { searchParams: { page: string } }) => {
                     </div>
                     <div>
                       <div className="font-bold">
-                        {user.first_name} {user.last_name}
+                        <Link href={`/admin/users/${user.id}`}>
+                          {user.first_name} {user.last_name}
+                        </Link>
                       </div>
                       <div className="text-sm opacity-50">{user.city}</div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  {user.cnic}
+                  <Link href={`/admin/users/${user.id}`}>{user.cnic}</Link>
                   <br />
                   <span className="badge badge-ghost badge-sm">
-                    {user?.address?.substring(0, 30)}
+                    <Link href={`/admin/users/${user.id}`}>
+                      {user?.address?.substring(0, 30)}
+                    </Link>
                   </span>
                 </td>
-                <td>{user.email}</td>
-                <td>{user.roles}</td>
-                <td>{user.mobile}</td>
+                <td>
+                  <Link href={`/admin/users/${user.id}`}>{user?.email}</Link>
+                </td>
+                <td>
+                  <Link href={`/admin/users/${user.id}`}>{user?.roles}</Link>
+                </td>
+                <td>
+                  <Link href={`/admin/users/${user.id}`}>{user?.mobile}</Link>
+                </td>
               </tr>
             )
           })}

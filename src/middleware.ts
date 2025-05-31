@@ -12,12 +12,12 @@ interface User {
 // Normalize paths for consistent comparison
 const normalizePath = (path: string) => path.replace(/\/$/, '');
 
-const unprotectedRoute = [
+const unprotectedRoutes = [
     '/auth/login',
     '/auth/register',
     '/auth/forgot-password',
     '/auth/verify-otp',
-    '/reset-password',
+    '/auth/reset-password', // This covers the base route
     '/',
     '/contact',
     '/about',
@@ -37,15 +37,28 @@ export function middleware(request: NextRequest) {
 
     const pathname = normalizePath(request.nextUrl.pathname);
 
-    const isUnprotectedRoute = unprotectedRoute.includes(pathname);
+    // Check for various route types
     const isNextAsset = pathname.startsWith('/_next');
+    const isApiRoute = pathname.startsWith('/api') || pathname.startsWith('/trpc');
+    const isResetPasswordRoute = pathname.startsWith('/auth/reset-password');
+    const isUnprotectedRoute = unprotectedRoutes.includes(pathname) || isResetPasswordRoute;
     const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
+    const isOnboardingRoute = pathname === '/onboarding';
     const paymentRoute = pathname.startsWith('/dashboard/payment-successfull');
     const paymentFailedRoute = pathname.startsWith('/dashboard/payment-failed');
 
+    // Skip middleware for Next.js assets and API routes
+    if (isNextAsset || isApiRoute) {
+        return NextResponse.next();
+    }
+
+    // Allow unprotected routes (including reset password with tokens)
+    if (isUnprotectedRoute) {
+        return NextResponse.next();
+    }
 
     // If there's no token and the route is protected
-    if (!token && !isUnprotectedRoute && !isNextAsset) {
+    if (!token) {
         return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
@@ -55,22 +68,17 @@ export function middleware(request: NextRequest) {
     }
 
     // Redirect admin to dashboard after login if accessing the root route
-    if (token && user?.role === 'admin' && pathname === '/') {
+    if (user?.role === 'admin' && pathname === '/') {
         return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     }
 
-    if (token && user?.role !== 'admin' && user?.is_verified === false && pathname !== '/onboarding') {
+    // Handle onboarding redirect - but NEVER for admin users
+    if (user && user.role != 'admin' && user.is_verified === false && !isOnboardingRoute) {
         return NextResponse.redirect(new URL('/onboarding', request.url));
     }
 
-    if (paymentRoute) {
-        const hasQueryParameters = request.nextUrl.searchParams.toString() !== '';
-        if (!hasQueryParameters) {
-            return NextResponse.redirect(new URL('/dashboard', request.url));
-        }
-    }
-
-    if (paymentFailedRoute) {
+    // Handle payment routes
+    if (paymentRoute || paymentFailedRoute) {
         const hasQueryParameters = request.nextUrl.searchParams.toString() !== '';
         if (!hasQueryParameters) {
             return NextResponse.redirect(new URL('/dashboard', request.url));
@@ -82,5 +90,9 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+    matcher: [
+        '/((?!.*\\.|_next).*)',
+        '/',
+        '/(api|trpc)(.*)'
+    ],
 };

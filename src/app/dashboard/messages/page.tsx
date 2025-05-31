@@ -16,8 +16,10 @@ interface Rooms {
   chat: {
     id: string
     created_at: string
-    application: {
+    accepted_application: {
       id: string
+      application_id: string
+      student_id: string
     }
   }
 }
@@ -25,6 +27,7 @@ interface Rooms {
 const Messages = async () => {
   const user = JSON.parse(cookies().get('user')?.value || '{}')
   const rooms: Rooms[] = await getRooms()
+
   return (
     <div className="overflow-x-auto">
       <h4 className="text-xl font-bold">Start discussion with</h4>
@@ -45,7 +48,7 @@ const Messages = async () => {
                 <td>{index + 1}</td>
                 <td>
                   <Link
-                    href={`/dashboard/messages/${room.chat.id}?applicationId=${room.chat.application.id}?roomId=${room.id}`}
+                    href={`/dashboard/messages/${room?.chat.id}?applicationId=${room.chat.accepted_application.id}?roomId=${room.id}`}
                   >
                     {user.id === room.owner.id
                       ? room.other_user.username
@@ -61,7 +64,7 @@ const Messages = async () => {
                     : ''}
                 </td>
                 <td>
-                  <StudentCancelBtn appId={room.chat.application.id} />
+                  <StudentCancelBtn appId={room.chat.accepted_application.id} />
                 </td>
               </tr>
             ))

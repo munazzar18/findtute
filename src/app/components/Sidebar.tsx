@@ -1,29 +1,48 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import logoutAction from '@/app/auth/logout/_action'
 import { usePathname } from 'next/navigation'
 import { IoFileTrayStacked, IoPeopleSharp, IoPower } from 'react-icons/io5'
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
+import { useSocket } from '@/utils/socket'
+
+interface MenuItem {
+  id: number
+  name: string
+  link: string
+  icon: React.ReactNode
+  children?: { id: number; name: string; link: string }[]
+}
 
 const Sidebar = ({
   items,
+  token,
+  currentUserId,
 }: {
-  items: {
-    id: number
-    name: string
-    link: string
-    icon: React.ReactNode
-    children?: { id: number; name: string; link: string }[]
-  }[]
+  items: MenuItem[]
+  token: string
+  currentUserId: string
 }) => {
+  const socket = useSocket(token)
   const pathname = usePathname()
+  const [unReadMessages, setUnReadMessages] = useState(0)
   const [expandedItems, setExpandedItems] = useState<number[]>([])
   const toggleDropdown = (id: number) => {
     setExpandedItems((prev) =>
       prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
     )
   }
+
+  useEffect(() => {
+    if (!socket) return
+
+    socket.emit('getMessagesByUserId')
+
+    socket.on('userMessages', (data) => {
+      setUnReadMessages(data.length)
+    })
+  }, [socket, token])
 
   return (
     <div className="h-screen min-h-screen bg-primary w-16 lg:!w-64 xl:!w-72 flex flex-col">
@@ -69,7 +88,7 @@ const Sidebar = ({
                   </a>
                   {/* Dropdown Menu */}
                   {expandedItems.includes(item.id) && (
-                    <ul className="ml-8 space-y-1">
+                    <ul className="ml-8 space-y-3">
                       {item.children.map((child) => (
                         <li key={child.id}>
                           <Link
@@ -90,7 +109,7 @@ const Sidebar = ({
               ) : (
                 <Link
                   href={item.link}
-                  className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-primary pr-6 ${
+                  className={`relative flex flex-row items-center h-12 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-primary pr-6 ${
                     pathname === item.link
                       ? '!text-gray-800 bg-gray-50 font-extrabold'
                       : ''
@@ -99,8 +118,19 @@ const Sidebar = ({
                   <span className="inline-flex justify-center items-center ml-4">
                     {item.icon}
                   </span>
-                  <span className="ml-2 text-sm tracking-wide truncate">
-                    {item.name}
+                  <span className="ml-2 text-base tracking-wide">
+                    {item.name === 'Messages' ? (
+                      <div className="indicator">
+                        <span className="indicator-item badge badge-primary">
+                          {unReadMessages}
+                        </span>
+                        <div className="me-5 place-items-center">
+                          {item.name}
+                        </div>
+                      </div>
+                    ) : (
+                      <span>{item.name}</span>
+                    )}
                   </span>
                 </Link>
               )}

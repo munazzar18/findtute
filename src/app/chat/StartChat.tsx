@@ -1,7 +1,6 @@
-
 'use client'
-import { TbSend2 } from "react-icons/tb";
-import React, { useState,useEffect, useRef } from 'react'
+import { TbSend2 } from 'react-icons/tb'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
 import { FaCircle } from 'react-icons/fa6'
 import toast from 'react-hot-toast'
@@ -20,19 +19,20 @@ interface Messages {
   chatId: string
   sender: any
   receiver: any
+  status: string
 }
 interface GroupProps {
-    messages: Messages[]
-    userId: string
-    chatRef: React.RefObject<HTMLDivElement>
-  }
-  
-  interface Notification {
-    chatId: string
-    content: string
-    from: string
-    userId: string
-  }
+  messages: Messages[]
+  userId: string
+  chatRef: React.RefObject<HTMLDivElement>
+}
+
+interface Notification {
+  chatId: string
+  content: string
+  from: string
+  userId: string
+}
 const url = process.env.NEXT_PUBLIC_API_URL as string
 
 const Chat: React.FC<ChatProps> = ({
@@ -50,6 +50,7 @@ const Chat: React.FC<ChatProps> = ({
   const chatRef = useRef<HTMLDivElement>(null)
   const [ownerUser, setOwnerUser] = useState<any>(null)
   const [otherUser, setOtherUser] = useState<any>(null)
+  const [msgStatus, setMsgStatus] = useState('')
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -87,11 +88,16 @@ const Chat: React.FC<ChatProps> = ({
     socket.emit('joinChat', { applicationId, chatId })
     setUserId(currentUserId)
 
+    socket.emit('messageStatus', {
+      chatId,
+      currentUserId,
+    })
+
     socket.on('newMessage', (message: any) => {
       scrollToBottom()
       setMessages((prevMessages) => [...prevMessages, message])
     })
-     // socket.on('notification', (notification: Notification) => {
+    // socket.on('notification', (notification: Notification) => {
     //   console.log('Received notification in layout:', notification)
     //   // if (notification.userId === currentUserId) return
 
@@ -118,7 +124,9 @@ const Chat: React.FC<ChatProps> = ({
     //   ))
     // })
 
-    socket.on('messageStatus', (messageStatus) => {})
+    socket.on('messageStatus', (messageStatus) => {
+      setMsgStatus(messageStatus)
+    })
     return () => {
       socket.off('newMessage')
       socket.disconnect()
@@ -127,14 +135,12 @@ const Chat: React.FC<ChatProps> = ({
 
   const sendMessage = () => {
     if (message.trim() === '') return
-    const sound = new Audio('/assets/soundmessage.wav'); // Path to your sound file
-    sound.play();
+    const sound = new Audio('/assets/soundmessage.wav') // Path to your sound file
+    sound.play()
     socket?.emit('sendMessage', { chatId, content: message })
-    setIsSent(true); 
+    setIsSent(true)
     setMessage('')
   }
-
-
 
   useEffect(() => {
     scrollToBottom()
@@ -162,14 +168,12 @@ const Chat: React.FC<ChatProps> = ({
             <FaCircle className="text-yellow-500" />
           ) : (
             <FaCircle className="text-red-500" />
-        )}{' '}
+          )}{' '}
         </h3>
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-4"
-        ref={chatRef}
-      >
+      <div className="flex-1 overflow-y-auto p-4" ref={chatRef}>
         {groupedMessages.map(({ date, msgs }) => (
           <div key={date}>
             <div className="text-center text-gray-500 text-sm my-2">
@@ -185,34 +189,36 @@ const Chat: React.FC<ChatProps> = ({
                     <div className="chat-header">
                       You
                       <time className="text-xs opacity-50 mx-2">
-                      {msg.created_at
-                        ? `${new Date(msg.created_at).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                        })}`
-                        : ''}
+                        {msg.created_at
+                          ? `${new Date(msg.created_at).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true,
+                            })}`
+                          : ''}
                       </time>
                     </div>
                     <div className="chat-bubble">{msg.content}</div>
+                    <div className="chat-footer opacity-50">{msg.status}</div>
                   </div>
                 ) : (
                   <div className="chat chat-start">
                     <div className="chat-header">
                       {msg.sender.username}
                       <time className="text-xs opacity-50 mx-2">
-                      {msg.created_at
+                        {msg.created_at
                           ? `${new Date(msg.created_at).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                        })}`
-                        : ''}
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true,
+                            })}`
+                          : ''}
                       </time>
                     </div>
                     <div className="chat-bubble chat-bubble-info">
                       {msg.content}
                     </div>
+                    <div className="chat-footer opacity-50">{msg.status}</div>
                   </div>
                 )}
               </div>
@@ -232,7 +238,8 @@ const Chat: React.FC<ChatProps> = ({
           placeholder="Type your message"
         />
         <button onClick={sendMessage} className="btn btn-primary group ml-2">
-          <span>Send</span> <TbSend2 className="transform transition-transform group-hover:translate-x-4 duration-300 text-2xl font-bold text-white" />
+          <span>Send</span>{' '}
+          <TbSend2 className="transform transition-transform group-hover:translate-x-4 duration-300 text-2xl font-bold text-white" />
         </button>
       </div>
     </div>
