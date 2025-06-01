@@ -1,10 +1,28 @@
-'use client'
 import React from 'react'
 import Sidebar from './Sidebar'
 import { IoFileTrayStacked, IoPeopleSharp } from 'react-icons/io5'
 import { FaAward, FaBookOpen, FaFileInvoiceDollar } from 'react-icons/fa'
+import { cookies } from 'next/headers'
+
+interface User {
+  id: string
+  username: string
+  email: string
+  role: string
+}
 
 const AdminSidebar = () => {
+  const userCookies = cookies().get('user')
+  const token = cookies().get('access_token')?.value
+  let user: User | null = null
+
+  try {
+    if (userCookies && userCookies.value) {
+      user = JSON.parse(userCookies.value)
+    }
+  } catch (error) {
+    console.error('Error parsing user cookie:', error)
+  }
   const items = [
     {
       id: 1,
@@ -40,7 +58,11 @@ const AdminSidebar = () => {
 
   return (
     <div>
-      <Sidebar items={items} />
+      <Sidebar
+        items={items}
+        token={token ? token : ''}
+        currentUserId={user ? user.id : ''}
+      />
     </div>
   )
 }
