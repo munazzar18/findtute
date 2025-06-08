@@ -135,6 +135,8 @@ export const UpdateProfileAction = async (formData: FormData) => {
         const data = await res.json()
         cookies().set('user', JSON.stringify({
             ...user,
+            lattitude: data?.data.lattitude,
+            longitude: data?.data.longitude,
             is_verified: data?.data.is_verified
         }), {
             secure: true,

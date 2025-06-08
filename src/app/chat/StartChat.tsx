@@ -129,6 +129,7 @@ const Chat: React.FC<ChatProps> = ({
     })
     return () => {
       socket.off('newMessage')
+      socket.off('messageStatus')
       socket.disconnect()
     }
   }, [socket])

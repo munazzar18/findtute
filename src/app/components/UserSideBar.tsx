@@ -56,25 +56,38 @@ const UserSideBar = () => {
       link: `/dashboard/profile`,
       icon: <FaUserLarge />,
     },
+
     {
       id: 3,
-      name: 'Browse',
-      link: `/dashboard/browse?page=1`,
-      icon: <IoPeopleSharp />,
-    },
-    {
-      id: 4,
       name: 'Messages',
       link: `/dashboard/messages`,
       icon: <IoChatbubbles />,
     },
     {
-      id: 5,
+      id: 4,
       name: 'Online Session',
       link: `/dashboard/online-session`,
       icon: <IoTv />,
     },
   ]
+
+  if (user?.role === 'student') {
+    items.push({
+      id: items.length + 1,
+      name: 'Find Tutors',
+      link: '/dashboard/find-teachers?page=1',
+      icon: <FaFile />,
+    })
+  }
+
+  if (user?.role === 'teacher') {
+    items.push({
+      id: items.length + 1,
+      name: 'Find Students',
+      link: '/dashboard/browse?page=1',
+      icon: <FaFile />,
+    })
+  }
 
   if (user?.role === 'teacher') {
     items.push({
