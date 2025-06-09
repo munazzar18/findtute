@@ -5,6 +5,7 @@ import Loader from '@/app/components/Loader'
 
 const PaymentResult = async ({ transactionId }: { transactionId: string }) => {
   const res = await InquirePaymentStatus(transactionId)
+  console.log(res)
 
   return (
     <div className="w-full max-w-4xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-md hover:shadow-xl">

@@ -1,7 +1,6 @@
-import BrowseFilters from '@/app/components/BrowseFilters'
+import Pagination from '@/app/components/Pagination'
 import StudentApplyBtn from '@/app/components/StudentApplyBtn'
-import { getAllApplications } from '@/app/lib/getApplication'
-import { getMatchingUsers } from '@/app/lib/getMatching'
+import { findStudents } from '@/app/lib/getMatching'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 
@@ -18,22 +17,6 @@ interface Subject {
 interface Location {
   geoLat: number
   geoLong: number
-}
-
-interface Application {
-  id: string
-  name: string
-  hourly_rate: number
-  monthly_rate: number
-  rating: number
-  lattitude: number
-  longitude: number
-  avatar: string
-  preference: string
-  expiry_date: string
-  user_id: string
-  teacherId: string
-  studentId: string
 }
 
 interface User {
@@ -69,7 +52,6 @@ interface User {
   updated_at: string
   grades: Grade[]
   subjects: Subject[]
-  create_application: Application[]
 }
 
 interface Browse {
@@ -81,7 +63,7 @@ interface Browse {
       total: number
       perPage: number
       currentPage: number
-      totalPages: number
+      lastPage: number
     }
   }
 }
@@ -91,152 +73,86 @@ const Browse = async ({
 }: {
   searchParams: {
     page?: string
-    subject?: string
-    grade?: string
-    rating?: string
-    location?: string
   }
 }) => {
   const authUser = JSON.parse(cookies().get('user')?.value || '{}')
-
-  const subject =
-    searchParams.subject && searchParams.subject !== 'undefined'
-      ? searchParams.subject
-      : undefined
-  const grade =
-    searchParams.grade && searchParams.grade !== 'undefined'
-      ? searchParams.grade
-      : undefined
-  const rating =
-    searchParams.rating && searchParams.rating !== 'undefined'
-      ? parseFloat(searchParams.rating)
-      : undefined
   const currentPage = searchParams.page ? parseInt(searchParams.page) : 1
-  const applications: Browse = await getMatchingUsers(
-    currentPage,
-    subject,
-    grade,
-    rating
-  )
-
-  const totalPages = applications?.data?.pageData?.totalPages || 1
+  const applications: Browse = await findStudents(currentPage)
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-8">
-        Browse {authUser.role === 'student' ? 'Tutors' : 'Students'}
-      </h1>
-      <BrowseFilters />
-      <div className="flex flex-wrap gap-4">
-        {applications?.data?.users?.length === 0 && (
-          <p>No matching applications found.</p>
-        )}
-        {applications &&
-          applications?.data?.users?.map((data) => {
-            const avatarUrl = data.avatar
-              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${data.avatar}`
-              : '/images/default-avatar.png'
+    <div className="flex flex-col items-center">
+      <div className="flex flex-wrap justify-center gap-8">
+        {applications?.data?.users?.map((data) => {
+          const initials = data.username.slice(0, 2).toUpperCase()
+          const avatarUrl = data.avatar
+            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${data.avatar}`
+            : null
 
-            return (
-              <div
-                className="card bg-base-100 w-64 shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out"
-                key={data.id}
-              >
-                <figure className="w-64 aspect-square">
+          return (
+            <div
+              key={data.id}
+              className="w-80 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
+            >
+              {/* Header Banner */}
+              <div className="h-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+              {/* Avatar */}
+              <div className="relative flex justify-center -mt-12">
+                {avatarUrl ? (
                   <img
                     src={avatarUrl}
-                    alt={data.first_name || 'user image'} // Convert null to empty string
-                    className="object-cover w-full h-full"
+                    alt={data.first_name || data.username}
+                    className="w-24 h-24 rounded-full border-4 border-white object-cover"
                   />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">
-                    {data.first_name + ' ' + data.last_name}
-                  </h2>
-                  <div className="card-actions justify-end">
-                    <p>Preference: {data.preference || 'Not specified'}</p>
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-semibold text-white border-4 border-white">
+                    {initials}
                   </div>
-                  <div className="card-actions justify-end">
-                    <p>
-                      Subject:{' '}
-                      {data.subjects.length > 0
-                        ? data.subjects
-                            .map((subject) => subject.subject)
-                            .join(', ')
-                        : 'Not specified'}
-                    </p>
-                  </div>
-                  <div className="card-actions justify-end">
-                    <p>
-                      Grades:{' '}
-                      {data.grades.length > 0
-                        ? data.grades.map((grade) => grade.grade).join(', ')
-                        : 'Not specified'}
-                    </p>
-                  </div>
-                  {authUser.role === 'student' && (
-                    <div>
-                      {data?.create_application?.length > 0 &&
-                      data?.create_application?.[0] ? (
-                        <div>
-                          {authUser.id ===
-                          data.create_application[0].studentId ? (
-                            <p className="p-1 bg-green-500 text-white rounded-lg text-center">
-                              In discussion
-                            </p>
-                          ) : (
-                            <StudentApplyBtn
-                              appId={data.create_application[0].id}
-                            />
-                          )}
-                        </div>
-                      ) : (
-                        <p className="p-1 bg-red-600 text-white rounded-lg text-center">
-                          Inactive Application
-                        </p>
-                      )}
-                    </div>
-                  )}
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="px-6 py-4 text-center">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {data.first_name
+                    ? `${data.first_name} ${data.last_name || ''}`.trim()
+                    : data.username}
+                </h3>
+                <p className="mt-1 text-gray-500">
+                  {data.preference || 'No preference'}
+                </p>
+
+                <div className="mt-3 text-left text-gray-600 text-sm space-y-1">
+                  <p>
+                    <span className="font-medium">Subjects:</span>{' '}
+                    {data.subjects.length > 0
+                      ? data.subjects.map((s) => s.subject).join(', ')
+                      : 'Not specified'}
+                  </p>
+                  <p>
+                    <span className="font-medium">Grades:</span>{' '}
+                    {data.grades.length > 0
+                      ? data.grades.map((g) => g.grade).join(', ')
+                      : 'Not specified'}
+                  </p>
                 </div>
               </div>
-            )
-          })}
+
+              {/* Actions */}
+              {/* <div className="px-6 pb-6 flex justify-between">
+              <Link href={`/students/${data.id}`}>
+                <button className="btn btn-outline btn-sm">View Profile</button>
+              </Link>
+            </div> */}
+            </div>
+          )
+        })}
       </div>
-
-      <div className="flex justify-center mt-8">
-        <div className="join">
-          {currentPage > 1 && (
-            <Link href={`?page=${currentPage - 1}`} className="join-item btn">
-              «
-            </Link>
-          )}
-
-          {/* Generate page buttons */}
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            const pageNum = currentPage <= 3 ? i + 1 : currentPage + i - 2
-
-            if (pageNum > 0 && pageNum <= totalPages) {
-              return (
-                <Link
-                  key={pageNum}
-                  href={`?page=${pageNum}`}
-                  className={`join-item btn ${
-                    currentPage === pageNum ? 'btn-active' : ''
-                  }`}
-                >
-                  {pageNum}
-                </Link>
-              )
-            }
-            return null
-          })}
-
-          {currentPage < totalPages && (
-            <Link href={`?page=${currentPage + 1}`} className="join-item btn">
-              »
-            </Link>
-          )}
-        </div>
+      <div className="mt-8">
+        <Pagination
+          pageData={applications?.data?.pageData}
+          link="/dashboard/browse"
+        />
       </div>
     </div>
   )

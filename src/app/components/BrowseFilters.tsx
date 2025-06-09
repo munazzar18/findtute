@@ -135,7 +135,8 @@ const BrowseFilters = () => {
         className="btn btn-outline btn-primary mt-4 w-full"
         onClick={() => {
           const params = new URLSearchParams(searchParams.toString())
-          router.push(`?${params.set('page', '1')}`)
+          params.set('page', '1')
+          router.push(`?${params.toString()}`)
         }}
       >
         Reset Filters

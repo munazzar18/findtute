@@ -33,7 +33,7 @@ export const InquirePaymentStatus = async (transactionId: string) => {
 
     const url = process.env.NEXT_PUBLIC_API_URL as string
     const token = cookies().get('access_token')?.value
-
+    console.log("Transaction Id: ", transactionId)
     try {
         const res = await fetch(`${url}payment/inquire-transaction`, {
             method: 'POST',
@@ -48,6 +48,7 @@ export const InquirePaymentStatus = async (transactionId: string) => {
         return data
     } catch (error) {
         console.error("payment update failed", error)
+        return error
     }
 }
 
