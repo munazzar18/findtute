@@ -37,11 +37,15 @@ const Sidebar = ({
   useEffect(() => {
     if (!socket) return
 
-    socket.emit('getMessagesByUserId')
+    socket.emit('getUnreadMessageCount')
 
-    socket.on('userMessages', (data) => {
-      setUnReadMessages(data.length)
+    socket.on('unreadMessageCount', (count: number) => {
+      setUnReadMessages(count)
     })
+
+    return () => {
+      socket.off('unreadMessageCount')
+    }
   }, [socket, token])
 
   return (
@@ -121,9 +125,11 @@ const Sidebar = ({
                   <span className="ml-2 text-base tracking-wide">
                     {item.name === 'Messages' ? (
                       <div className="indicator">
-                        <span className="indicator-item badge badge-primary">
-                          {unReadMessages}
-                        </span>
+                        {unReadMessages > 0 && (
+                          <span className="indicator-item badge badge-primary">
+                            {unReadMessages}
+                          </span>
+                        )}
                         <div className="me-5 place-items-center">
                           {item.name}
                         </div>

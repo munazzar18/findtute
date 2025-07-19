@@ -36,7 +36,7 @@ export default function Layout({
         <UserSideBar />
 
         <UserStatus token={token} status />
-        <CustomToast token={token} currentUserId={user?.id ?? ''} />
+        {/* <CustomToast token={token} currentUserId={user?.id ?? ''} /> */}
 
         <div className="flex-1 flex flex-col overflow-hidden">
           <main className="flex-1 p-4 lg:p-6 overflow-y-auto bg-primary-foreground">

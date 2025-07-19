@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSocket } from '../../utils/socket'
 import { FaCircle } from 'react-icons/fa6'
 import toast from 'react-hot-toast'
+
 interface ChatProps {
   token: string
   chatId: string
@@ -21,6 +22,7 @@ interface Messages {
   receiver: any
   status: string
 }
+
 interface GroupProps {
   messages: Messages[]
   userId: string
@@ -33,6 +35,7 @@ interface Notification {
   from: string
   userId: string
 }
+
 const url = process.env.NEXT_PUBLIC_API_URL as string
 
 const Chat: React.FC<ChatProps> = ({
@@ -72,12 +75,14 @@ const Chat: React.FC<ChatProps> = ({
     setIsSent(false)
     return data
   }
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' || event.key === 'NumpadEnter') {
       event.preventDefault()
       sendMessage()
     }
   }
+
   useEffect(() => {
     getChat()
   }, [])
@@ -88,55 +93,81 @@ const Chat: React.FC<ChatProps> = ({
     socket.emit('joinChat', { applicationId, chatId })
     setUserId(currentUserId)
 
-    socket.emit('messageStatus', {
-      chatId,
-      currentUserId,
-    })
+    // Add a small delay to ensure joinChat is processed first
+    setTimeout(() => {
+      console.log('Emitting messageStatus:', { chatId, currentUserId })
+      socket.emit('messageStatus', {
+        chatId,
+        currentUserId,
+      })
+    }, 100)
 
     socket.on('newMessage', (message: any) => {
       scrollToBottom()
       setMessages((prevMessages) => [...prevMessages, message])
     })
-    // socket.on('notification', (notification: Notification) => {
-    //   console.log('Received notification in layout:', notification)
-    //   // if (notification.userId === currentUserId) return
 
-    //   toast.custom((t) => (
-    //     <div
-    //       className={`${
-    //         t.visible ? 'animate-enter' : 'animate-leave'
-    //       } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-    //     >
-    //       <div className="w-0 flex-1 p-4">
-    //         <div className="flex items-start">
-    //           <div className="flex-shrink-0 pt-0.5">
-    //             <FaCircle className="text-green-400" />
-    //           </div>
-    //           <div className="ml-3 flex-1">
-    //             <p className="text-sm font-medium text-gray-900">
-    //               {notification.from}
-    //             </p>
-    //             <p className="text-sm text-gray-500">{notification.content}</p>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   ))
-    // })
+    socket.on('messageStatus', (messageStatuses) => {
+      setMsgStatus(messageStatuses)
 
-    socket.on('messageStatus', (messageStatus) => {
-      setMsgStatus(messageStatus)
+      // Update messages with new statuses
+      if (Array.isArray(messageStatuses) && messageStatuses.length > 0) {
+        setMessages((prevMessages) => {
+          return prevMessages.map((msg) => {
+            // Only update messages where current user is receiver
+            // (messages sent TO the current user should be marked as seen)
+            if (msg.receiver?.id === currentUserId) {
+              return {
+                ...msg,
+                status: 'seen', // or messageStatuses[0] if you want to use the actual status
+              }
+            }
+            return msg
+          })
+        })
+      }
     })
+
+    // Listen for status updates from other users
+    socket.on(
+      'statusUpdate',
+      (data: { chatId: string; userId: string; status: string }) => {
+        if (data.chatId === chatId) {
+          setMessages((prevMessages) => {
+            return prevMessages.map((msg) => {
+              // Update messages sent by current user to show they've been seen by others
+              if (
+                msg.sender?.id === currentUserId &&
+                msg.receiver?.id === data.userId
+              ) {
+                return {
+                  ...msg,
+                  status: data.status,
+                }
+              }
+              return msg
+            })
+          })
+        }
+      }
+    )
+
+    // Add error handling
+    socket.on('error', (error) => {
+      console.error('Socket error:', error)
+    })
+
     return () => {
       socket.off('newMessage')
       socket.off('messageStatus')
-      socket.disconnect()
+      socket.off('statusUpdate')
+      socket.off('error')
     }
-  }, [socket])
+  }, [socket, chatId, applicationId, currentUserId])
 
   const sendMessage = () => {
     if (message.trim() === '') return
-    const sound = new Audio('/assets/soundmessage.wav') // Path to your sound file
+    const sound = new Audio('/assets/soundmessage.wav')
     sound.play()
     socket?.emit('sendMessage', { chatId, content: message })
     setIsSent(true)
@@ -184,7 +215,9 @@ const Chat: React.FC<ChatProps> = ({
                 : date}
             </div>
             {msgs.map((msg, index) => (
-              <div key={index}>
+              <div key={msg.id || index}>
+                {' '}
+                {/* Use msg.id instead of index for better React key */}
                 {userId === msg.sender.id ? (
                   <div className="chat chat-end">
                     <div className="chat-header">
@@ -200,7 +233,13 @@ const Chat: React.FC<ChatProps> = ({
                       </time>
                     </div>
                     <div className="chat-bubble">{msg.content}</div>
-                    <div className="chat-footer opacity-50">{msg.status}</div>
+                    <div className="chat-footer opacity-50">
+                      {msg.status === 'seen'
+                        ? 'seen'
+                        : msg.status === 'sent'
+                        ? 'delivered'
+                        : msg.status}
+                    </div>
                   </div>
                 ) : (
                   <div className="chat chat-start">
@@ -219,7 +258,13 @@ const Chat: React.FC<ChatProps> = ({
                     <div className="chat-bubble chat-bubble-info">
                       {msg.content}
                     </div>
-                    <div className="chat-footer opacity-50">{msg.status}</div>
+                    <div className="chat-footer opacity-50">
+                      {msg.status === 'seen'
+                        ? 'seen'
+                        : msg.status === 'sent'
+                        ? 'delivered'
+                        : msg.status}
+                    </div>
                   </div>
                 )}
               </div>
