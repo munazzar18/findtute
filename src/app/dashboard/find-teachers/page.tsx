@@ -201,7 +201,7 @@ const FindTeachersPage = async ({
                       ))}
                     </div>
                   </div>
-                  {app.teacher.is_authorized ? (
+                  {app.expiry_date >= new Date().toISOString() ? (
                     <div className="card-actions justify-end mt-4">
                       <button className="btn btn-outline btn-sm">
                         Start Chat
