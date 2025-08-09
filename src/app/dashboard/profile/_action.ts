@@ -120,6 +120,8 @@ export const UpdateProfileAction = async (formData: FormData) => {
     const experience = formData.get('experience')
     const grades_ids = formData.get('grades_ids')
     const subjects_ids = formData.get('subjects_ids')
+    const hourly_rate = formData.get('hourly_rate')
+    const monthly_rate = formData.get('monthly_rate')
     try {
         const res = await fetch(`${url}user/update-profile/${user?.id}`, {
             method: 'PUT',
@@ -129,7 +131,7 @@ export const UpdateProfileAction = async (formData: FormData) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ first_name, last_name, cnic, mobile, country, state, city, address, lattitude, longitude, avatar, preference, education, experience, grades_ids, subjects_ids }),
+            body: JSON.stringify({ first_name, last_name, cnic, mobile, country, state, city, address, lattitude, longitude, hourly_rate, monthly_rate, avatar, preference, education, experience, grades_ids, subjects_ids }),
 
         })
         const data = await res.json()
