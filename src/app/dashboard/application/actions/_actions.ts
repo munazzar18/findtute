@@ -55,3 +55,25 @@ export const StudentCancelAction = async (formData: FormData) => {
     }
 
 }
+
+
+export const getRoomsFromChatId = async (chatId: string) => {
+    const url = process.env.NEXT_PUBLIC_API_URL as string
+    const token = cookies().get('access_token')?.value
+
+    try {
+        const res = await fetch(`${url}chat/rooms/${chatId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.error("something went wrong to get rooms", error)
+    }
+
+}

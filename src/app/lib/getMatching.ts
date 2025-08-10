@@ -106,6 +106,28 @@ export const getMatchingTutors = async (page: number) => {
 
 }
 
+export const getMyAcceptedApplication = async () => {
+    const token = cookies().get('access_token')?.value
+    try {
+        const res = await fetch(`${url}accepted-application/my-applications`, {
+            cache: 'no-store',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+
+        const data = await res.json()
+        return data
+
+    } catch (error) {
+        console.error('Error fetching matching users:', error)
+        return {
+            data: [],
+        }
+    }
+}
+
 export const findStudents = async (page: number) => {
     const token = cookies().get('access_token')?.value
     try {

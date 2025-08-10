@@ -1,5 +1,9 @@
 import BrowseFilters from '@/app/components/BrowseFilters'
-import { getMatchingTutors } from '@/app/lib/getMatching'
+import StudentApplyBtn from '@/app/components/StudentApplyBtn'
+import {
+  getMatchingTutors,
+  getMyAcceptedApplication,
+} from '@/app/lib/getMatching'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -76,6 +80,19 @@ interface Application {
   }
 }
 
+interface AcceptedApplication {
+  status: string
+  message: string
+  data: [
+    {
+      id: string
+      application_id: string
+      student_id: string
+      application: Application
+    }
+  ]
+}
+
 const FindTeachersPage = async ({
   searchParams,
 }: {
@@ -95,6 +112,9 @@ const FindTeachersPage = async ({
 
   const currentPage = searchParams.page ? parseInt(searchParams.page) : 1
   const applications: Application = await getMatchingTutors(currentPage)
+  const acceptedApplications: AcceptedApplication =
+    await getMyAcceptedApplication()
+  console.log('acceptedApplications', acceptedApplications)
   const totalPages = applications?.data?.pageData?.totalPages || 1
 
   const haversineDistance = (
@@ -203,9 +223,13 @@ const FindTeachersPage = async ({
                   </div>
                   {app.expiry_date >= new Date().toISOString() ? (
                     <div className="card-actions justify-end mt-4">
-                      <button className="btn btn-outline btn-sm">
-                        Start Chat
-                      </button>
+                      {acceptedApplications.data
+                        .map((a) => a.application_id)
+                        .includes(app.id) ? (
+                        <p>Already Applied</p>
+                      ) : (
+                        <StudentApplyBtn appId={app.id} />
+                      )}
                     </div>
                   ) : (
                     <div className="card-actions justify-end mt-4">
